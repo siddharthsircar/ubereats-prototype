@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import 'tachyons';
-import Addressbar from "./components/Addressbar/Addressbar";
-import Menu from "./components/Navigation/Menu/Menu";
-import Navigation from "./components/Navigation/Navigation";
+import Addressbar from "../Addressbar/Addressbar";
+import Menu from "../Navigation/Menu/Menu";
+import Navigation from "../Navigation/Navigation";
 import './Home.css';
 
 const useOnClickOutside = (ref, handler) => {

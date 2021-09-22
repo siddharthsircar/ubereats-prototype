@@ -5,9 +5,9 @@ import { bool } from 'prop-types';
 const Menu = ({ open }) => {
     return (
         <StyledMenu open={open}>
-            <a href="/" style={{ backgroundColor: 'black', color: 'white', textAlign: 'center' }}>Sign In</a>
+            <a href="/user/login" style={{ backgroundColor: 'black', color: 'white', textAlign: 'center' }}>Sign In</a>
             <br />
-            <a href="/" className='pa3' style={{ color: 'black' }}>Add Your Restaurant</a>
+            <a href="/restaurant/login" className='pa3' style={{ color: 'black' }}>Add Your Restaurant</a>
         </StyledMenu>
     )
 }

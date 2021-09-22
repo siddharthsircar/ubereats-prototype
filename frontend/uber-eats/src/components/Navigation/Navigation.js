@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "./Logo/Logo";
-import Signin from "./Signin/Signin";
+import SigninButton from "./SigninButton/SigninButton";
 import Burger from "./Menu/MenuIcon/Burgermenu";
 
 const Navigation = (props) => {
@@ -10,7 +10,7 @@ const Navigation = (props) => {
                 <Burger open={props.open} setOpen={props.setOpen} />
                 <Logo />
             </div>
-            <Signin />
+            <SigninButton />
         </div>
     );
 }
