@@ -22,7 +22,7 @@ const unauthDispatcher = (payload) => ({
 
 const loginUser = (payload) => (dispatch) => {
     console.log('PL :', payload);
-    axios.post('http://localhost:3001/user/login', payload)
+    axios.post('http://localhost:7000/user/login', payload)
         .then((res) => {
             if (res.status === 200) {
                 console.log(res);
@@ -43,7 +43,7 @@ const loginUser = (payload) => (dispatch) => {
 
 const registerUser = (payload) => (dispatch) => {
     console.log(payload);
-    axios.post('http://localhost:3001/user/register', payload)
+    axios.post('http://localhost:7000/user/register', payload)
         .then((res) => {
             if (res.status === 201) {
                 console.log(res);

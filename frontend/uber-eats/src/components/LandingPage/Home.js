@@ -3,7 +3,6 @@ import 'tachyons';
 import Addressbar from "../Addressbar/Addressbar";
 import Menu from "../Navigation/Menu/Menu";
 import Navigation from "../Navigation/Navigation";
-import './Home.css';
 
 const useOnClickOutside = (ref, handler) => {
     useEffect(() => {

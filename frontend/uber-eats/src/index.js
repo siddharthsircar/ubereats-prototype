@@ -1,25 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-// import { Provider } from 'react-redux';
-import rootReducer from './redux/reducer/rootReducer';
+import { Provider } from 'react-redux';
+import store from './redux/reducer/rootReducer';
 import reportWebVitals from './reportWebVitals';
 import 'tachyons';
 import App from './App';
 
-// const store = createStore(rootReducer, compose(applyMiddleware(thunk),
-//   // eslint-disable-next-line no-underscore-dangle
-//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-//   // eslint-disable-next-line function-paren-newline
-// ));
-
 ReactDOM.render(
   <React.StrictMode>
-    {/* <Provider store={store}> */}
-    <App />
-    {/* </Provider> */}
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
