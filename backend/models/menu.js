@@ -22,54 +22,35 @@ const sequelize = new Sequelize(aws.dbName, aws.userName, aws.password, {
 });
 const salt = 10;
 
-const users = sequelize.define(
-    'users',
+const menu = sequelize.define(
+    'menu',
     {
-        user_id:
+        item_id:
         {
             type: DT.UUID,
             primaryKey: true,
             defaultValue: DT.UUIDV1,
         },
-        first_name:
+        menu_id:
+        {
+            type: DT.UUID,
+            allowNull: false,
+        },
+        item_name:
         {
             type: DT.STRING(50),
-            allowNull: false,
-        },
-        last_name:
-        {
-            type: DT.STRING(50),
-            allowNull: false,
-        },
-        phone_number: {
-            type: DT.STRING(50),
-            allowNull: false,
-        },
-        email: {
-            type: DT.STRING(50),
-            allowNull: false,
             unique: true,
-        },
-        password: {
-            type: DT.STRING(200),
             allowNull: false,
         },
-        street_address:
-        {
+        item_desc: {
             type: DT.STRING(50),
             allowNull: false,
         },
-        city:
-        {
+        item_price: {
             type: DT.STRING(50),
             allowNull: false,
         },
-        state:
-        {
-            type: DT.STRING(50),
-            allowNull: false,
-        },
-        country:
+        item_type:
         {
             type: DT.STRING(50),
             allowNull: false,
@@ -78,15 +59,15 @@ const users = sequelize.define(
     {
         hooks: {
             // eslint-disable-next-line no-shadow
-            beforeCreate: (users) => {
+            beforeCreate: (restaurants) => {
                 // eslint-disable-next-line no-param-reassign
-                users.password = users.password !== '' ? bcrypt.hashSync(users.password, salt) : '';
+                restaurants.password = restaurants.password !== '' ? bcrypt.hashSync(restaurants.password, salt) : '';
             },
         },
     },
 );
 
-sequelize.sync()
+// sequelize.sync()
 
 // Force sync all models
 // It will drop the table first 
@@ -94,5 +75,5 @@ sequelize.sync()
 sequelize.sync({ force: true })
 
 module.exports = {
-    users,
+    menu,
 };

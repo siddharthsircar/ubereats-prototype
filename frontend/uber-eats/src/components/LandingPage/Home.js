@@ -26,7 +26,7 @@ const Home = () => {
     const node = useRef();
     useOnClickOutside(node, () => setOpen(false))
     return (
-        <div style={{ height: '100vh' }}>
+        <div style={{ height: '100vh', background: 'linear-gradient(89deg, #ff5edf 0%, #04c8de 100%)' }}>
             <div ref={node}>
                 <Navigation open={open} setOpen={setOpen} />
                 <Menu open={open} setOpen={setOpen} />

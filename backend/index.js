@@ -36,6 +36,7 @@ app.use((req, res, next) => {
 app.use(express.static('public'));
 console.log('env baby:', process.env.SEQUELIZE_SYNC_FORCE);
 app.use('/user', require('./routes/userRoutes'));
+app.use('/restaurant', require('./routes/restaurantRoutes'));
 
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to Siddharth\'s application.' });

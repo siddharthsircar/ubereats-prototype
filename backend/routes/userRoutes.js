@@ -16,23 +16,32 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
     const userDetails = req.body;
     const { first_name, last_name, phone_number, email, password, street_address, city, state, country } = userDetails;
-    const createRes = await createUser(first_name, last_name, phone_number, email, password, street_address, city, state, country);
-    if (createRes.statusCode === 201) {
-        res.status(201).send({
-            user: {
-                user_id: createRes.body.dataValues.user_id,
-                first_name: createRes.body.dataValues.first_name,
-                last_name: createRes.body.dataValues.last_name,
-                city: createRes.body.dataValues.city,
-                email: createRes.body.dataValues.email,
-            },
-        });
+    let user = await getUserByCreds(email);
+    if (user.statusCode === 200) {
+        res.status(403).send({
+            error: {
+                message: 'Email address already registered.'
+            }
+        })
     } else {
-        res.status(500).send({
-            errors: {
-                body: createRes.body,
-            },
-        });
+        const createRes = await createUser(first_name, last_name, phone_number, email, password, street_address, city, state, country);
+        if (createRes.statusCode === 201) {
+            res.status(201).send({
+                user: {
+                    user_id: createRes.body.dataValues.user_id,
+                    first_name: createRes.body.dataValues.first_name,
+                    last_name: createRes.body.dataValues.last_name,
+                    city: createRes.body.dataValues.city,
+                    email: createRes.body.dataValues.email,
+                },
+            });
+        } else {
+            res.status(500).send({
+                errors: {
+                    body: createRes.body,
+                },
+            });
+        }
     }
 });
 
@@ -58,11 +67,11 @@ router.post('/login', async (req, res) => {
             } else if (!isMatch) {
                 res.status(403).send({
                     errors: {
-                        body: 'Unauth User',
+                        message: 'Invalid Login Credentials',
                     },
                 });
             } else {
-                console.log('Successful log in');
+                console.log('Successfully logged in');
                 delete userDetails.password;
                 res.status(200).send({
                     user: userDetails,
@@ -71,6 +80,30 @@ router.post('/login', async (req, res) => {
         });
     } else {
         res.status(userDetails.statusCode).send({
+            errors: {
+                body: userDetails.body,
+            },
+        });
+    }
+});
+
+router.get('/profile', async (req, res) => {
+    const { user_id } = req.body;
+    console.log(user_id);
+    const userDetails = await getUser(user_id);
+    if (userDetails.statusCode === 200) {
+        res.status(200).send({
+            user: userDetails.body,
+        });
+    } else if (userDetails.statusCode === 404) {
+        res.status(404).send({
+            errors: {
+                body: userDetails.body,
+            },
+        });
+    }
+    else {
+        res.status(500).send({
             errors: {
                 body: userDetails.body,
             },
@@ -118,11 +151,11 @@ router.post('/updateProfilePicture', upload.single('file'), async (req, res) => 
     });
 });
 
-router.post('/updateUserDetails', async (req, res) => {
+router.post('/profile', async (req, res) => {
     const { userID, updateData } = req.body;
     const updateRes = await updateUser(userID, updateData);
     if (updateRes.statusCode === 200) {
-        res.status(200).send('User updated successfully!');
+        res.status(200).send('Profile updated successfully!');
     } else {
         res.status(500).send({
             errors: {

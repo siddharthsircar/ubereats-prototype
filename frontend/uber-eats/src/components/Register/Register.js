@@ -65,7 +65,7 @@ class Register extends Component {
         }
         return (
             <div>
-                <nav className='fl-jc-center' style={{ overflow: 'hidden', position: 'sticky', top: '0', background: 'linear-gradient(89deg, #ff5edf 0%, #04c8de 100%)' }}>
+                <nav className='fl-jc-center' style={{ overflow: 'hidden', position: 'sticky', top: '0', background: 'white' }}>
                     <Logo />
                 </nav>
                 <main className="pa4 black-80">

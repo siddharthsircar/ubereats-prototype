@@ -22,26 +22,26 @@ const sequelize = new Sequelize(aws.dbName, aws.userName, aws.password, {
 });
 const salt = 10;
 
-const users = sequelize.define(
-    'users',
+const restaurants = sequelize.define(
+    'restaurants',
     {
-        user_id:
+        rest_id:
         {
             type: DT.UUID,
             primaryKey: true,
             defaultValue: DT.UUIDV1,
         },
-        first_name:
-        {
-            type: DT.STRING(50),
-            allowNull: false,
-        },
-        last_name:
+        name:
         {
             type: DT.STRING(50),
             allowNull: false,
         },
         phone_number: {
+            type: DT.STRING(50),
+            allowNull: false,
+        },
+        timings:
+        {
             type: DT.STRING(50),
             allowNull: false,
         },
@@ -74,19 +74,24 @@ const users = sequelize.define(
             type: DT.STRING(50),
             allowNull: false,
         },
+        menu_id:
+        {
+            type: DT.UUID,
+            allowNull: true,
+        },
     },
     {
         hooks: {
             // eslint-disable-next-line no-shadow
-            beforeCreate: (users) => {
+            beforeCreate: (restaurants) => {
                 // eslint-disable-next-line no-param-reassign
-                users.password = users.password !== '' ? bcrypt.hashSync(users.password, salt) : '';
+                restaurants.password = restaurants.password !== '' ? bcrypt.hashSync(restaurants.password, salt) : '';
             },
         },
     },
 );
 
-sequelize.sync()
+// sequelize.sync()
 
 // Force sync all models
 // It will drop the table first 
@@ -94,5 +99,5 @@ sequelize.sync()
 sequelize.sync({ force: true })
 
 module.exports = {
-    users,
+    restaurants,
 };
