@@ -27,12 +27,17 @@ router.post('/register', async (req, res) => {
         const createRes = await createUser(first_name, last_name, phone_number, email, password, street_address, city, state, country);
         if (createRes.statusCode === 201) {
             res.status(201).send({
-                user: {
+                user:
+                {
                     user_id: createRes.body.dataValues.user_id,
                     first_name: createRes.body.dataValues.first_name,
                     last_name: createRes.body.dataValues.last_name,
-                    city: createRes.body.dataValues.city,
+                    phone_number: createRes.body.dataValues.phone_number,
                     email: createRes.body.dataValues.email,
+                    street_address: createRes.body.dataValues.street_address,
+                    city: createRes.body.dataValues.city,
+                    state: createRes.body.dataValues.state,
+                    country: createRes.body.dataValues.country,
                 },
             });
         } else {
@@ -74,7 +79,17 @@ router.post('/login', async (req, res) => {
                 console.log('Successfully logged in');
                 delete userDetails.password;
                 res.status(200).send({
-                    user: userDetails,
+                    user: {
+                        user_id: userDetails.user_id,
+                        first_name: userDetails.first_name,
+                        last_name: userDetails.last_name,
+                        phone_number: userDetails.phone_number,
+                        email: userDetails.email,
+                        street_address: userDetails.street_address,
+                        city: userDetails.city,
+                        state: userDetails.state,
+                        country: userDetails.country,
+                    },
                 });
             }
         });
@@ -108,9 +123,19 @@ router.get('/profile/:user_id', async (req, res) => {
     console.log(user_id);
     const userDetails = await getUser(user_id);
     if (userDetails.statusCode === 200) {
-        console.log('User Profile Body: ', userDetails.body);
+        console.log('User Profile Body: ', userDetails.body.dataValues);
         res.status(200).send({
-            user: userDetails.body,
+            user: {
+                user_id: userDetails.body.dataValues.user_id,
+                first_name: userDetails.body.dataValues.first_name,
+                last_name: userDetails.body.dataValues.last_name,
+                phone_number: userDetails.body.dataValues.phone_number,
+                email: userDetails.body.dataValues.email,
+                street_address: userDetails.body.dataValues.street_address,
+                city: userDetails.body.dataValues.city,
+                state: userDetails.body.dataValues.state,
+                country: userDetails.body.dataValues.country,
+            },
         });
     } else if (userDetails.statusCode === 404) {
         res.status(404).send({

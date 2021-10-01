@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Address extends Component {
     constructor(props) {
@@ -10,8 +11,9 @@ class Address extends Component {
 
     componentDidMount = () => {
         this.setState({
-            user: JSON.parse(localStorage.getItem('user')),
+            user: this.props.user,
         })
+        console.log("address user prop", this.props.user);
     }
 
     render() {
@@ -46,4 +48,8 @@ class Address extends Component {
     }
 }
 
-export default Address;
+const mapStateToProps = (state) => ({
+    user: state.auth.user,
+});
+
+export default connect(mapStateToProps)(Address);

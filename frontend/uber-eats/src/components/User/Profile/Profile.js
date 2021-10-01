@@ -43,7 +43,7 @@ class Profile extends Component {
             if (this.state.activeTab !== tab) this.setState({ activeTab: tab });
         }
         if (!this.state.authFlag) {
-            <Redirect to="/" />;
+            <Redirect to="/home" />;
         }
         return (
             <div style={{ background: '#37718e', height: '92vh', position: 'relative', top: '8vh' }}>
@@ -56,17 +56,17 @@ class Profile extends Component {
                     <br />
                     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                         <div>
-                            <div className='full-name b f3 white'>
+                            <div className='full-name b f3 white ma2'>
                                 {this.state.user.first_name + " " + this.state.user.last_name}
                             </div>
-                            <div className='contact-details white em'>
-                                <span>+1 {this.state.user.phone_number}</span>
-                                <span> . {this.state.user.email}</span>
+                            <div className='contact-details f5 white em'>
+                                <span className="ma2">+1 {this.state.user.phone_number}</span>
+                                <span className="ma2">{this.state.user.email}</span>
                             </div>
                         </div>
                         <br />
                         <div>
-                            <Button className='white'>Edit Profile</Button>
+                            <Button className='white ma2'>Edit Profile</Button>
                         </div>
                     </div>
                     <br />
@@ -77,12 +77,12 @@ class Profile extends Component {
                                     className={
                                         classnames(
                                             { active: this.state.activeTab === '1' },
-                                            'b black pointer'
+                                            'b black hover-black pointer'
                                         )
                                     }
                                     onClick={() => { toggle('1'); }}
                                 >
-                                    Address
+                                    <p className="black b">Address</p>
                                 </NavLink>
                             </NavItem>
                             <NavItem className='black'>
@@ -90,12 +90,12 @@ class Profile extends Component {
                                     className={
                                         classnames(
                                             { active: this.state.activeTab === '2' },
-                                            'b black pointer'
+                                            'b black hover-black pointer'
                                         )
                                     }
                                     onClick={() => { toggle('2'); }}
                                 >
-                                    Orders
+                                    <p className="black b">Orders</p>
                                 </NavLink>
                             </NavItem>
                             <NavItem>
@@ -103,12 +103,12 @@ class Profile extends Component {
                                     className={
                                         classnames(
                                             { active: this.state.activeTab === '3' },
-                                            'b black pointer'
+                                            'b black hover-black pointer'
                                         )
                                     }
                                     onClick={() => { toggle('3'); }}
                                 >
-                                    Favorites
+                                    <p className="black b">Favorites</p>
                                 </NavLink>
                             </NavItem>
                             <NavItem>
@@ -120,7 +120,7 @@ class Profile extends Component {
                                     }
                                     onClick={this.handleLogout}
                                 >
-                                    LOGOUT
+                                    <p className="black b">Logout</p>
                                 </NavLink>
                             </NavItem>
                         </Nav>
@@ -128,7 +128,7 @@ class Profile extends Component {
                             <TabPane tabId="1">
                                 <Row>
                                     <Col sm="12">
-                                        <Address userProp={this.state.user} />
+                                        <Address userDets={this.state.user} />
                                     </Col>
                                 </Row>
                             </TabPane>
@@ -136,9 +136,8 @@ class Profile extends Component {
                                 <Row>
                                     <Col sm="6">
                                         <Card body>
-                                            <CardTitle>Special Title Treatment</CardTitle>
+                                            <CardTitle>Past Orders</CardTitle>
                                             <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                                            <Button>Go somewhere</Button>
                                         </Card>
 
                                     </Col>
@@ -148,9 +147,8 @@ class Profile extends Component {
                                 <Row>
                                     <Col sm="6">
                                         <Card body>
-                                            <CardTitle>Special Title Treatment</CardTitle>
+                                            <CardTitle>Favorite Restaurants</CardTitle>
                                             <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                                            <Button>Go somewhere</Button>
                                         </Card>
                                     </Col>
                                 </Row>

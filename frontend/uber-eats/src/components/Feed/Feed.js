@@ -37,6 +37,7 @@ class Feed extends Component {
             redirectVar = <Redirect to='/home' />
         }
         let restaurantCards = null;
+        let feed = null;
         if (this.state.showRestaurants) {
             JSON.stringify(this.state.restaurants);
             restaurantCards = this.state.restaurants.map(restaurant => {
@@ -46,22 +47,23 @@ class Feed extends Component {
                     </Col>
                 );
             });
+            feed = <Row>
+                <Col xs={2} className="shadow-2">
+                    <h3>Filters</h3>
+                </Col>
+                <Col>
+                    <Row>{restaurantCards}{restaurantCards}</Row>
+                    <Row>{restaurantCards}{restaurantCards}</Row>
+                    <Row>{restaurantCards}{restaurantCards}</Row>
+                    <Row>{restaurantCards}{restaurantCards}</Row>
+                </Col>
+            </Row>
         }
-        else restaurantCards = "No Restaurants to be displayed";
+        else feed = <div className="fl-jc-center">No Restaurants to be displayed</div>
         return (
             <div className='center pa3 page' >
                 {redirectVar}
-                <Row>
-                    <Col xs={2} className="shadow-2">
-                        <h3>Filters</h3>
-                    </Col>
-                    <Col>
-                        <Row>{restaurantCards}{restaurantCards}</Row>
-                        <Row>{restaurantCards}{restaurantCards}</Row>
-                        <Row>{restaurantCards}{restaurantCards}</Row>
-                        <Row>{restaurantCards}{restaurantCards}</Row>
-                    </Col>
-                </Row>
+                {feed}
             </div>
         );
     }

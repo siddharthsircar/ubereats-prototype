@@ -12,7 +12,7 @@ class RestaurantCard extends Component {
         let imageSrc = 'http://localhost:7000/public/restaurant_image.jpg';
         return (
             <Link to={{ pathname: '/restaurant', state: resData }} className="black hover-black" style={{ textDecoration: "none" }}>
-                <Card>
+                <Card className="shadow-3">
                     <CardBody>
                         <CardTitle tag="h5">{this.props.restaurant.store_name}</CardTitle>
                         <CardSubtitle tag="h6" className="mb-2 text-muted">{this.props.restaurant.city + ", " + this.props.restaurant.state}</CardSubtitle>

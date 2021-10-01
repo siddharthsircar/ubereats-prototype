@@ -26,8 +26,12 @@ router.post('/register', async (req, res) => {
                     rest_id: createRes.body.dataValues.rest_id,
                     store_name: createRes.body.dataValues.store_name,
                     timings: createRes.body.dataValues.timings,
-                    city: createRes.body.dataValues.city,
+                    phone_number: createRes.body.dataValues.phone_number,
                     email: createRes.body.dataValues.email,
+                    street_address: createRes.body.dataValues.street_address,
+                    city: createRes.body.dataValues.city,
+                    state: createRes.body.dataValues.state,
+                    country: createRes.body.dataValues.country,
                 },
             });
         } else {
@@ -69,7 +73,17 @@ router.post('/login', async (req, res) => {
                 console.log('Successful log in');
                 delete restDetails.password;
                 res.status(200).send({
-                    user: restDetails,
+                    user: {
+                        rest_id: restDetails.rest_id,
+                        store_name: restDetails.store_name,
+                        timings: restDetails.timings,
+                        phone_number: restDetails.phone_number,
+                        email: restDetails.email,
+                        street_address: restDetails.street_address,
+                        city: restDetails.city,
+                        state: restDetails.state,
+                        country: restDetails.country,
+                    },
                 });
             }
         });
@@ -103,7 +117,17 @@ router.get('/profile/:user_id', async (req, res) => {
     const restDetails = await getRestaurantProfile(rest_id);
     if (restDetails.statusCode === 200) {
         res.status(200).send({
-            user: restDetails.body,
+            user: {
+                rest_id: restDetails.body.dataValues.rest_id,
+                store_name: restDetails.body.dataValues.store_name,
+                timings: restDetails.body.dataValues.timings,
+                phone_number: restDetails.body.dataValues.phone_number,
+                email: restDetails.body.dataValues.email,
+                street_address: restDetails.body.dataValues.street_address,
+                city: restDetails.body.dataValues.city,
+                state: restDetails.body.dataValues.state,
+                country: restDetails.body.dataValues.country,
+            },
         });
     } else if (restDetails.statusCode === 404) {
         res.status(404).send({

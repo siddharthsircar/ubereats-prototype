@@ -82,7 +82,7 @@ class RestaurantProfile extends Component {
                                     }
                                     onClick={() => { toggle('1'); }}
                                 >
-                                    Address
+                                    <p className="black b">Address</p>
                                 </NavLink>
                             </NavItem>
                             <NavItem className='black'>
@@ -95,7 +95,7 @@ class RestaurantProfile extends Component {
                                     }
                                     onClick={() => { toggle('2'); }}
                                 >
-                                    Menu
+                                    <p className="black b">Menu</p>
                                 </NavLink>
                             </NavItem>
                             <NavItem>
@@ -108,7 +108,7 @@ class RestaurantProfile extends Component {
                                     }
                                     onClick={() => { toggle('3'); }}
                                 >
-                                    Orders
+                                    <p className="black b">Orders</p>
                                 </NavLink>
                             </NavItem>
                             <NavItem>
@@ -120,7 +120,7 @@ class RestaurantProfile extends Component {
                                     }
                                     onClick={this.handleLogout}
                                 >
-                                    LOGOUT
+                                    <p className="black b">Logout</p>
                                 </NavLink>
                             </NavItem>
                         </Nav>
