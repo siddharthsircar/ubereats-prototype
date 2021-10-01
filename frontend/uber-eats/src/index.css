@@ -44,6 +44,5 @@ a {
 .page {
   height: 92vh;
   position: relative;
-  top: 8vh;
-  /* z-index: -1000; */
+  top: 10vh;
 }

@@ -69,6 +69,29 @@ const getRestaurantbyEmail = async (email) => {
     }
 };
 
+const getRestaurants = async () => {
+    try {
+        const userObject = await restaurants.findAll();
+        if (userObject !== undefined && userObject !== null) {
+            return {
+                statusCode: 200,
+                body: userObject,
+            };
+        }
+
+        return {
+            statusCode: 404,
+            body: 'No Restaurants Found',
+        };
+    } catch (err) {
+        console.log(err);
+        return {
+            statusCode: 500,
+            body: err,
+        };
+    }
+};
+
 /**
  * [someFunction description]
  * @param  {String} userID ID of user to be updated
@@ -102,4 +125,5 @@ module.exports = {
     getRestaurantProfile,
     updateRestaurant,
     getRestaurantbyEmail,
+    getRestaurants
 };

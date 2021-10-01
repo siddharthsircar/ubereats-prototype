@@ -23,19 +23,21 @@ class Navigation extends Component {
         let showLocation = null;
         let showProfile = null;
         let redirectVar = null;
-        if (!localStorage.getItem('user')) {
+        if (!this.props.authUser) {
             showMenu = <Burger open={this.props.open} setOpen={this.props.setOpen} />;
             showSignin = <SigninButton />;
             redirectVar = <Redirect to="/home" />;
         }
-        else if (localStorage.getItem('userType') === 'customer') {
-            showSearch = <SearchBar />;
-            showLocation = <UserCity />;
-            showProfile = <UserProfile />
-            redirectVar = <Redirect to="/user/feed" />;
-        }
-        else if (localStorage.getItem('userType') === 'restaurant') {
-            redirectVar = <Redirect to="/restaurant/profile" />;
+        else {
+            if (localStorage.getItem('userType') === 'customer') {
+                showSearch = <SearchBar />;
+                showLocation = <UserCity />;
+                showProfile = <UserProfile />
+                redirectVar = <Redirect to="/user/feed" />;
+            }
+            else if (localStorage.getItem('userType') === 'restaurant') {
+                redirectVar = <Redirect to="/restaurant/profile" />;
+            }
         }
         return (
             <div>

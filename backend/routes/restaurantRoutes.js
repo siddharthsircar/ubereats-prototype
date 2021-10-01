@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 
 const {
-    createRestaurant, getRestaurantProfile, updateRestaurant, getRestaurantbyEmail
+    createRestaurant, getRestaurantProfile, updateRestaurant, getRestaurantbyEmail, getRestaurants
 } = require('../controller/restaurantController');
 
 const router = express.Router();
@@ -122,17 +122,15 @@ router.get('/profile/:user_id', async (req, res) => {
 });
 
 router.get('/all', async (req, res) => {
-    const { rest_id } = req.body;
-    console.log(req.body);
-    const restDetails = await getRestaurantProfile(rest_id);
+    const restDetails = await getRestaurants();
     if (restDetails.statusCode === 200) {
         res.status(200).send({
-            restaurant: restDetails.body,
+            restaurants: restDetails.body,
         });
     } else if (restDetails.statusCode === 404) {
         res.status(404).send({
             errors: {
-                message: "No Restaurants Found",
+                message: "No Restaurants Found!!",
             },
         });
     }
