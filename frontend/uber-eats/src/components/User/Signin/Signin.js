@@ -59,7 +59,7 @@ class Signin extends Component {
                 <main className="pa4 black-80 w-50 center" style={{ top: '8vh', position: 'relative' }}>
                     <form className="measure center" onSubmit={this.handleSubmit}>
                         <fieldset id="signin" className="ba b--transparent ph0 mh0">
-                            <legend className="f3 fw6 ph0 mh0"><img src="https://img.icons8.com/ios-glyphs/30/000000/gender-neutral-user.png" alt='cutomer-icon' />Welcome Back</legend>
+                            <legend className="f3 fw6 ph0 mh0"><img src="https://img.icons8.com/ios-glyphs/30/000000/gender-neutral-user.png" alt='cutomer-icon' /> Welcome Back</legend>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f5" for="email-address">Email</label>
                                 <input

@@ -87,7 +87,7 @@ class Register extends Component {
                 <main className="pa4 black-80 w-50 center" style={{ top: '8vh', position: 'relative', overflow: 'visible' }}>
                     <form className="measure center" onSubmit={this.handleSubmit}>
                         <fieldset id="signin" className="ba b--transparent ph0 mh0">
-                            <legend className="f3 fw6 ph0 mh0 center">Create new account</legend>
+                            <legend className="f3 fw6 ph0 mh0 center"><img src="https://img.icons8.com/ios-glyphs/30/000000/gender-neutral-user.png" alt='cutomer-icon' /> Create new account</legend>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f5" for="first_name">First Name</label>
                                 <input
