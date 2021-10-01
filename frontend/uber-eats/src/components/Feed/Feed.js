@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import FeedNav from "../Navigation/FeedNavBar/FeedNav";
-import './Feed.style.css';
-import Navigation from "../Navigation/Navigation";
+import { Redirect } from 'react-router';
 
 class Feed extends Component {
     constructor(props) {
@@ -13,9 +11,15 @@ class Feed extends Component {
     }
 
     render() {
+        let redirectVar = null;
+        if (!localStorage.getItem('user')) {
+            redirectVar = <Redirect to='/home' />
+        }
         return (
-            <Navigation />
-            // Restaurant List cards
+            <div className='fl-jc-center page' >
+                {redirectVar}
+                No Restaurants to be displayed.
+            </div>
         );
     }
 }

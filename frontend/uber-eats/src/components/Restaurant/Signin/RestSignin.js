@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Logo from "../../Navigation/Logo/Logo";
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginUser } from '../../../redux/actions/authAction';
+import { loginRest } from '../../../redux/actions/authAction';
+import { Link } from "react-router-dom";
 
 class RestSignin extends Component {
     constructor(props) {
@@ -10,14 +10,21 @@ class RestSignin extends Component {
         this.state = {
             email: '',
             password: '',
-            authFlag: false
+            showError: false,
+            signInError: '',
         }
         this.inputChange = this.inputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount = () => {
+        this.setState({
+            showError: false,
+        })
+    }
+
     inputChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value })
+        this.setState({ [e.target.name]: e.target.value, showError: false })
     }
 
     handleSubmit = (e) => {
@@ -26,30 +33,42 @@ class RestSignin extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        this.props.loginUser(data);
+        this.props.loginRest(data);
+        setTimeout(() => {
+            if (!this.props.authUser) {
+                this.setState(
+                    {
+                        showError: true,
+                    }
+                );
+            } else {
+                this.setState(
+                    {
+                        showError: false,
+                    }
+                );
+            }
+        }, 2000);
     }
 
     render() {
         let signInError = null;
-        if (this.props.authUser) {
+        if (this.props.authUser || localStorage.getItem('user')) {
             return <Redirect to="/restaurant/profile" />;
         }
-        else if (!this.props.authUser) {
+        else if (!this.props.authUser && this.state.showError) {
             signInError = this.props.signInError;
         }
         return (
             <div>
-                <div className='fl-jc-center'>
-                    <Logo />
-                </div>
-                <main className="pa4 black-80">
+                <main className="pa4 black-80 w-50 center" style={{ top: '8vh', position: 'relative' }}>
                     <form className="measure center" onSubmit={this.handleSubmit}>
                         <fieldset id="signin" className="ba b--transparent ph0 mh0">
-                            <legend className="f3 fw6 ph0 mh0">Welcome Back</legend>
+                            <legend className="f3 fw6 ph0 mh0"><img src="https://img.icons8.com/external-inipagistudio-mixed-inipagistudio/30/000000/external-restaurant-hospitality-inipagistudio-mixed-inipagistudio.png" alt="restaurant-icon" /> Welcome Back</legend>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f5" for="email-address">Email</label>
                                 <input
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="pa2 input-reset ba bg-transparent  w-100"
                                     type="email"
                                     name="email"
                                     id="email"
@@ -59,7 +78,7 @@ class RestSignin extends Component {
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f5" for="password">Password</label>
                                 <input
-                                    className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="b pa2 input-reset ba bg-transparent  w-100"
                                     type="password"
                                     name="password"
                                     id="password"
@@ -67,16 +86,22 @@ class RestSignin extends Component {
                                     onChange={this.inputChange}
                                     required />
                             </div>
-                            <div className="mv3 center b yellow">
+                            <div className="mv3 center b red">
                                 {signInError}
                             </div>
                         </fieldset>
 
                         <div className="">
-                            <input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib" type="submit" value="Sign In" />
+                            <button className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib" type="submit" value="Sign In" >Sign In</button>
                         </div>
                         <div className="lh-copy mt3 f4">
-                            New to Uber? <a href="/restaurant/register" className="b f4 link dim black db">Create an account</a>
+                            New to Uber?
+                            <Link
+                                to="/restaurant/register"
+                                className="b f4 link dim hover-black black db"
+                                style={{ 'text-decoration': 'none' }}>
+                                Create an account
+                            </Link >
                         </div>
                     </form>
                 </main>
@@ -91,7 +116,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    loginUser: (payload) => dispatch(loginUser(payload)),
+    loginRest: (payload) => dispatch(loginRest(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RestSignin);

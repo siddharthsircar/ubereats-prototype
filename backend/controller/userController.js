@@ -32,7 +32,7 @@ const getUser = async (userID) => {
         }
         return {
             statusCode: 404,
-            body: 'User not found',
+            body: 'User Unauthorized',
         };
     } catch (err) {
         return {
@@ -54,12 +54,12 @@ const getUserByCreds = async (email) => {
                 statusCode: 200,
                 body: userObject,
             };
+        } else {
+            return {
+                statusCode: 404,
+                body: 'You are not registered. Please create an account.',
+            };
         }
-
-        return {
-            statusCode: 404,
-            body: 'User not found',
-        };
     } catch (err) {
         console.log(err);
         return {

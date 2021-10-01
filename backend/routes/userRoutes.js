@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
     let user = await getUserByCreds(email);
     if (user.statusCode === 200) {
         res.status(403).send({
-            error: {
+            errors: {
                 message: 'Email address already registered.'
             }
         })
@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
         } else {
             res.status(500).send({
                 errors: {
-                    body: createRes.body,
+                    message: createRes.body,
                 },
             });
         }
@@ -61,13 +61,13 @@ router.post('/login', async (req, res) => {
             if (err) {
                 res.status(500).send({
                     errors: {
-                        body: err,
+                        message: err,
                     },
                 });
             } else if (!isMatch) {
                 res.status(403).send({
                     errors: {
-                        message: 'Invalid Login Credentials',
+                        message: 'Incorrect Password',
                     },
                 });
             } else {
@@ -81,31 +81,48 @@ router.post('/login', async (req, res) => {
     } else {
         res.status(userDetails.statusCode).send({
             errors: {
-                body: userDetails.body,
+                message: userDetails.body,
             },
         });
     }
 });
 
-router.get('/profile', async (req, res) => {
-    const { user_id } = req.body;
+router.post('/profile/:user_id', async (req, res) => {
+    const { updateData } = req.body;
+    const user_id = req.params.user_id;
+    console.log(user_id);
+    const updateRes = await updateUser(user_id, updateData);
+    if (updateRes.statusCode === 200) {
+        res.status(200).send('Profile updated successfully!');
+    } else {
+        res.status(500).send({
+            errors: {
+                message: updateRes.body,
+            },
+        });
+    }
+});
+
+router.get('/profile/:user_id', async (req, res) => {
+    const user_id = req.params.user_id;
     console.log(user_id);
     const userDetails = await getUser(user_id);
     if (userDetails.statusCode === 200) {
+        console.log('User Profile Body: ', userDetails.body);
         res.status(200).send({
             user: userDetails.body,
         });
     } else if (userDetails.statusCode === 404) {
         res.status(404).send({
             errors: {
-                body: userDetails.body,
+                message: userDetails.body,
             },
         });
     }
     else {
         res.status(500).send({
             errors: {
-                body: userDetails.body,
+                message: userDetails.body,
             },
         });
     }
@@ -121,7 +138,7 @@ router.post('/updateProfilePicture', upload.single('file'), async (req, res) => 
     if (userDetails.statusCode === 500 || userDetails.statusCode === 404) {
         res.status(500).send({
             errors: {
-                body: userDetails.body,
+                message: userDetails.body,
             },
         });
     }
@@ -149,20 +166,6 @@ router.post('/updateProfilePicture', upload.single('file'), async (req, res) => 
             }
         }
     });
-});
-
-router.post('/profile', async (req, res) => {
-    const { userID, updateData } = req.body;
-    const updateRes = await updateUser(userID, updateData);
-    if (updateRes.statusCode === 200) {
-        res.status(200).send('Profile updated successfully!');
-    } else {
-        res.status(500).send({
-            errors: {
-                body: updateRes.body,
-            },
-        });
-    }
 });
 
 router.get('/pingServer', (req, res) => {

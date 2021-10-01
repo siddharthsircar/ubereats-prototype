@@ -1,16 +1,24 @@
 import React, { Component } from "react";
-import Button from "react-bootstrap/Button"
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl'
-
+import { Link } from "react-router-dom";
 class UserProfile extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { isOpen: false }
+    }
+
+    handleOpen = () => {
+        this.setState({ isOpen: true })
+    }
+
+    handleClose = () => {
+        this.setState({ isOpen: false })
+    }
+
     render() {
         return (
-            <div>
-                <Form className="d-flex">
-                    <Button variant="outline-success">Profile</Button>
-                </Form>
-            </div>
+            <nav className='ma3 mr4' style={{ background: 'white' }}>
+                <Link to="/user/profile"><button id='login' className='border-0 pa2 b grow f4 black bg-white link pointer'>Profile</button></Link>
+            </nav>
         );
     }
 }

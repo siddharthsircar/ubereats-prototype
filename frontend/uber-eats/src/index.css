@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
   /* background: linear-gradient(89deg, #ff5edf 0%, #04c8de 100%); */
 }
 
@@ -38,4 +39,11 @@ button {
 a {
   text-decoration: none;
   color: black;
+}
+
+.page {
+  height: 92vh;
+  position: relative;
+  top: 8vh;
+  /* z-index: -1000; */
 }

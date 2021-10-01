@@ -1,4 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { Redirect } from "react-router";
+import { Button } from 'react-bootstrap';
 
 const Addressbar = () => {
     return (
@@ -13,7 +16,11 @@ const Addressbar = () => {
                         type='text'
                         placeholder='Enter Address: Street Address, City'
                         className='f3 mh2 ma2 pa2 w-80 center'></input>
-                    <button onClick={event => window.location.href = '/user/feed'} className='center w-30 ma2 grow f4 link ph2 pv2 dib white bg-black br3'>Find Food</button>
+                    <Redirect to="/user/feed">
+                        {/* <button className='center w-30 ma2 grow f4 link ph2 pv2 dib white bg-black br3'>Find Food</button> */}
+                        <Button variant="dark">Find Food</Button>
+                    </Redirect>
+
                 </div>
             </div>
         </div>

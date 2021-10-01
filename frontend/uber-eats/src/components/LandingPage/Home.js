@@ -1,41 +1,40 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import 'tachyons';
-import Addressbar from "../Addressbar/Addressbar";
-import Menu from "../Navigation/Menu/Menu";
-import Navigation from "../Navigation/Navigation";
+import { Link } from "react-router-dom";
+import { Redirect } from "react-router";
 
-const useOnClickOutside = (ref, handler) => {
-    useEffect(() => {
-        const listener = event => {
-            if (!ref.current || ref.current.contains(event.target)) {
-                return;
-            }
-            handler(event);
-        };
-        document.addEventListener('mousedown', listener);
-        return () => {
-            document.removeEventListener('mousedown', listener);
-        };
-    },
-        [ref, handler],
-    );
-};
-
-const Home = () => {
-    const [open, setOpen] = useState(false);
-    const node = useRef();
-    useOnClickOutside(node, () => setOpen(false))
+const Home = (props) => {
+    let redirectVar = null;
+    if (localStorage.getItem('user')) {
+        redirectVar = <Redirect to="/user/feed" />
+    }
     return (
-        <div style={{ height: '100vh', background: 'linear-gradient(89deg, #ff5edf 0%, #04c8de 100%)' }}>
-            <div ref={node}>
-                <Navigation open={open} setOpen={setOpen} />
-                <Menu open={open} setOpen={setOpen} />
-            </div>
-            <div>
-                <Addressbar />
-            </div>
-
-        </div>
+        <div style={{ height: '100vh', background: 'linear-gradient(89deg, #ff5edf 0%, #04c8de 100%)', zIndex: '-1000', }}>
+            {redirectVar}
+            <div style={{ top: '25vh', position: 'relative' }}>
+                <p className='f2 b' style={{ textAlign: 'center' }}>
+                    {'Want food? Get Food.'}
+                </p>
+                <div></div>
+                <div className='fl-jc-center'>
+                    <div className='pa2 w-30 br3 shadow-5 fl-jc-spa' >
+                        <input
+                            type='text'
+                            placeholder='Enter Address: Street Address, City'
+                            className='f3 br3 mh2 ma2 pa2 w-80 center'></input>
+                        <button
+                            className='center w-30 ma2 grow f4 link ph2 pv2 dib white bg-black br3'>
+                            <Link
+                                to="/user/feed" className='white'
+                                style={{ 'text-decoration': 'none' }}
+                            >
+                                Find Food
+                            </Link>
+                        </button>
+                    </div>
+                </div>
+            </div >
+        </div >
     )
 }
 

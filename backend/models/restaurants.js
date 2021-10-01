@@ -31,7 +31,7 @@ const restaurants = sequelize.define(
             primaryKey: true,
             defaultValue: DT.UUIDV1,
         },
-        name:
+        store_name:
         {
             type: DT.STRING(50),
             allowNull: false,
@@ -74,11 +74,6 @@ const restaurants = sequelize.define(
             type: DT.STRING(50),
             allowNull: false,
         },
-        menu_id:
-        {
-            type: DT.UUID,
-            allowNull: true,
-        },
     },
     {
         hooks: {
@@ -91,12 +86,7 @@ const restaurants = sequelize.define(
     },
 );
 
-// sequelize.sync()
-
-// Force sync all models
-// It will drop the table first 
-// and re-create it afterwards
-sequelize.sync({ force: true })
+restaurants.sync();
 
 module.exports = {
     restaurants,

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { registerUser } from '../../redux/actions/authAction';
-import Logo from '../Navigation/Logo/Logo';
-import { formatPhoneNumber } from '../../utils/utils';
-// import axios from 'axios';
+import { registerUser } from '../../../redux/actions/authAction';
+import { formatPhoneNumber } from '../../../utils/utils';
 
 class Register extends Component {
     constructor(props) {
@@ -19,6 +17,8 @@ class Register extends Component {
             city: '',
             state: 'California',
             country: 'United States',
+            showError: false,
+            signInError: '',
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.inputChange = this.inputChange.bind(this);
@@ -44,6 +44,21 @@ class Register extends Component {
             country: this.state.country,
         };
         this.props.registerUser(data);
+        setTimeout(() => {
+            if (!this.props.authUser) {
+                this.setState(
+                    {
+                        showError: true,
+                    }
+                );
+            } else {
+                this.setState(
+                    {
+                        showError: false,
+                    }
+                );
+            }
+        }, 2000);
     }
 
     inputChange = (e) => {
@@ -53,29 +68,30 @@ class Register extends Component {
             phone_number = formatPhoneNumber(value);
             this.setState({ [name]: phone_number })
         } else {
-            this.setState({ [name]: value })
+            this.setState({ [name]: value, showError: false })
         }
     }
 
     render() {
         const { first_name, last_name, phone_number, email, password, street_address, city, state, country } = this.state;
 
-        if (this.props.authUser) {
+        let signInError = null;
+        if (this.props.authUser || localStorage.getItem('user')) {
             return <Redirect to="/user/feed" />;
         }
+        else if (!this.props.authUser && this.state.showError) {
+            signInError = this.props.signInError;
+        }
         return (
-            <div>
-                <nav className='fl-jc-center' style={{ overflow: 'hidden', position: 'sticky', top: '0', background: 'white' }}>
-                    <Logo />
-                </nav>
-                <main className="pa4 black-80">
+            <div style={{ overflow: 'scroll' }}>
+                <main className="pa4 black-80 w-50 center" style={{ top: '8vh', position: 'relative', overflow: 'visible' }}>
                     <form className="measure center" onSubmit={this.handleSubmit}>
                         <fieldset id="signin" className="ba b--transparent ph0 mh0">
                             <legend className="f3 fw6 ph0 mh0 center">Create new account</legend>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f5" for="first_name">First Name</label>
                                 <input
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="pa2 input-reset ba bg-transparent w-100"
                                     type="text"
                                     name="first_name"
                                     id="first_name"
@@ -86,7 +102,7 @@ class Register extends Component {
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f5" for="last_name">Last Name</label>
                                 <input
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="pa2 input-reset ba bg-transparent  w-100"
                                     type="last_name"
                                     name="last_name"
                                     id="last_name"
@@ -97,7 +113,7 @@ class Register extends Component {
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f5" for="phone_number">Phone Number</label>
                                 <input
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="pa2 input-reset ba bg-transparent  w-100"
                                     type="phone_number"
                                     // pattern="[0-9]"
                                     placeholder="(212)477-1000"
@@ -109,7 +125,7 @@ class Register extends Component {
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f5" for="email-address">Email</label>
                                 <input
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="pa2 input-reset ba bg-transparent w-100"
                                     type="email"
                                     name="email"
                                     id="email"
@@ -120,7 +136,7 @@ class Register extends Component {
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f5" for="password">Password</label>
                                 <input
-                                    className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="b pa2 input-reset ba bg-transparent w-100"
                                     type="password"
                                     name="password"
                                     id="password"
@@ -132,7 +148,7 @@ class Register extends Component {
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f5" for="street_address">Street Address</label>
                                 <input
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="pa2 input-reset ba bg-transparent w-100"
                                     type="street_address"
                                     name="street_address"
                                     id="street_address"
@@ -143,7 +159,7 @@ class Register extends Component {
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f5" for="city">City</label>
                                 <input
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="pa2 input-reset ba bg-transparent w-100"
                                     type="city"
                                     name="city"
                                     id="city"
@@ -173,6 +189,9 @@ class Register extends Component {
                                     onChange={this.inputChange}
                                     disabled required />
                             </div>
+                            <div className="mv3 center b red">
+                                {signInError}
+                            </div>
                         </fieldset>
                         <div className="">
                             <button
@@ -180,7 +199,13 @@ class Register extends Component {
                                 type="submit">Sign Up</button>
                         </div>
                         <div className="lh-copy f4 mt3">
-                            Have an account? <a href="/user/login" className="b f4 link dim black db">Sign In</a>
+                            Have an account?
+                            <Link
+                                to="/user/login"
+                                className="b f4 link dim hover-black black db"
+                                style={{ 'text-decoration': 'none' }}>
+                                Sign In
+                            </Link>
                         </div>
                     </form>
                 </main>
@@ -191,6 +216,7 @@ class Register extends Component {
 
 const mapStateToProps = (state) => ({
     authUser: state.auth.authUser,
+    signInError: state.auth.error
 });
 
 function mapDispatchToProps(dispatch) {

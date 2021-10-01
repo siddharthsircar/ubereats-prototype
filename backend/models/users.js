@@ -86,12 +86,13 @@ const users = sequelize.define(
     },
 );
 
-sequelize.sync()
+// users.sync()
 
 // Force sync all models
 // It will drop the table first 
 // and re-create it afterwards
-sequelize.sync({ force: true })
+// { alter: true }
+users.sync();
 
 module.exports = {
     users,

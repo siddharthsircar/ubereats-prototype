@@ -9,21 +9,22 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
     const restDetails = req.body;
-    const { name, phone_number, timings, email, password, street_address, city, state, country } = restDetails;
+    console.log('Rest Details: ', restDetails)
+    const { store_name, phone_number, timings, email, password, street_address, city, state, country } = restDetails;
     let restaurant = await getRestaurantbyEmail(email);
     if (restaurant.statusCode === 200) {
         res.status(403).send({
-            error: {
+            errors: {
                 message: 'Email address already registered.'
             }
         })
     } else {
-        const createRes = await createRestaurant(name, phone_number, timings, email, password, street_address, city, state, country);
+        const createRes = await createRestaurant(store_name, phone_number, timings, email, password, street_address, city, state, country);
         if (createRes.statusCode === 201) {
             res.status(201).send({
-                restaurant: {
+                user: {
                     rest_id: createRes.body.dataValues.rest_id,
-                    name: createRes.body.dataValues.name,
+                    store_name: createRes.body.dataValues.store_name,
                     timings: createRes.body.dataValues.timings,
                     city: createRes.body.dataValues.city,
                     email: createRes.body.dataValues.email,
@@ -32,7 +33,7 @@ router.post('/register', async (req, res) => {
         } else {
             res.status(500).send({
                 errors: {
-                    body: createRes.body,
+                    message: createRes.body,
                 },
             });
         }
@@ -55,13 +56,13 @@ router.post('/login', async (req, res) => {
             if (err) {
                 res.status(500).send({
                     errors: {
-                        body: err,
+                        message: err,
                     },
                 });
             } else if (!isMatch) {
                 res.status(403).send({
                     errors: {
-                        body: 'Unauth User',
+                        message: 'Incorrect Password',
                     },
                 });
             } else {
@@ -75,45 +76,46 @@ router.post('/login', async (req, res) => {
     } else {
         res.status(restDetails.statusCode).send({
             errors: {
-                body: restDetails.body,
+                message: restDetails.body,
             },
         });
     }
 });
 
-router.post('/profile', async (req, res) => {
-    const { restId, updateData } = req.body;
+router.post('/profile/:user_id', async (req, res) => {
+    const { updateData } = req.body;
+    const restId = req.params.user_id;
     const updateRes = await updateRestaurant(restId, updateData);
     if (updateRes.statusCode === 200) {
         res.status(200).send('User updated successfully!');
     } else {
         res.status(500).send({
             errors: {
-                body: updateRes.body,
+                message: updateRes.body,
             },
         });
     }
 });
 
-router.get('/profile', async (req, res) => {
-    const { rest_id } = req.body;
+router.get('/profile/:user_id', async (req, res) => {
+    const rest_id = req.params.user_id;
     console.log(req.body);
     const restDetails = await getRestaurantProfile(rest_id);
     if (restDetails.statusCode === 200) {
         res.status(200).send({
-            restaurant: restDetails.body,
+            user: restDetails.body,
         });
     } else if (restDetails.statusCode === 404) {
         res.status(404).send({
             errors: {
-                body: restDetails.body,
+                message: restDetails.body,
             },
         });
     }
     else {
         res.status(500).send({
             errors: {
-                body: restDetails.body,
+                message: restDetails.body,
             },
         });
     }
@@ -130,14 +132,14 @@ router.get('/all', async (req, res) => {
     } else if (restDetails.statusCode === 404) {
         res.status(404).send({
             errors: {
-                body: restDetails.body,
+                message: "No Restaurants Found",
             },
         });
     }
     else {
         res.status(500).send({
             errors: {
-                body: restDetails.body,
+                message: restDetails.body,
             },
         });
     }

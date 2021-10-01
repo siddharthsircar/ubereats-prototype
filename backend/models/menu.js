@@ -56,15 +56,15 @@ const menu = sequelize.define(
             allowNull: false,
         },
     },
-    {
-        hooks: {
-            // eslint-disable-next-line no-shadow
-            beforeCreate: (restaurants) => {
-                // eslint-disable-next-line no-param-reassign
-                restaurants.password = restaurants.password !== '' ? bcrypt.hashSync(restaurants.password, salt) : '';
-            },
-        },
-    },
+    // {
+    //     hooks: {
+    //         // eslint-disable-next-line no-shadow
+    //         beforeCreate: (restaurants) => {
+    //             // eslint-disable-next-line no-param-reassign
+    //             restaurants.password = restaurants.password !== '' ? bcrypt.hashSync(restaurants.password, salt) : '';
+    //         },
+    //     },
+    // },
 );
 
 // sequelize.sync()
@@ -72,7 +72,7 @@ const menu = sequelize.define(
 // Force sync all models
 // It will drop the table first 
 // and re-create it afterwards
-sequelize.sync({ force: true })
+menu.sync();
 
 module.exports = {
     menu,

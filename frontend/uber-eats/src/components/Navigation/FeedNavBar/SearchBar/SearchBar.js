@@ -14,7 +14,7 @@ class SearchBar extends Component {
                         className="mr-2"
                         aria-label="Search"
                     />
-                    <Button variant="outline-success">Search</Button>
+                    <Button variant="dark">Search</Button>
                 </Form>
             </div>
         );

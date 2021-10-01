@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Logo from "../Navigation/Logo/Logo";
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loginUser } from '../../redux/actions/authAction';
+import { loginUser } from '../../../redux/actions/authAction';
+import { Link } from 'react-router-dom';
 
 class Signin extends Component {
     constructor(props) {
@@ -10,14 +10,15 @@ class Signin extends Component {
         this.state = {
             email: '',
             password: '',
-            authFlag: false
+            showError: false,
+            signInError: '',
         }
         this.inputChange = this.inputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     inputChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value })
+        this.setState({ [e.target.name]: e.target.value, showError: false })
     }
 
     handleSubmit = (e) => {
@@ -26,7 +27,23 @@ class Signin extends Component {
             email: this.state.email,
             password: this.state.password
         }
+        this.setState({ loading: true });
         this.props.loginUser(data);
+        setTimeout(() => {
+            if (!this.props.authUser) {
+                this.setState(
+                    {
+                        showError: true,
+                    }
+                );
+            } else {
+                this.setState(
+                    {
+                        showError: false,
+                    }
+                );
+            }
+        }, 2000);
     }
 
     render() {
@@ -34,22 +51,19 @@ class Signin extends Component {
         if (this.props.authUser) {
             return <Redirect to="/user/feed" />;
         }
-        else if (!this.props.authUser) {
+        else if (!this.props.authUser && this.state.showError) {
             signInError = this.props.signInError;
         }
         return (
             <div>
-                <div className='fl-jc-center'>
-                    <Logo />
-                </div>
-                <main className="pa4 black-80">
+                <main className="pa4 black-80 w-50 center" style={{ top: '8vh', position: 'relative' }}>
                     <form className="measure center" onSubmit={this.handleSubmit}>
                         <fieldset id="signin" className="ba b--transparent ph0 mh0">
-                            <legend className="f3 fw6 ph0 mh0">Welcome Back</legend>
+                            <legend className="f3 fw6 ph0 mh0"><img src="https://img.icons8.com/ios-glyphs/30/000000/gender-neutral-user.png" alt='cutomer-icon' />Welcome Back</legend>
                             <div className="mt3">
                                 <label className="db fw6 lh-copy f5" for="email-address">Email</label>
                                 <input
-                                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="pa2 input-reset ba bg-transparent w-100"
                                     type="email"
                                     name="email"
                                     id="email"
@@ -59,7 +73,7 @@ class Signin extends Component {
                             <div className="mv3">
                                 <label className="db fw6 lh-copy f5" for="password">Password</label>
                                 <input
-                                    className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                                    className="b pa2 input-reset ba bg-transparent w-100"
                                     type="password"
                                     name="password"
                                     id="password"
@@ -67,16 +81,27 @@ class Signin extends Component {
                                     onChange={this.inputChange}
                                     required />
                             </div>
-                            <div className="mv3 center b yellow">
+                            <div className="mv3 center b red">
                                 {signInError}
                             </div>
                         </fieldset>
 
                         <div className="">
-                            <input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib" type="submit" value="Sign In" />
+                            <button
+                                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib"
+                                type="submit"
+                            >
+                                Sign In
+                            </button>
                         </div>
                         <div className="lh-copy mt3 f4">
-                            New to Uber? <a href="/user/register" className="b f4 link dim black db">Create an account</a>
+                            New to Uber?
+                            <Link
+                                to="/user/register"
+                                className="b f4 link dim hover-black black db"
+                                style={{ 'text-decoration': 'none' }}>
+                                Create an account
+                            </Link >
                         </div>
                     </form>
                 </main>

@@ -3,9 +3,9 @@ const { Op } = require('sequelize');
 const { restaurants } = require('../models/index');
 
 // eslint-disable-next-line consistent-return
-const createRestaurant = async (name, phone_number, timings, email, password, street_address, city, state, country) => {
+const createRestaurant = async (store_name, phone_number, timings, email, password, street_address, city, state, country) => {
     try {
-        const userObject = await restaurants.create({ name, phone_number, timings, email, password, street_address, city, state, country });
+        const userObject = await restaurants.create({ store_name, phone_number, timings, email, password, street_address, city, state, country });
         return {
             statusCode: 201,
             body: userObject,
@@ -58,7 +58,7 @@ const getRestaurantbyEmail = async (email) => {
 
         return {
             statusCode: 404,
-            body: 'User not found',
+            body: 'You are not registered. Please create an account.',
         };
     } catch (err) {
         console.log(err);

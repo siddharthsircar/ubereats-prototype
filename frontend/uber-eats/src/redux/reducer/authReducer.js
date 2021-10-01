@@ -1,27 +1,60 @@
 /* eslint-disable no-fallthrough */
 /* eslint-disable no-console */
 import {
-    LOGIN, LOGOUT, REGISTER, UNAUTHENTICATED,
+    USER_LOGIN, USER_REGISTER, RESTAURANT_LOGIN, RESTAURANT_REGISTER, LOGOUT, UNAUTHENTICATED,
 } from '../actions/action_types';
 
 const initState = {
     user: '',
+    userId: '',
     authUser: false,
     error: '',
 };
 
 const authReducer = (state = initState, action) => {
     switch (action.type) {
-        case LOGIN: {
+        case USER_LOGIN: {
             console.log('action payload', action.payload);
             localStorage.setItem('user', JSON.stringify(action.payload.user));
+            localStorage.setItem('userType', 'customer');
             return {
                 user: action.payload.user,
+                userId: action.payload.user.user_id,
+                authUser: true,
+            };
+        }
+        case USER_REGISTER: {
+            console.log('inside register reducer', action.payload);
+            localStorage.setItem('user', JSON.stringify(action.payload.user));
+            localStorage.setItem('userType', 'customer');
+            return {
+                user: action.payload.user,
+                userId: action.payload.user.user_id,
+                authUser: true,
+            };
+        }
+        case RESTAURANT_LOGIN: {
+            console.log('action payload', action.payload);
+            localStorage.setItem('user', JSON.stringify(action.payload.user));
+            localStorage.setItem('userType', 'restaurant');
+            return {
+                user: action.payload.user,
+                userId: action.payload.user.rest_id,
+                authUser: true,
+            };
+        }
+        case RESTAURANT_REGISTER: {
+            console.log('inside register reducer', action.payload);
+            localStorage.setItem('user', JSON.stringify(action.payload.user));
+            localStorage.setItem('userType', 'restaurant');
+            return {
+                user: action.payload.user,
+                userId: action.payload.user.rest_id,
                 authUser: true,
             };
         }
         case UNAUTHENTICATED: {
-            console.log(action.payload);
+            console.log("Unauthenticated: ", action.payload);
             return {
                 error: action.payload,
                 authUser: false,
@@ -30,16 +63,9 @@ const authReducer = (state = initState, action) => {
         case LOGOUT: {
             console.log('logging out');
             localStorage.removeItem('user');
+            localStorage.removeItem('userType');
             return {
                 authUser: false,
-            };
-        }
-        case REGISTER: {
-            console.log('inside register reducer', action.payload);
-            localStorage.setItem('user', JSON.stringify(action.payload.user));
-            return {
-                user: action.payload.user,
-                authUser: true,
             };
         }
         default:
