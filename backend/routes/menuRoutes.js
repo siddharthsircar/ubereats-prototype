@@ -22,7 +22,7 @@ router.get('/items/:rest_id', async (req, res) => {
                         if (key === "item_type") {
                             isValid = isValid && item[key] == filters[key];
                         } else if (key === "search") {
-                            isValid = isValid && (item["item_type"] === filters[key] || item["item_name"].contains(filters[key]) || item["item_desc"].contains(filters[key]));
+                            isValid = isValid && (item["item_type"] === filters[key] || item["item_name"].toLowerCase().includes(filters[key].toLowerCase()) || item["item_desc"].toLowerCase().includes(filters[key].toLowerCase()));
                         }
 
                     }
