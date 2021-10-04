@@ -186,4 +186,8 @@ router.get('/profile/:user_id', async (req, res) => {
     }
 });
 
+// Add to cart
+
+// Checkout
+
 module.exports = router;

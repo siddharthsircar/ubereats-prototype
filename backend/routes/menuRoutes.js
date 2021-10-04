@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const {
     addItem, getAllItemsByRestaurant, searchItems, getItemDetails, getItemsByType, updateItem, getItemByName
-} = require('../controller/menucontroller');
+} = require('../controller/menuController');
 
 const router = express.Router();
 
@@ -84,7 +84,7 @@ router.post('/item', async (req, res) => {
             } else {
                 res.status(500).send({
                     errors: {
-                        message: createdItem.body,
+                        message: createdItem.body.errors[0],
                     },
                 });
             }
