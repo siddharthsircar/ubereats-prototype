@@ -92,17 +92,17 @@ const getRestaurants = async () => {
     }
 };
 
-/**
- * [someFunction description]
- * @param  {String} userID ID of user to be updated
- * @param  {Object} updateData update object eg: {name: Yash, city: Santa clara}
- * @return {String}      Successful update or Failure
- */
 const updateRestaurant = async (restaurantId, updateData) => {
     try {
+        console.log("UpdateObject: ", updateData);
         const updateObject = await restaurants.update(
             updateData,
-            { where: { rest_id: restaurantId } },
+            {
+                where:
+                {
+                    rest_id: restaurantId,
+                }
+            },
         );
         if (updateObject !== undefined && updateObject !== null) {
             return {

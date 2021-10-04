@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-const bcrypt = require('bcrypt');
 const aws = require('../config/config');
 
 const DT = Sequelize.DataTypes;
@@ -36,42 +35,43 @@ const menu = sequelize.define(
             type: DT.UUID,
             allowNull: false,
         },
+        item_image:
+        {
+            type: DT.STRING(50),
+            unique: false,
+            allowNull: true,
+        },
         item_name:
         {
             type: DT.STRING(50),
             unique: true,
             allowNull: false,
+            validate: {
+                len: [2, 50]
+            }
         },
         item_desc: {
             type: DT.STRING(50),
-            allowNull: false,
-        },
-        item_price: {
-            type: DT.STRING(50),
-            allowNull: false,
+            allowNull: true,
         },
         item_type:
         {
-            type: DT.STRING(50),
+            type: DT.STRING(10),
             allowNull: false,
+            validate: {
+                len: [3, 10]
+            }
+        },
+        item_price: {
+            type: DT.STRING(10),
+            allowNull: false,
+            validate: {
+                len: [1, 10]
+            }
         },
     },
-    // {
-    //     hooks: {
-    //         // eslint-disable-next-line no-shadow
-    //         beforeCreate: (restaurants) => {
-    //             // eslint-disable-next-line no-param-reassign
-    //             restaurants.password = restaurants.password !== '' ? bcrypt.hashSync(restaurants.password, salt) : '';
-    //         },
-    //     },
-    // },
 );
 
-// sequelize.sync()
-
-// Force sync all models
-// It will drop the table first 
-// and re-create it afterwards
 menu.sync();
 
 module.exports = {

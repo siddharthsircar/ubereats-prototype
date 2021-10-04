@@ -9,10 +9,7 @@ const cors = require('cors');
 
 // eslint-disable-next-line no-unused-vars
 const dotenv = require('dotenv');
-
 dotenv.config();
-// eslint-disable-next-line no-unused-vars
-const db = require('./models/index');
 
 app.use(bp.json());
 app.use(bp.urlencoded({
@@ -37,12 +34,13 @@ app.use(express.static('public'));
 console.log('env baby:', process.env.SEQUELIZE_SYNC_FORCE);
 app.use('/user', require('./routes/userRoutes'));
 app.use('/restaurant', require('./routes/restaurantRoutes'));
+app.use('/menu', require('./routes/menuRoutes'));
 
 app.get('/', (req, res) => {
-    res.json({ message: 'Welcome to Siddharth\'s application.' });
+    res.json({ message: 'Welcome to Siddharth\'s Uber Eats application.' });
 });
 
-const port = process.env.PORT;
+// const port = process.env.PORT;
 // || 3001;
 app.listen(7000, () => console.log(`listening on port 7000`));
 module.exports = app;
