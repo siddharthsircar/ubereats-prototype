@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerUser } from '../../../redux/actions/authAction';
 import { formatPhoneNumber } from '../../../utils/utils';
-
+import './Register.css';
 class Register extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +15,7 @@ class Register extends Component {
             password: '',
             street_address: '',
             city: '',
+            zip: '',
             state: 'California',
             country: 'United States',
             showError: false,
@@ -40,17 +41,14 @@ class Register extends Component {
             password: this.state.password,
             street_address: this.state.street_address,
             city: this.state.city,
+            zip: this.state.zip,
             state: this.state.state,
             country: this.state.country,
         };
         this.props.registerUser(data);
         setTimeout(() => {
             if (!this.props.authUser) {
-                this.setState(
-                    {
-                        showError: true,
-                    }
-                );
+                this.setState({ showError: true });
             } else {
                 this.setState(
                     {
@@ -73,23 +71,23 @@ class Register extends Component {
     }
 
     render() {
-        const { first_name, last_name, phone_number, email, password, street_address, city, state, country } = this.state;
+        const { first_name, last_name, phone_number, email, password, street_address, city, zip, state, country } = this.state;
 
-        let signInError = null;
+        // let signInError = null;
         if (this.props.authUser || localStorage.getItem('user')) {
             return <Redirect to="/user/feed" />;
         }
         else if (!this.props.authUser && this.state.showError) {
-            signInError = this.props.signInError;
+            console.log(this.props.signInError);
         }
         return (
-            <div style={{ overflow: 'scroll' }}>
-                <main className="pa4 black-80 w-50 center" style={{ top: '8vh', position: 'relative', overflow: 'visible' }}>
+            <div>
+                <main className="pa4 black-80 w-50 center main">
                     <form className="measure center" onSubmit={this.handleSubmit}>
                         <fieldset id="signin" className="ba b--transparent ph0 mh0">
                             <legend className="f3 fw6 ph0 mh0 center"><img src="https://img.icons8.com/ios-glyphs/30/000000/gender-neutral-user.png" alt='cutomer-icon' /> Create new account</legend>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="first_name">First Name</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="first_name">First Name</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="text"
@@ -100,7 +98,7 @@ class Register extends Component {
                                     autoFocus required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="last_name">Last Name</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="last_name">Last Name</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent  w-100"
                                     type="last_name"
@@ -111,7 +109,7 @@ class Register extends Component {
                                     required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="phone_number">Phone Number</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="phone_number">Phone Number</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent  w-100"
                                     type="phone_number"
@@ -120,10 +118,11 @@ class Register extends Component {
                                     name="phone_number"
                                     id="phone_number"
                                     value={phone_number}
-                                    onChange={this.inputChange} required />
+                                    onChange={this.inputChange}
+                                    required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="email-address">Email</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="email-address">Email</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="email"
@@ -134,7 +133,7 @@ class Register extends Component {
                                     required />
                             </div>
                             <div className="mv3">
-                                <label className="db fw6 lh-copy f5" for="password">Password</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="password">Password</label>
                                 <input
                                     className="b pa2 input-reset ba bg-transparent w-100"
                                     type="password"
@@ -146,7 +145,7 @@ class Register extends Component {
                             </div>
                             <legend className="f3 fw6 ph0 mh0">Address</legend>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="street_address">Street Address</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="street_address">Street Address</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="street_address"
@@ -157,7 +156,7 @@ class Register extends Component {
                                     required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="city">City</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="city">City</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="city"
@@ -168,7 +167,18 @@ class Register extends Component {
                                     required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="state">State</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="zip">Zip Code</label>
+                                <input
+                                    className="pa2 input-reset ba bg-transparent w-100"
+                                    type="zip"
+                                    name="zip"
+                                    id="zip"
+                                    value={zip}
+                                    onChange={this.inputChange}
+                                    required />
+                            </div>
+                            <div className="mt3">
+                                <label className="db fw6 lh-copy f5" htmlFor="state">State</label>
                                 <input
                                     className="b pa2 input-reset ba bg-transparent w-100"
                                     type="state"
@@ -176,10 +186,11 @@ class Register extends Component {
                                     id="state"
                                     value={state}
                                     onChange={this.inputChange}
-                                    disabled required />
+                                    disabled
+                                    required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="country">Country</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="country">Country</label>
                                 <input
                                     className="b pa2 input-reset ba bg-transparent w-100"
                                     type="country"
@@ -187,10 +198,11 @@ class Register extends Component {
                                     id="country"
                                     value={country}
                                     onChange={this.inputChange}
-                                    disabled required />
+                                    disabled
+                                    required />
                             </div>
                             <div className="mv3 center b red">
-                                {signInError}
+                                {/* {signInError} */}
                             </div>
                         </fieldset>
                         <div className="">
@@ -203,7 +215,7 @@ class Register extends Component {
                             <Link
                                 to="/user/login"
                                 className="b f4 link dim hover-black black db"
-                                style={{ 'text-decoration': 'none' }}>
+                                style={{ textDecoration: 'none' }}>
                                 Sign In
                             </Link>
                         </div>

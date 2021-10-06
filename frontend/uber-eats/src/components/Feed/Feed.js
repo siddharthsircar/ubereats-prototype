@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import "./Feed.style.css";
+import "./Feed.css";
 import axios from 'axios';
 import RestaurantCard from "./RestaurantCard/RestaurantCard";
 import { Col, Row } from 'react-bootstrap';
@@ -33,7 +33,7 @@ class Feed extends Component {
 
     render() {
         let redirectVar = null;
-        if (!this.props.authUser) {
+        if (!this.props.authUser && (this.props.city === undefined || this.props.city === null)) {
             redirectVar = <Redirect to='/home' />
         }
         let restaurantCards = null;
@@ -52,10 +52,7 @@ class Feed extends Component {
                     <h3>Filters</h3>
                 </Col>
                 <Col>
-                    <Row>{restaurantCards}{restaurantCards}</Row>
-                    <Row>{restaurantCards}{restaurantCards}</Row>
-                    <Row>{restaurantCards}{restaurantCards}</Row>
-                    <Row>{restaurantCards}{restaurantCards}</Row>
+                    <Row>{restaurantCards}</Row>
                 </Col>
             </Row>
         }

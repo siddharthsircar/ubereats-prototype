@@ -64,6 +64,11 @@ const users = sequelize.define(
             type: DT.STRING(50),
             allowNull: false,
         },
+        zip:
+        {
+            type: DT.STRING(50),
+            allowNull: false,
+        },
         state:
         {
             type: DT.STRING(50),
@@ -86,12 +91,6 @@ const users = sequelize.define(
     },
 );
 
-// users.sync()
-
-// Force sync all models
-// It will drop the table first 
-// and re-create it afterwards
-// { alter: true }
 users.sync();
 
 module.exports = {

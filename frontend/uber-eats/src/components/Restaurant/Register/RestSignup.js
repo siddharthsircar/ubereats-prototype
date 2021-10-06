@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerRest } from '../../../redux/actions/authAction';
 import { formatPhoneNumber } from '../../../utils/utils';
-
+import './RestSignup.css';
 class RestSignup extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +15,7 @@ class RestSignup extends Component {
             password: '',
             street_address: '',
             city: '',
+            zip: '',
             state: 'California',
             country: 'United States',
             showError: false,
@@ -40,6 +41,7 @@ class RestSignup extends Component {
             password: this.state.password,
             street_address: this.state.street_address,
             city: this.state.city,
+            zip: this.state.zip,
             state: this.state.state,
             country: this.state.country,
         };
@@ -69,7 +71,7 @@ class RestSignup extends Component {
     }
 
     render() {
-        const { store_name, phone_number, timings, email, password, street_address, city, state, country } = this.state;
+        const { store_name, phone_number, timings, email, password, street_address, city, zip, state, country } = this.state;
         let signInError = null;
         if (this.props.authUser) {
             return <Redirect to="/restaurant/profile" />;
@@ -78,13 +80,13 @@ class RestSignup extends Component {
             signInError = this.props.signInError;
         }
         return (
-            <div style={{ overflow: 'scroll' }}>
-                <main className="pa4 black-80 w-50 center" style={{ top: '8vh', position: 'relative', overflow: 'visible' }}>
+            <div>
+                <main className="pa4 black-80 w-50 center main">
                     <form className="measure center" onSubmit={this.handleSubmit}>
                         <fieldset id="signin" className="ba b--transparent ph0 mh0">
                             <legend className="f3 fw6 ph0 mh0 center"><img src="https://img.icons8.com/external-inipagistudio-mixed-inipagistudio/30/000000/external-restaurant-hospitality-inipagistudio-mixed-inipagistudio.png" alt="restaurant-icon" /> Add Your Restaurant</legend>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="store_name">Store Name</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="store_name">Store Name</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="text"
@@ -95,7 +97,7 @@ class RestSignup extends Component {
                                     autoFocus required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="phone_number">Phone Number</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="phone_number">Phone Number</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="phone_number"
@@ -107,7 +109,7 @@ class RestSignup extends Component {
                                     onChange={this.inputChange} required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="phone_number">Timings</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="phone_number">Timings</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="timings"
@@ -119,7 +121,7 @@ class RestSignup extends Component {
                                     onChange={this.inputChange} required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="email-address">Email</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="email-address">Email</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="email"
@@ -130,7 +132,7 @@ class RestSignup extends Component {
                                     required />
                             </div>
                             <div className="mv3">
-                                <label className="db fw6 lh-copy f5" for="password">Password</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="password">Password</label>
                                 <input
                                     className="b pa2 input-reset ba bg-transparent w-100"
                                     type="password"
@@ -142,7 +144,7 @@ class RestSignup extends Component {
                             </div>
                             <legend className="f3 fw6 ph0 mh0">Address</legend>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="street_address">Street Address</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="street_address">Street Address</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="street_address"
@@ -153,7 +155,7 @@ class RestSignup extends Component {
                                     required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="city">City</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="city">City</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="city"
@@ -164,7 +166,18 @@ class RestSignup extends Component {
                                     required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="state">State</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="zip">Zip Code</label>
+                                <input
+                                    className="pa2 input-reset ba bg-transparent w-100"
+                                    type="zip"
+                                    name="zip"
+                                    id="zip"
+                                    value={zip}
+                                    onChange={this.inputChange}
+                                    required />
+                            </div>
+                            <div className="mt3">
+                                <label className="db fw6 lh-copy f5" htmlFor="state">State</label>
                                 <input
                                     className="b pa2 input-reset ba bg-transparent w-100"
                                     type="state"
@@ -175,7 +188,7 @@ class RestSignup extends Component {
                                     disabled required />
                             </div>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="country">Country</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="country">Country</label>
                                 <input
                                     className="b pa2 input-reset ba bg-transparent w-100"
                                     type="country"

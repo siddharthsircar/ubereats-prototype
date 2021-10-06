@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 
 const {
-    createRestaurant, getRestaurantProfile, updateRestaurant, getRestaurantbyEmail, getRestaurants
+    createRestaurant, getRestaurantProfile, updateRestaurant, getRestaurantbyEmail, getRestaurantsByUserZip, getRestaurants,
 } = require('../controller/restaurantController');
 
 const router = express.Router();
@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
     const restDetails = req.body;
     console.log('Rest Details: ', restDetails)
-    const { store_name, phone_number, timings, email, password, street_address, city, state, country } = restDetails;
+    const { store_name, phone_number, timings, email, password, street_address, city, zip, state, country } = restDetails;
 
     try {
         let restaurant = await getRestaurantbyEmail(email);
@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
                 }
             })
         } else {
-            const createRes = await createRestaurant(store_name, phone_number, timings, email, password, street_address, city, state, country);
+            const createRes = await createRestaurant(store_name, phone_number, timings, email, password, street_address, city, zip, state, country);
             if (createRes.statusCode === 201) {
                 res.status(201).send({
                     user: {
@@ -32,6 +32,7 @@ router.post('/register', async (req, res) => {
                         email: createRes.body.dataValues.email,
                         street_address: createRes.body.dataValues.street_address,
                         city: createRes.body.dataValues.city,
+                        zip: createRes.body.dataValues.zip,
                         state: createRes.body.dataValues.state,
                         country: createRes.body.dataValues.country,
                     },
@@ -92,6 +93,7 @@ router.post('/login', async (req, res) => {
                             email: restDetails.email,
                             street_address: restDetails.street_address,
                             city: restDetails.city,
+                            zip: restDetails.zip,
                             state: restDetails.state,
                             country: restDetails.country,
                         },
@@ -157,6 +159,7 @@ router.get('/profile/:user_id', async (req, res) => {
                     email: restDetails.body.dataValues.email,
                     street_address: restDetails.body.dataValues.street_address,
                     city: restDetails.body.dataValues.city,
+                    zip: restDetails.body.dataValues.zip,
                     state: restDetails.body.dataValues.state,
                     country: restDetails.body.dataValues.country,
                 },
@@ -187,8 +190,23 @@ router.get('/profile/:user_id', async (req, res) => {
 
 router.get('/all', async (req, res) => {
     try {
-        const restDetails = await getRestaurants();
+        const { zip, searchQuery } = req.query;
+        console.log("Zip: ", zip, "Search: ", searchQuery);
+        let restDetails = null;
+        if (zip !== undefined) {
+            restDetails = await getRestaurantsByUserZip(zip);
+        } else {
+            restDetails = await getRestaurants();
+        }
         if (restDetails.statusCode === 200) {
+            if (searchQuery) {
+                const restaurants = restDetails.body.filter(restaurant => {
+                    let isValid = true;
+                    isValid = isValid && (restaurant["store_name"].toLowerCase().includes(searchQuery));
+                    return isValid;
+                });
+                restDetails = restaurants;
+            }
             res.status(200).send({
                 restaurants: restDetails.body,
             });

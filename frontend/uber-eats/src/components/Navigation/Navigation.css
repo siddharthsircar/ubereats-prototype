@@ -1,0 +1,17 @@
+.nav-container {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  top: 0;
+  position: fixed;
+  background: white;
+  height: 80px;
+  z-index: 1000;
+}
+
+.logo {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}

@@ -3,14 +3,15 @@ const { Op } = require('sequelize');
 const { users } = require('../models/index');
 
 // eslint-disable-next-line consistent-return
-const createUser = async (first_name, last_name, phone_number, email, password, street_address, city, state, country) => {
+const createUser = async (first_name, last_name, phone_number, email, password, street_address, city, zip, state, country) => {
     try {
-        const userObject = await users.create({ first_name, last_name, phone_number, email, password, street_address, city, state, country });
+        const userObject = await users.create({ first_name, last_name, phone_number, email, password, street_address, city, zip, state, country });
         return {
             statusCode: 201,
             body: userObject,
         };
     } catch (err) {
+        console.log("Error while creating user row: ", err);
         return {
             statusCode: 500,
             body: err,
@@ -69,12 +70,6 @@ const getUserByCreds = async (email) => {
     }
 };
 
-/**
- * [someFunction description]
- * @param  {String} userID ID of user to be updated
- * @param  {Object} updateData update object eg: {name: Yash, city: Santa clara}
- * @return {String}      Successful update or Failure
- */
 const updateUser = async (userID, updateData) => {
     try {
         const updateObject = await users.update(
@@ -94,7 +89,6 @@ const updateUser = async (userID, updateData) => {
         };
     }
 };
-
 
 
 module.exports = {

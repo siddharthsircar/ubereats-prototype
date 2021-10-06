@@ -7,30 +7,36 @@ import classnames from 'classnames';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Address from './Address/Address';
 import { logoutDispatcher } from '../../../redux/actions/authAction';
+import './Profile.css';
 
-class Profile extends Component {
+class UserProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
             userId: '',
             user: '',
-            authFlag: '',
             activeTab: '1'
         };
         this.handleLogout = this.handleLogout.bind(this);
     }
 
     componentDidMount = () => {
-        let user_id = JSON.parse(localStorage.getItem('user')).user_id;
-        console.log(user_id);
-        axios.get(`http://localhost:7000/user/profile/${user_id}`).then((res) => {
-            this.setState(
-                {
-                    user: res.data.user,
-                    userId: res.data.user.userId
-                }
-            );
-        });
+        if (localStorage.getItem('user')) {
+            this.setState({ authFlag: this.props.authUser });
+            console.log("Component Did Mount: ", this.state.authFlag);
+            let user_id = JSON.parse(localStorage.getItem('user')).user_id;
+            console.log(user_id);
+            axios.get(`http://localhost:7000/user/profile/${user_id}`).then((res) => {
+                this.setState(
+                    {
+                        user: res.data.user,
+                        userId: res.data.user.userId
+                    }
+                );
+            });
+        } else {
+            this.setState({ authFlag: false });
+        }
     }
 
     handleLogout = () => {
@@ -42,19 +48,18 @@ class Profile extends Component {
         const toggle = tab => {
             if (this.state.activeTab !== tab) this.setState({ activeTab: tab });
         }
-        if (!this.state.authFlag) {
-            <Redirect to="/home" />;
+        if (!this.props.authUser) {
+            return <Redirect to="/home" />;
+        }
+        let address = null;
+        if (this.state.user) {
+            address = <Address userDets={this.state.user} />
         }
         return (
-            <div style={{ background: '#37718e', height: '92vh', position: 'relative', top: '8vh' }}>
-                <div
-                    className='center'
-                    style={{
-                        width: '50%',
-                    }}
-                >
+            <div className='parent-container'>
+                <div className='center profile-container'>
                     <br />
-                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                    <div className='user-info'>
                         <div>
                             <div className='full-name b f3 white ma2'>
                                 {this.state.user.first_name + " " + this.state.user.last_name}
@@ -70,7 +75,7 @@ class Profile extends Component {
                         </div>
                     </div>
                     <br />
-                    <div className='br3 shadow-5' style={{ background: 'white' }} >
+                    <div className='br3 shadow-5 bg-white'>
                         <Nav tabs>
                             <NavItem>
                                 <NavLink
@@ -128,7 +133,8 @@ class Profile extends Component {
                             <TabPane tabId="1">
                                 <Row>
                                     <Col sm="12">
-                                        <Address userDets={this.state.user} />
+                                        {/* <Address userDets={this.props.user} /> */}
+                                        {address}
                                     </Col>
                                 </Row>
                             </TabPane>
@@ -170,4 +176,4 @@ const mapDispatchToProps = (dispatch) => ({
     logoutDispatcher: () => dispatch(logoutDispatcher()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

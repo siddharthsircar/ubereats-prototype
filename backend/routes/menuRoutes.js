@@ -7,6 +7,9 @@ const {
 
 const router = express.Router();
 
+/* 
+    Get menu for a restaurant
+*/
 router.get('/items/:rest_id', async (req, res) => {
     const filters = req.query;
     console.log("filters: ", filters);
@@ -58,6 +61,7 @@ router.get('/items/:rest_id', async (req, res) => {
     }
 });
 
+/* Add Menu Item */
 router.post('/item', async (req, res) => {
     const ItemDetails = req.body;
     console.log('Item Details: ', ItemDetails)
@@ -100,6 +104,7 @@ router.post('/item', async (req, res) => {
     }
 });
 
+/* Get item details */
 router.get('/item/:item_id', async (req, res) => {
     const item_id = req.params.item_id;
     console.log("Getting Item Details: ", req.body);
@@ -124,6 +129,7 @@ router.get('/item/:item_id', async (req, res) => {
     }
 });
 
+/* Update Item Details */
 router.put('/item/:item_id', async (req, res) => {
     const { updateData } = req.body;
     const item_id = req.params.item_id;

@@ -1,0 +1,18 @@
+.home-container {
+  height: 100vh;
+  background: linear-gradient(89deg, #ff5edf 0%, #04c8de 100%);
+  z-index: -1000;
+}
+
+.address-container {
+  top: 25vh;
+  position: relative;
+}
+
+.find-food {
+  color: white;
+}
+
+.find-food:hover {
+  color: white;
+}

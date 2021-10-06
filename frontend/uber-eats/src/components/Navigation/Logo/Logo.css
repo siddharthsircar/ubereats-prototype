@@ -1,0 +1,12 @@
+.logo-container {
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  color: black;
+}

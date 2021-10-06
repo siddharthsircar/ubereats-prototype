@@ -11,13 +11,13 @@ class Address extends Component {
 
     componentDidMount = () => {
         this.setState({
-            user: this.props.user,
+            user: this.props.userDets,
         })
         console.log("address user prop", this.props.user);
     }
 
     render() {
-        const { street_address, city, state, country } = this.state.user;
+        const { street_address, city, zip, state, country } = this.state.user;
         return (
             <div>
                 <main className="pa4 black-80">
@@ -31,7 +31,7 @@ class Address extends Component {
                         </div>
                         <div className="mt3">
                             <label className="db fw6 lh-copy f4 b" for="city">City</label>
-                            <label className="border db fw6 lh-copy f5" for="city">{city}</label>
+                            <label className="border db fw6 lh-copy f5" for="city">{city + ", " + zip}</label>
                         </div>
                         <div className="mt3">
                             <label className="db fw6 lh-copy f4 b" for="state">State</label>

@@ -3,6 +3,7 @@ import 'tachyons';
 import { Link } from "react-router-dom";
 import { Redirect } from "react-router";
 import { connect } from 'react-redux';
+import './Home.css';
 
 class Home extends Component {
     constructor(props) {
@@ -11,20 +12,23 @@ class Home extends Component {
             city: ''
         }
     }
+
+    handleInput = (e) => {
+
+    }
+
     render() {
-        let redirectVar = null;
         if (this.props.authUser) {
             if (localStorage.getItem('userType') === 'customer') {
-                redirectVar = <Redirect to="/user/feed" />;
+                return <Redirect to="/user/feed" />;
             }
             else if (localStorage.getItem('userType') === 'restaurant') {
-                redirectVar = <Redirect to="/restaurant/profile" />;
+                return <Redirect to="/restaurant/profile" />;
             }
         }
         return (
-            <div style={{ height: '100vh', background: 'linear-gradient(89deg, #ff5edf 0%, #04c8de 100%)', zIndex: '-1000', }}>
-                {redirectVar}
-                <div style={{ top: '25vh', position: 'relative' }}>
+            <div className='home-container'>
+                <div className='address-container'>
                     <p className='f2 b' style={{ textAlign: 'center' }}>
                         {'Want food? Get Food.'}
                     </p>
@@ -34,12 +38,13 @@ class Home extends Component {
                             <input
                                 type='text'
                                 placeholder='Enter Address: Street Address, City'
-                                className='f3 br3 mh2 ma2 pa2 w-80 center'></input>
+                                className='f3 br3 mh2 ma2 pa2 w-80 center'
+                                onChange={this.handleInput}></input>
                             <button
-                                className='center w-30 ma2 grow f4 link ph2 pv2 dib white bg-black br3'>
+                                className='center w-30 ma2 grow f4 link ph2 pv2 dib bg-black br3'>
                                 <Link
-                                    to="/user/feed" className='white'
-                                    style={{ 'text-decoration': 'none' }}
+                                    to="/user/feed"
+                                    className="find-food"
                                 >
                                     Find Food
                                 </Link>

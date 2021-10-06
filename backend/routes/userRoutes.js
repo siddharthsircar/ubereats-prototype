@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
     const userDetails = req.body;
-    const { first_name, last_name, phone_number, email, password, street_address, city, state, country } = userDetails;
+    const { first_name, last_name, phone_number, email, password, street_address, city, zip, state, country } = userDetails;
     try {
         let user = await getUserByCreds(email);
         if (user.statusCode === 200) {
@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
                 }
             })
         } else {
-            const createRes = await createUser(first_name, last_name, phone_number, email, password, street_address, city, state, country);
+            const createRes = await createUser(first_name, last_name, phone_number, email, password, street_address, city, zip, state, country);
             if (createRes.statusCode === 201) {
                 res.status(201).send({
                     user:
@@ -35,6 +35,7 @@ router.post('/register', async (req, res) => {
                         email: createRes.body.dataValues.email,
                         street_address: createRes.body.dataValues.street_address,
                         city: createRes.body.dataValues.city,
+                        zip: createRes.body.dataValues.zip,
                         state: createRes.body.dataValues.state,
                         country: createRes.body.dataValues.country,
                     },
@@ -94,6 +95,7 @@ router.post('/login', async (req, res) => {
                             email: userDetails.email,
                             street_address: userDetails.street_address,
                             city: userDetails.city,
+                            zip: userDetails.zip,
                             state: userDetails.state,
                             country: userDetails.country,
                         },
@@ -148,7 +150,6 @@ router.get('/profile/:user_id', async (req, res) => {
     try {
         const userDetails = await getUser(user_id);
         if (userDetails.statusCode === 200) {
-            console.log('User Profile Body: ', userDetails.body.dataValues);
             res.status(200).send({
                 user: {
                     user_id: userDetails.body.dataValues.user_id,
@@ -158,6 +159,7 @@ router.get('/profile/:user_id', async (req, res) => {
                     email: userDetails.body.dataValues.email,
                     street_address: userDetails.body.dataValues.street_address,
                     city: userDetails.body.dataValues.city,
+                    zip: userDetails.body.dataValues.zip,
                     state: userDetails.body.dataValues.state,
                     country: userDetails.body.dataValues.country,
                 },

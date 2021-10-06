@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginUser } from '../../../redux/actions/authAction';
 import { Link } from 'react-router-dom';
+import './Signin.css';
 
 class Signin extends Component {
     constructor(props) {
@@ -56,12 +57,12 @@ class Signin extends Component {
         }
         return (
             <div>
-                <main className="pa4 black-80 w-50 center" style={{ top: '8vh', position: 'relative' }}>
+                <main className="pa4 black-80 w-50 center main">
                     <form className="measure center" onSubmit={this.handleSubmit}>
                         <fieldset id="signin" className="ba b--transparent ph0 mh0">
                             <legend className="f3 fw6 ph0 mh0"><img src="https://img.icons8.com/ios-glyphs/30/000000/gender-neutral-user.png" alt='cutomer-icon' /> Welcome Back</legend>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f5" for="email-address">Email</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="email-address">Email</label>
                                 <input
                                     className="pa2 input-reset ba bg-transparent w-100"
                                     type="email"
@@ -71,7 +72,7 @@ class Signin extends Component {
                                     onChange={this.inputChange} required autoFocus />
                             </div>
                             <div className="mv3">
-                                <label className="db fw6 lh-copy f5" for="password">Password</label>
+                                <label className="db fw6 lh-copy f5" htmlFor="password">Password</label>
                                 <input
                                     className="b pa2 input-reset ba bg-transparent w-100"
                                     type="password"

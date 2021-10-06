@@ -64,6 +64,11 @@ const restaurants = sequelize.define(
             type: DT.STRING(50),
             allowNull: false,
         },
+        zip:
+        {
+            type: DT.INTEGER,
+            allowNull: false,
+        },
         state:
         {
             type: DT.STRING(50),
@@ -90,4 +95,5 @@ restaurants.sync();
 
 module.exports = {
     restaurants,
+    sequelize
 };
