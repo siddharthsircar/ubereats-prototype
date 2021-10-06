@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const StyledMenu = styled.nav`
   display: flex;
@@ -12,10 +12,10 @@ export const StyledMenu = styled.nav`
   top: 7vh;
   left: 0;
   transition: transform 0.5s ease-in-out;
-  background:white;
-  transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(-100%)'};
+  background: white;
+  transform: ${({ open }) => (open ? "translateX(0)" : "translateX(-100%)")};
 
-  a {      
+  a {
     text-transform: uppercase;
     top: 10vh;
     padding: 10px;
