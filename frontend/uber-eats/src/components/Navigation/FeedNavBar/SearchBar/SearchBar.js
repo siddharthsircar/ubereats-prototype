@@ -6,7 +6,7 @@ import FormControl from "react-bootstrap/FormControl";
 class SearchBar extends Component {
   render() {
     return (
-      <div>
+      <div className="br4 w-30">
         <Form className="d-flex">
           <FormControl
             type="search"
@@ -14,6 +14,7 @@ class SearchBar extends Component {
             className="mr-2"
             aria-label="Search"
           />
+          <div style={{ width: "20px" }}></div>
           <Button variant="dark">Search</Button>
         </Form>
       </div>

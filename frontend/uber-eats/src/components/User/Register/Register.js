@@ -121,7 +121,7 @@ class Register extends Component {
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent  w-100"
-                  type="last_name"
+                  type="text"
                   name="last_name"
                   id="last_name"
                   value={last_name}
@@ -135,8 +135,7 @@ class Register extends Component {
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent  w-100"
-                  type="phone_number"
-                  // pattern="[0-9]"
+                  type="number"
                   placeholder="(212)477-1000"
                   name="phone_number"
                   id="phone_number"
@@ -180,7 +179,7 @@ class Register extends Component {
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent w-100"
-                  type="street_address"
+                  type="text"
                   name="street_address"
                   id="street_address"
                   value={street_address}
@@ -194,7 +193,7 @@ class Register extends Component {
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent w-100"
-                  type="city"
+                  type="text"
                   name="city"
                   id="city"
                   value={city}
@@ -208,7 +207,7 @@ class Register extends Component {
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent w-100"
-                  type="zip"
+                  type="text"
                   name="zip"
                   id="zip"
                   value={zip}
@@ -222,7 +221,7 @@ class Register extends Component {
                 </label>
                 <input
                   className="b pa2 input-reset ba bg-transparent w-100"
-                  type="state"
+                  type="text"
                   name="state"
                   id="state"
                   value={state}
@@ -237,7 +236,7 @@ class Register extends Component {
                 </label>
                 <input
                   className="b pa2 input-reset ba bg-transparent w-100"
-                  type="country"
+                  type="text"
                   name="country"
                   id="country"
                   value={country}

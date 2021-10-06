@@ -1,0 +1,8 @@
+.profile {
+  background: white;
+}
+
+.profile:hover {
+  background: black;
+  color: white;
+}

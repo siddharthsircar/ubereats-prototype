@@ -8,6 +8,8 @@
   background: white;
   height: 80px;
   z-index: 1000;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .logo {

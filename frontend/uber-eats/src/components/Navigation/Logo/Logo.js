@@ -4,7 +4,7 @@ import "./Logo.css";
 
 const Logo = () => {
   return (
-    <div className="ma3">
+    <div>
       <a href="/">
         <Tilt className="Tilt" options={{ max: 65 }}>
           <div className="Tilt-inner f2 pa3 logo-container">

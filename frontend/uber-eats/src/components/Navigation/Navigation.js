@@ -7,6 +7,7 @@ import UserCity from "./FeedNavBar/UserCity/UserCity";
 import UserProfile from "./FeedNavBar/UserProfile/UserProfile";
 import { connect } from "react-redux";
 import "./Navigation.css";
+import Cart from "./Cart/Cart";
 
 class Navigation extends Component {
   constructor(props) {
@@ -17,11 +18,13 @@ class Navigation extends Component {
   }
 
   render() {
+    console.log("From Navigation: ", this.props);
     let showMenu = null;
     let showSignin = null;
     let showSearch = null;
     let showLocation = null;
     let showProfile = null;
+    let showCart = null;
     if (!this.props.authUser) {
       showMenu = <Burger open={this.props.open} setOpen={this.props.setOpen} />;
       showSignin = <SigninButton />;
@@ -30,17 +33,25 @@ class Navigation extends Component {
         showSearch = <SearchBar />;
         showLocation = <UserCity />;
         showProfile = <UserProfile />;
+        showCart = (
+          <Cart
+            summary={this.props.summary}
+            openSummary={this.props.openSummary}
+            closeSummary={this.props.closeSummary}
+          />
+        );
       }
     }
     return (
       <div>
         <div className="shadow-3 nav-container">
-          <div className="ml4 logo">
+          <div className="logo">
             {showMenu}
             <Logo />
           </div>
           {showLocation}
           {showSearch}
+          {showCart}
           {showProfile}
           {showSignin}
         </div>

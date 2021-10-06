@@ -1,22 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import "./UserProfile.css";
 class UserProfile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isOpen: false };
-  }
-
-  handleOpen = () => {
-    this.setState({ isOpen: true });
-  };
-
-  handleClose = () => {
-    this.setState({ isOpen: false });
-  };
-
   render() {
     return (
-      <nav className="ma3 mr4" style={{ background: "white" }}>
+      <nav className="ma3">
         <Link to="/user/profile">
           <button
             id="login"

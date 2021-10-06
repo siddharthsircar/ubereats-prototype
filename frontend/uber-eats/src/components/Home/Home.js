@@ -11,9 +11,12 @@ class Home extends Component {
     this.state = {
       city: "",
     };
+    this.handleInput = this.handleInput.bind(this);
   }
 
-  handleInput = (e) => {};
+  handleInput = (e) => {
+    this.setState({ city: e.target.value });
+  };
 
   render() {
     if (this.props.authUser) {
@@ -36,10 +39,20 @@ class Home extends Component {
                 type="text"
                 placeholder="Enter Address: Street Address, City"
                 className="f3 br3 mh2 ma2 pa2 w-80 center"
+                value={this.state.city}
                 onChange={this.handleInput}
-              ></input>
+              />
+              <div style={{ width: "10px" }}></div>
               <button className="center w-30 ma2 grow f4 link ph2 pv2 dib bg-black br3">
-                <Link to="/user/feed" className="find-food">
+                <Link
+                  to={{
+                    pathname: "/user/feed",
+                    state: {
+                      city: this.state.city,
+                    },
+                  }}
+                  className="find-food"
+                >
                   Find Food
                 </Link>
               </button>

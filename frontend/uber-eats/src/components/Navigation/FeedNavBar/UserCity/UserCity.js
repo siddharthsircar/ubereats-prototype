@@ -13,7 +13,7 @@ class UserCity extends Component {
       <div>
         <Form className="d-flex">
           <img
-            src="https://img.icons8.com/external-those-icons-fill-those-icons/30/000000/external-location-maps-and-locations-those-icons-fill-those-icons-3.png"
+            src="https://img.icons8.com/small/32/000000/marker.png"
             alt="location-icon"
           />
           <FormControl

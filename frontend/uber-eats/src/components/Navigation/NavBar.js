@@ -21,11 +21,22 @@ const useOnClickOutside = (ref, handler) => {
 const NavBar = () => {
   const [open, setOpen] = useState(false);
   const node = useRef();
+
+  const [showSummary, setshowSummary] = useState(false);
+  const handleClose = () => setshowSummary(false);
+  const handleShow = () => setshowSummary(true);
+
   useOnClickOutside(node, () => setOpen(false));
   return (
     <div>
       <div ref={node}>
-        <Navigation open={open} setOpen={setOpen} />
+        <Navigation
+          open={open}
+          setOpen={setOpen}
+          summary={showSummary}
+          openSummary={handleShow}
+          closeSummary={handleClose}
+        />
         <Menu open={open} setOpen={setOpen} />
       </div>
     </div>

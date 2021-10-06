@@ -14,6 +14,10 @@ class Feed extends Component {
       restaurants: null,
       showRestaurants: false,
     };
+    if (this.props.location.state !== undefined) {
+      let { city } = this.props.location.state;
+      this.city = city;
+    }
   }
 
   componentDidMount() {
@@ -33,12 +37,11 @@ class Feed extends Component {
   }
 
   render() {
-    let redirectVar = null;
     if (
       !this.props.authUser &&
-      (this.props.city === undefined || this.props.city === null)
+      (this.city === undefined || this.city === null || !this.city)
     ) {
-      redirectVar = <Redirect to="/home" />;
+      return <Redirect to="/home" />;
     }
     let restaurantCards = null;
     let feed = null;
@@ -63,12 +66,7 @@ class Feed extends Component {
       );
     } else
       feed = <div className="fl-jc-center">No Restaurants to be displayed</div>;
-    return (
-      <div className="center pa3 page">
-        {redirectVar}
-        {feed}
-      </div>
-    );
+    return <div className="center pa3 page">{feed}</div>;
   }
 }
 
