@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { formatPhoneNumber } from "../../../../utils/utils";
 import axios from "axios";
 import server from "../../../../config";
-class RestSignup extends Component {
+import { updateDispatcher } from "../../../../redux/actions/authAction";
+class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,6 +69,20 @@ class RestSignup extends Component {
             )
             .then((res) => {
               if (res.status === 200) {
+                const restaurant = {
+                  rest_id: this.props.restaurant.rest_id,
+                  store_image: res.data.Location,
+                  store_name: this.state.store_name,
+                  phone_number: this.state.phone_number,
+                  timings: this.state.timings,
+                  email: this.state.email,
+                  street_address: this.state.street_address,
+                  city: this.state.city,
+                  zip: this.state.zip,
+                  state: this.state.state,
+                  country: this.state.country,
+                };
+                this.props.updateDispatcher(restaurant);
                 console.log("User updated successfully");
                 this.setState({ updated: true });
               }
@@ -97,6 +112,20 @@ class RestSignup extends Component {
         )
         .then((res) => {
           if (res.status === 200) {
+            const restaurant = {
+              rest_id: this.props.restaurant.rest_id,
+              store_image: res.data.Location,
+              store_name: this.state.store_name,
+              phone_number: this.state.phone_number,
+              timings: this.state.timings,
+              email: this.state.email,
+              street_address: this.state.street_address,
+              city: this.state.city,
+              zip: this.state.zip,
+              state: this.state.state,
+              country: this.state.country,
+            };
+            this.props.updateDispatcher(restaurant);
             console.log("User updated successfully");
             this.setState({ updated: true });
           }
@@ -136,6 +165,10 @@ class RestSignup extends Component {
     }
     if (this.state.updated) {
       return <Redirect to="/restaurant/profile" />;
+    }
+
+    if (localStorage.getItem("userType") !== "restaurant") {
+      return <Redirect to="/home" />;
     }
     return (
       <div>
@@ -180,7 +213,7 @@ class RestSignup extends Component {
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent w-100"
-                  type="phone_number"
+                  type="text"
                   // pattern="[0-9]"
                   placeholder="(212)477-1000"
                   name="phone_number"
@@ -314,4 +347,10 @@ const mapStateToProps = (state) => ({
   restaurant: state.auth.user,
 });
 
-export default connect(mapStateToProps)(RestSignup);
+function mapDispatchToProps(dispatch) {
+  return {
+    updateDispatcher: (payload) => dispatch(updateDispatcher(payload)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);

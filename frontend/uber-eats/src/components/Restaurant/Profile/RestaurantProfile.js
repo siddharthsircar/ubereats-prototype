@@ -69,6 +69,9 @@ class RestaurantProfile extends Component {
     if (!this.props.authUser) {
       return <Redirect to="/home" />;
     }
+    if (localStorage.getItem("userType") !== "restaurant") {
+      return <Redirect to="/home" />;
+    }
     let address = null;
     if (this.state.restaurant) {
       address = <Address userDets={this.state.restaurant} />;

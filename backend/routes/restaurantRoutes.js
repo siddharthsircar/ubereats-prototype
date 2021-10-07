@@ -148,10 +148,9 @@ router.post("/login", async (req, res) => {
 });
 
 /** Update Restaurant Profile */
-router.put("/profile/:user_id", async (req, res) => {
+router.put("/profile/:rest_id", async (req, res) => {
   const updateData = req.body;
-  console.log("UpdateData from body", updateData);
-  const restId = req.params.user_id;
+  const restId = req.params.rest_id;
   try {
     const updateRes = await updateRestaurant(restId, updateData);
     if (updateRes.statusCode === 200) {
@@ -175,8 +174,8 @@ router.put("/profile/:user_id", async (req, res) => {
 });
 
 /** Get Restaurant Profile */
-router.get("/profile/:user_id", async (req, res) => {
-  const rest_id = req.params.user_id;
+router.get("/profile/:rest_id", async (req, res) => {
+  const rest_id = req.params.rest_id;
   console.log(req.body);
   try {
     const restDetails = await getRestaurantProfile(rest_id);

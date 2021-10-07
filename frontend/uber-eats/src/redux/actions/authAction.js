@@ -7,6 +7,7 @@ import {
   RESTAURANT_REGISTER,
   LOGOUT,
   UNAUTHENTICATED,
+  UPDATE_USER,
 } from "./action_types";
 
 const userLoginDispatcher = (payload) => ({
@@ -35,6 +36,11 @@ const logoutDispatcher = () => ({
 
 const unauthDispatcher = (payload) => ({
   type: UNAUTHENTICATED,
+  payload,
+});
+
+const updateDispatcher = (payload) => ({
+  type: UPDATE_USER,
   payload,
 });
 
@@ -128,6 +134,7 @@ export {
   userRegisterDispatcher,
   restRegisterDispatcher,
   restLoginDispatcher,
+  updateDispatcher,
   loginUser,
   registerUser,
   loginRest,

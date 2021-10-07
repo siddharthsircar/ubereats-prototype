@@ -7,6 +7,7 @@ import {
   RESTAURANT_REGISTER,
   LOGOUT,
   UNAUTHENTICATED,
+  UPDATE_USER,
 } from "../actions/action_types";
 
 const initState = {
@@ -63,6 +64,14 @@ const authReducer = (state = initState, action) => {
       return {
         error: action.payload,
         authUser: false,
+      };
+    }
+    case UPDATE_USER: {
+      console.log("User Update: ", action.payload);
+      return {
+        user: action.payload,
+        userId: action.payload.rest_id,
+        authUser: true,
       };
     }
     case LOGOUT: {

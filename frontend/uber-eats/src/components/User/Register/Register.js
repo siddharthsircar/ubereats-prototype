@@ -92,7 +92,7 @@ class Register extends Component {
       <div>
         <main className="pa4 black-80 w-50 center main">
           <form className="measure center" onSubmit={this.handleSubmit}>
-            <fieldset id="signin" className="ba b--transparent ph0 mh0">
+            <fieldset id="register" className="ba b--transparent ph0 mh0">
               <legend className="f3 fw6 ph0 mh0 center">
                 <img
                   src="https://img.icons8.com/ios-glyphs/30/000000/gender-neutral-user.png"
@@ -135,7 +135,7 @@ class Register extends Component {
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent  w-100"
-                  type="number"
+                  type="text"
                   placeholder="(212)477-1000"
                   name="phone_number"
                   id="phone_number"

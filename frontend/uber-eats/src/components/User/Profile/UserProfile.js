@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
 import {
@@ -35,9 +35,7 @@ class UserProfile extends Component {
   componentDidMount = () => {
     if (localStorage.getItem("user")) {
       this.setState({ authFlag: this.props.authUser });
-      console.log("Component Did Mount: ", this.state.authFlag);
       let user_id = JSON.parse(localStorage.getItem("user")).user_id;
-      console.log(user_id);
       axios.get(`http://localhost:7000/user/profile/${user_id}`).then((res) => {
         this.setState({
           user: res.data.user,
@@ -61,6 +59,9 @@ class UserProfile extends Component {
     if (!this.props.authUser) {
       return <Redirect to="/home" />;
     }
+    if (localStorage.getItem("userType") !== "customer") {
+      return <Redirect to="/home" />;
+    }
     let address = null;
     if (this.state.user) {
       address = <Address userDets={this.state.user} />;
@@ -71,17 +72,18 @@ class UserProfile extends Component {
           <br />
           <div className="user-info">
             <div>
-              <div className="full-name b f3 black ma2">
+              <div className="full-name b f3 white ma2">
                 {this.state.user.first_name + " " + this.state.user.last_name}
               </div>
-              <div className="contact-details f5 black em">
+              <div className="contact-details f5 white em">
                 <span className="ma2">{`+1 ${this.state.user.phone_number} • ${this.state.user.email}`}</span>
-                {/* <span className="ma2">{this.state.user.email}</span> */}
               </div>
             </div>
             <br />
             <div>
-              <Button className="white ma2">Edit Profile</Button>
+              <Link to="/user/edit">
+                <Button color="dark">Edit Profile</Button>
+              </Link>
             </div>
           </div>
           <br />

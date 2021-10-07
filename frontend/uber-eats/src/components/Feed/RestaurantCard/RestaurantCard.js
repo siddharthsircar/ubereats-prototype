@@ -5,10 +5,10 @@ import { Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
 import logo from "../../../assets/images/restaurant_image.jpg";
 class RestaurantCard extends Component {
   render() {
-    var resData = this.props.restaurant;
+    let resData = this.props.restaurant;
     return (
       <Link
-        to={{ pathname: "/restaurant", state: resData }}
+        to={{ pathname: "/restaurant", state: { restaurant: resData } }}
         className="black hover-black"
         style={{ textDecoration: "none" }}
       >

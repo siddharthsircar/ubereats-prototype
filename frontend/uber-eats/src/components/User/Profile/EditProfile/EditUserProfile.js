@@ -1,25 +1,25 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { registerRest } from "../../../redux/actions/authAction";
-import { formatPhoneNumber } from "../../../utils/utils";
-import "./RestSignup.css";
-class RestSignup extends Component {
+import { formatPhoneNumber } from "../../../../utils/utils";
+import axios from "axios";
+import server from "../../../../config";
+import { updateDispatcher } from "../../../../redux/actions/authAction";
+
+class EditUserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      store_name: "",
-      phone_number: "",
-      timings: "",
-      email: "",
-      password: "",
-      street_address: "",
-      city: "",
-      zip: "",
-      state: "California",
-      country: "United States",
-      showError: false,
-      signInError: "",
+      first_name: this.props.user.first_name,
+      last_name: this.props.user.last_name,
+      phone_number: this.props.user.phone_number,
+      email: this.props.user.email,
+      street_address: this.props.user.street_address,
+      city: this.props.user.city,
+      zip: this.props.user.zip,
+      state: this.props.user.state,
+      country: this.props.user.country,
+      updated: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.inputChange = this.inputChange.bind(this);
@@ -31,31 +31,45 @@ class RestSignup extends Component {
     });
   }
 
-  handleSubmit(e) {
+  handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
-      store_name: this.state.store_name,
+      first_name: this.state.first_name,
+      last_name: this.state.last_name,
       phone_number: this.state.phone_number,
-      timings: this.state.timings,
       email: this.state.email,
-      password: this.state.password,
       street_address: this.state.street_address,
       city: this.state.city,
       zip: this.state.zip,
       state: this.state.state,
       country: this.state.country,
     };
-    this.props.registerRest(data);
-    setTimeout(() => {
-      if (!this.props.authUser) {
-        this.setState({ showError: true });
-      } else {
-        this.setState({
-          showError: false,
-        });
-      }
-    }, 2000);
-  }
+    axios
+      .put(`${server}/user/profile/${this.props.user.user_id}`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          let user = {
+            user_id: this.props.user.user_id,
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            phone_number: this.state.phone_number,
+            email: this.state.email,
+            street_address: this.state.street_address,
+            city: this.state.city,
+            zip: this.state.zip,
+            state: this.state.state,
+            country: this.state.country,
+          };
+          this.props.updateDispatcher(user);
+          console.log("User updated successfully");
+          this.setState({ updated: true });
+        }
+      })
+      .catch((err) => {
+        console.log("Error while updating restaurant profile: ", err);
+        alert("Unable to update profile");
+      });
+  };
 
   inputChange = (e) => {
     let phone_number = "";
@@ -70,78 +84,61 @@ class RestSignup extends Component {
 
   render() {
     const {
-      store_name,
+      first_name,
+      last_name,
       phone_number,
-      timings,
       email,
-      password,
       street_address,
       city,
       zip,
       state,
       country,
     } = this.state;
-    let signInError = null;
-    if (this.props.authUser) {
-      return <Redirect to="/restaurant/profile" />;
-    } else if (!this.props.authUser && this.state.showError) {
-      signInError = this.props.signInError;
+
+    // let signInError = null;
+    if (!this.props.authUser) {
+      return <Redirect to="/home" />;
+    }
+    if (localStorage.getItem("userType") !== "customer") {
+      return <Redirect to="/home" />;
+    }
+    if (this.state.updated) {
+      return <Redirect to="/user/profile" />;
     }
     return (
       <div>
         <main className="pa4 black-80 w-50 center main">
           <form className="measure center" onSubmit={this.handleSubmit}>
-            <fieldset id="signin" className="ba b--transparent ph0 mh0">
-              <legend className="f3 fw6 ph0 mh0 center">
-                <img
-                  src="https://img.icons8.com/external-inipagistudio-mixed-inipagistudio/30/000000/external-restaurant-hospitality-inipagistudio-mixed-inipagistudio.png"
-                  alt="restaurant-icon"
-                />{" "}
-                Add Your Restaurant
-              </legend>
+            <fieldset
+              id="edit-user-profile"
+              className="ba b--transparent ph0 mh0"
+            >
+              <legend className="f3 fw6 ph0 mh0 center">Update Details</legend>
               <div className="mt3">
-                <label className="db fw6 lh-copy f5" htmlFor="store_name">
-                  Store Name
+                <label className="db fw6 lh-copy f5" htmlFor="first_name">
+                  First Name
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent w-100"
                   type="text"
-                  name="store_name"
-                  id="store_name"
-                  value={store_name}
+                  name="first_name"
+                  id="first_name"
+                  value={first_name}
                   onChange={this.inputChange}
                   autoFocus
                   required
                 />
               </div>
               <div className="mt3">
-                <label className="db fw6 lh-copy f5" htmlFor="phone_number">
-                  Phone Number
+                <label className="db fw6 lh-copy f5" htmlFor="last_name">
+                  Last Name
                 </label>
                 <input
-                  className="pa2 input-reset ba bg-transparent w-100"
+                  className="pa2 input-reset ba bg-transparent  w-100"
                   type="text"
-                  // pattern="[0-9]"
-                  placeholder="(212)477-1000"
-                  name="phone_number"
-                  id="phone_number"
-                  value={phone_number}
-                  onChange={this.inputChange}
-                  required
-                />
-              </div>
-              <div className="mt3">
-                <label className="db fw6 lh-copy f5" htmlFor="phone_number">
-                  Timings
-                </label>
-                <input
-                  className="pa2 input-reset ba bg-transparent w-100"
-                  type="timings"
-                  // pattern="[0-9]"
-                  placeholder="7 a.m - 9 p.m"
-                  name="timings"
-                  id="timings"
-                  value={timings}
+                  name="last_name"
+                  id="last_name"
+                  value={last_name}
                   onChange={this.inputChange}
                   required
                 />
@@ -158,18 +155,20 @@ class RestSignup extends Component {
                   value={email}
                   onChange={this.inputChange}
                   required
+                  disabled
                 />
               </div>
-              <div className="mv3">
-                <label className="db fw6 lh-copy f5" htmlFor="password">
-                  Password
+              <div className="mt3">
+                <label className="db fw6 lh-copy f5" htmlFor="phone_number">
+                  Phone Number
                 </label>
                 <input
-                  className="b pa2 input-reset ba bg-transparent w-100"
-                  type="password"
-                  name="password"
-                  id="password"
-                  value={password}
+                  className="pa2 input-reset ba bg-transparent  w-100"
+                  type="text"
+                  placeholder="(212)477-1000"
+                  name="phone_number"
+                  id="phone_number"
+                  value={phone_number}
                   onChange={this.inputChange}
                   required
                 />
@@ -181,7 +180,7 @@ class RestSignup extends Component {
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent w-100"
-                  type="street_address"
+                  type="text"
                   name="street_address"
                   id="street_address"
                   value={street_address}
@@ -195,7 +194,7 @@ class RestSignup extends Component {
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent w-100"
-                  type="city"
+                  type="text"
                   name="city"
                   id="city"
                   value={city}
@@ -209,7 +208,7 @@ class RestSignup extends Component {
                 </label>
                 <input
                   className="pa2 input-reset ba bg-transparent w-100"
-                  type="zip"
+                  type="text"
                   name="zip"
                   id="zip"
                   value={zip}
@@ -223,7 +222,7 @@ class RestSignup extends Component {
                 </label>
                 <input
                   className="b pa2 input-reset ba bg-transparent w-100"
-                  type="state"
+                  type="text"
                   name="state"
                   id="state"
                   value={state}
@@ -238,7 +237,7 @@ class RestSignup extends Component {
                 </label>
                 <input
                   className="b pa2 input-reset ba bg-transparent w-100"
-                  type="country"
+                  type="text"
                   name="country"
                   id="country"
                   value={country}
@@ -247,25 +246,14 @@ class RestSignup extends Component {
                   required
                 />
               </div>
-              <div className="mv3 center b red">{signInError}</div>
             </fieldset>
             <div className="">
               <button
-                className="b ph3 mt2 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib"
+                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f5 dib"
                 type="submit"
               >
-                Signup
+                Update
               </button>
-            </div>
-            <div className="lh-copy f4 mt3">
-              Have an account?
-              <Link
-                to="/restaurant/login"
-                className="b f4 link dim hover-black black db"
-                style={{ "text-decoration": "none" }}
-              >
-                Sign In
-              </Link>
             </div>
           </form>
         </main>
@@ -276,13 +264,13 @@ class RestSignup extends Component {
 
 const mapStateToProps = (state) => ({
   authUser: state.auth.authUser,
-  signInError: state.auth.error,
+  user: state.auth.user,
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    registerRest: (payload) => dispatch(registerRest(payload)),
+    updateDispatcher: (payload) => dispatch(updateDispatcher(payload)),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RestSignup);
+export default connect(mapStateToProps, mapDispatchToProps)(EditUserProfile);
