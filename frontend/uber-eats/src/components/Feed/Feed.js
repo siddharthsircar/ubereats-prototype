@@ -55,9 +55,9 @@ class Feed extends Component {
       });
       feed = (
         <Row>
-          <Col xs={2} className="shadow-2">
+          {/* <Col xs={2} className="shadow-2">
             <h3>Filters</h3>
-          </Col>
+          </Col> */}
           <Col>
             <Row>{restaurantCards}</Row>
           </Col>

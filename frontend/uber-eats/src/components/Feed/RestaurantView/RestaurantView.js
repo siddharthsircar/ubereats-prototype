@@ -100,11 +100,12 @@ class RestaurantView extends Component {
                   <CardSubtitle tag="h6" className="mb-2 pt2 text-muted">
                     {item.item_price}
                   </CardSubtitle>
+                  <Button color="primary">Add</Button>
                 </div>
-                <div className="fl w-20">
+                <div className="pt3 pr1 fl w-20">
                   <img
-                    width="150px"
-                    height="127px"
+                    width="170px"
+                    height="125px"
                     src={item.item_image}
                     alt="item-img"
                   />

@@ -97,7 +97,7 @@ const getRestaurantsByUserZip = async (zip) => {
   try {
     // const userObject = await restaurants.findAll();
     const userObject = await sequelize.query(
-      `SELECT rest_id, store_name, timings, street_address, city, state, zip, abs(${zip} - zip) as diff FROM restaurants order by diff`,
+      `SELECT rest_id, store_image, store_name, timings, street_address, city, state, zip, abs(${zip} - zip) as diff FROM restaurants order by diff`,
       { type: QueryTypes.SELECT }
     );
     if (userObject !== undefined && userObject !== null) {
@@ -125,6 +125,7 @@ const getRestaurants = async () => {
     const userObject = await restaurants.findAll({
       attributes: [
         "rest_id",
+        "store_image",
         "store_name",
         "timings",
         "street_address",
