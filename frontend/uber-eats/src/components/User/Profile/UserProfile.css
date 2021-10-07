@@ -1,5 +1,4 @@
 .parent-container {
-  background: #37718e;
   height: 92vh;
   position: relative;
   top: 8vh;
@@ -12,4 +11,5 @@
 .user-info {
   display: flex;
   justify-content: space-around;
+  color: black;
 }

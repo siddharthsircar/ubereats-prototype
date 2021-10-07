@@ -1,5 +1,8 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
+const fs = require("fs");
+const multiparty = require("multiparty");
+const fileType = require("file-type");
+const { uploadFile } = require("./../utils/s3Uploader");
 
 const {
   addItem,
@@ -56,6 +59,7 @@ router.get("/items/:rest_id", async (req, res) => {
         },
       });
     } else {
+      console.log(menuItems.body);
       res.status(500).send({
         errors: {
           message: menuItems.body,
@@ -76,8 +80,15 @@ router.get("/items/:rest_id", async (req, res) => {
 router.post("/item", async (req, res) => {
   const ItemDetails = req.body;
   console.log("Item Details: ", ItemDetails);
-  let { menu_id, item_image, item_name, item_desc, item_type, item_price } =
-    ItemDetails;
+  let {
+    menu_id,
+    item_image,
+    item_name,
+    item_desc,
+    item_type,
+    category,
+    item_price,
+  } = ItemDetails;
   try {
     item_price = item_price + " $";
     item_type = item_type.toLowerCase();
@@ -95,6 +106,7 @@ router.post("/item", async (req, res) => {
         item_name,
         item_desc,
         item_type,
+        category,
         item_price
       );
       if (createdItem.statusCode === 201) {
@@ -160,6 +172,27 @@ router.put("/item/:item_id", async (req, res) => {
       },
     });
   }
+});
+
+router.post("/item/uploadImage", (request, response) => {
+  const form = new multiparty.Form();
+  form.parse(request, async (error, fields, files) => {
+    if (error) {
+      return response.status(500).send(error);
+    }
+    try {
+      const path = files.file[0].path;
+      const buffer = fs.readFileSync(path);
+      const type = await fileType.fromBuffer(buffer);
+      const fileName = `itemImages/${Date.now().toString()}`;
+      const data = await uploadFile(buffer, fileName, type);
+      console.log("Success: ", data);
+      return response.status(200).send(data);
+    } catch (err) {
+      console.log("Upload Error: ", err);
+      return response.status(500).send(err);
+    }
+  });
 });
 
 router.get("/pingServer", (req, res) => {

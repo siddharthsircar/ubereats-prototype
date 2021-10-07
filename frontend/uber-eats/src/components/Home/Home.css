@@ -7,6 +7,7 @@
 .address-container {
   top: 25vh;
   position: relative;
+  z-index: 0;
 }
 
 .find-food {

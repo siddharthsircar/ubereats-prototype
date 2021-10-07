@@ -29,7 +29,7 @@ class Home extends Component {
     return (
       <div className="home-container">
         <div className="address-container">
-          <p className="f2 b" style={{ textAlign: "center" }}>
+          <p className="f2 b w-50 center" style={{ textAlign: "center" }}>
             {"Want food? Get Food."}
           </p>
           <div></div>
@@ -37,7 +37,7 @@ class Home extends Component {
             <div className="pa2 w-30 br3 shadow-5 fl-jc-spa">
               <input
                 type="text"
-                placeholder="Enter Address: Street Address, City"
+                placeholder="Street Address, City, Zip"
                 className="f3 br3 mh2 ma2 pa2 w-80 center"
                 value={this.state.city}
                 onChange={this.handleInput}

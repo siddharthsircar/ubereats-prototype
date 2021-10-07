@@ -1,14 +1,7 @@
 import React, { Component } from "react";
 // import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {
-  Card,
-  CardText,
-  CardBody,
-  CardLink,
-  CardTitle,
-  CardSubtitle,
-} from "reactstrap";
+import { Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
 import logo from "../../../assets/images/restaurant_image.jpg";
 class RestaurantCard extends Component {
   render() {

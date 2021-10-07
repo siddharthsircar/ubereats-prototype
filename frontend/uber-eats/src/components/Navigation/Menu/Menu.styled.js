@@ -9,7 +9,8 @@ export const StyledMenu = styled.nav`
   text-align: left;
   padding: 2rem;
   position: fixed;
-  top: 7vh;
+  z-index: 1;
+  top: 8vh;
   left: 0;
   transition: transform 0.5s ease-in-out;
   background: white;

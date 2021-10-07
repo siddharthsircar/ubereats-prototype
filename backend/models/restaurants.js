@@ -30,6 +30,11 @@ const restaurants = sequelize.define(
       primaryKey: true,
       defaultValue: DT.UUIDV1,
     },
+    store_image: {
+      type: DT.STRING(50),
+      unique: false,
+      allowNull: true,
+    },
     store_name: {
       type: DT.STRING(50),
       allowNull: false,

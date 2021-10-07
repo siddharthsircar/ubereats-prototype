@@ -19,7 +19,7 @@ import classnames from "classnames";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Address from "./Address/Address";
 import { logoutDispatcher } from "../../../redux/actions/authAction";
-import "./Profile.css";
+import "./UserProfile.css";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -71,12 +71,12 @@ class UserProfile extends Component {
           <br />
           <div className="user-info">
             <div>
-              <div className="full-name b f3 white ma2">
+              <div className="full-name b f3 black ma2">
                 {this.state.user.first_name + " " + this.state.user.last_name}
               </div>
-              <div className="contact-details f5 white em">
-                <span className="ma2">+1 {this.state.user.phone_number}</span>
-                <span className="ma2">{this.state.user.email}</span>
+              <div className="contact-details f5 black em">
+                <span className="ma2">{`+1 ${this.state.user.phone_number} • ${this.state.user.email}`}</span>
+                {/* <span className="ma2">{this.state.user.email}</span> */}
               </div>
             </div>
             <br />
@@ -131,7 +131,7 @@ class UserProfile extends Component {
                   className={classnames("b black pointer")}
                   onClick={this.handleLogout}
                 >
-                  <p className="black b">Logout</p>
+                  <Button color="dark">Logout</Button>
                 </NavLink>
               </NavItem>
             </Nav>

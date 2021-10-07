@@ -9,6 +9,7 @@ const addItem = async (
   item_name,
   item_desc,
   item_type,
+  category,
   item_price
 ) => {
   try {
@@ -18,6 +19,7 @@ const addItem = async (
       item_name,
       item_desc,
       item_type,
+      category,
       item_price,
     });
     return {

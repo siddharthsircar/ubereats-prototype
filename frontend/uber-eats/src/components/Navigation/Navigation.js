@@ -18,7 +18,6 @@ class Navigation extends Component {
   }
 
   render() {
-    console.log("From Navigation: ", this.props);
     let showMenu = null;
     let showSignin = null;
     let showSearch = null;

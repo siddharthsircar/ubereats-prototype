@@ -8,6 +8,7 @@ import RestSignin from "./Restaurant/Signin/RestSignin";
 import RestSignup from "./Restaurant/Register/RestSignup";
 import UserProfile from "./User/Profile/UserProfile";
 import RestaurantProfile from "./Restaurant/Profile/RestaurantProfile";
+import EditProfile from "./Restaurant/Profile/EditProfile/EditProfile";
 import { Redirect } from "react-router";
 class Main extends Component {
   render() {
@@ -28,6 +29,7 @@ class Main extends Component {
         <Route exact path="/restaurant/register" component={RestSignup} />
         <Route exact path="/user/profile" component={UserProfile} />
         <Route exact path="/restaurant/profile" component={RestaurantProfile} />
+        <Route exact path="/restaurant/edit" component={EditProfile} />
       </div>
     );
   }

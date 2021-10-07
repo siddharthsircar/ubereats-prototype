@@ -1,6 +1,9 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-
+const fs = require("fs");
+const multiparty = require("multiparty");
+const fileType = require("file-type");
+const { uploadFile } = require("./../utils/s3Uploader");
 const {
   createRestaurant,
   getRestaurantProfile,
@@ -12,6 +15,7 @@ const {
 
 const router = express.Router();
 
+/* Add new restaurant */
 router.post("/register", async (req, res) => {
   const restDetails = req.body;
   console.log("Rest Details: ", restDetails);
@@ -53,6 +57,7 @@ router.post("/register", async (req, res) => {
         res.status(201).send({
           user: {
             rest_id: createRes.body.dataValues.rest_id,
+            store_image: createRes.body.dataValues.store_image,
             store_name: createRes.body.dataValues.store_name,
             timings: createRes.body.dataValues.timings,
             phone_number: createRes.body.dataValues.phone_number,
@@ -82,6 +87,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
+/* Restaurant Signin */
 router.post("/login", async (req, res) => {
   const userCreds = req.body;
   const { email } = userCreds;
@@ -92,7 +98,6 @@ router.post("/login", async (req, res) => {
       restDetails = restDetails.body.dataValues;
       bcrypt.compare(password, restDetails.password, (err, isMatch) => {
         console.log(bcrypt.hashSync(password, 10));
-        // console.log(userDetails.password);
         if (err) {
           res.status(500).send({
             errors: {
@@ -111,6 +116,7 @@ router.post("/login", async (req, res) => {
           res.status(200).send({
             user: {
               rest_id: restDetails.rest_id,
+              store_image: restDetails.store_image,
               store_name: restDetails.store_name,
               timings: restDetails.timings,
               phone_number: restDetails.phone_number,
@@ -141,6 +147,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+/** Update Restaurant Profile */
 router.put("/profile/:user_id", async (req, res) => {
   const updateData = req.body;
   console.log("UpdateData from body", updateData);
@@ -167,6 +174,7 @@ router.put("/profile/:user_id", async (req, res) => {
   }
 });
 
+/** Get Restaurant Profile */
 router.get("/profile/:user_id", async (req, res) => {
   const rest_id = req.params.user_id;
   console.log(req.body);
@@ -176,6 +184,7 @@ router.get("/profile/:user_id", async (req, res) => {
       res.status(200).send({
         user: {
           rest_id: restDetails.body.dataValues.rest_id,
+          store_image: restDetails.body.dataValues.store_image,
           store_name: restDetails.body.dataValues.store_name,
           timings: restDetails.body.dataValues.timings,
           phone_number: restDetails.body.dataValues.phone_number,
@@ -210,6 +219,30 @@ router.get("/profile/:user_id", async (req, res) => {
   }
 });
 
+/** Update Restaurant image */
+router.post("/profile/uploadImage/:rest_id", async (req, res) => {
+  const rest_id = req.params.rest_id;
+  const form = new multiparty.Form();
+  form.parse(req, async (error, fields, files) => {
+    if (error) {
+      return res.status(500).send(error);
+    }
+    try {
+      const path = files.file[0].path;
+      const buffer = fs.readFileSync(path);
+      const type = await fileType.fromBuffer(buffer);
+      const fileName = `restaurantImages/${rest_id}`;
+      const data = await uploadFile(buffer, fileName, type);
+      console.log("Success: ", data);
+      return res.status(200).send(data);
+    } catch (err) {
+      console.log("Upload Error: ", err);
+      return res.status(500).send(err);
+    }
+  });
+});
+
+/** Get all restaurants */
 router.get("/all", async (req, res) => {
   try {
     const { zip, searchQuery } = req.query;
@@ -221,15 +254,22 @@ router.get("/all", async (req, res) => {
       restDetails = await getRestaurants();
     }
     if (restDetails.statusCode === 200) {
+      console.log("RestDetails: ", restDetails);
       if (searchQuery) {
         const restaurants = restDetails.body.filter((restaurant) => {
           let isValid = true;
           isValid =
             isValid &&
-            restaurant["store_name"].toLowerCase().includes(searchQuery);
+            (restaurant["store_name"]
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+              restaurant["city"]
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()));
           return isValid;
         });
-        restDetails = restaurants;
+        restDetails.body = restaurants;
+        console.log("RestDetails: ", restDetails);
       }
       res.status(200).send({
         restaurants: restDetails.body,

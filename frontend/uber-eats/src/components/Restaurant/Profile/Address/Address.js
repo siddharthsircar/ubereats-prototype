@@ -12,7 +12,6 @@ class Address extends Component {
     this.setState({
       user: this.props.user,
     });
-    console.log("address user prop", this.props.user);
   };
 
   render() {

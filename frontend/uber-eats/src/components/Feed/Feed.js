@@ -46,7 +46,6 @@ class Feed extends Component {
     let restaurantCards = null;
     let feed = null;
     if (this.state.showRestaurants) {
-      JSON.stringify(this.state.restaurants);
       restaurantCards = this.state.restaurants.map((restaurant) => {
         return (
           <Col className="ma2">

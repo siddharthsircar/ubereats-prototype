@@ -35,9 +35,6 @@ const menu = sequelize.define("menu", {
     type: DT.STRING(50),
     unique: false,
     allowNull: true,
-    validate: {
-      notEmpty: true,
-    },
   },
   item_name: {
     type: DT.STRING(50),
@@ -48,7 +45,7 @@ const menu = sequelize.define("menu", {
     },
   },
   item_desc: {
-    type: DT.STRING(50),
+    type: DT.STRING(500),
     allowNull: true,
   },
   item_type: {
@@ -57,6 +54,10 @@ const menu = sequelize.define("menu", {
     validate: {
       len: [3, 10],
     },
+  },
+  category: {
+    type: DT.STRING(50),
+    allowNull: false,
   },
   item_price: {
     type: DT.STRING(10),
