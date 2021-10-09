@@ -12,6 +12,17 @@ const {
   getUserByCreds,
 } = require("../controller/userController");
 
+const {
+  getUserOrders,
+  getCartOrderId,
+  addOrder,
+  getOrderSummary,
+  addItemsToOrder,
+  removeFromCart,
+  updateOrder,
+  removeCart,
+} = require("../controller/orderController");
+
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
@@ -209,7 +220,158 @@ router.get("/profile/:user_id", async (req, res) => {
 });
 
 // Add to cart
+router.post("/addtocart/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+  const order_details = req.body;
+  let { rest_id, item_id, item_name, item_price, order_status } = order_details;
+  try {
+    order_status = order_status.toLowerCase();
+    const cart = await getCartOrderId(user_id);
+    let order_id = "";
+    if (cart.statusCode === 200 && rest_id !== cart.body.rest_id) {
+      res
+        .status(403)
+        .send({ message: "Items from different restaurant already in cart" });
+    } else {
+      if (cart.statusCode === 200 && rest_id === cart.body.rest_id) {
+        order_id = cart.body.order_id;
+      } else if (cart.statusCode === 404) {
+        const addRes = await addOrder(user_id, rest_id, order_status);
+        order_id = addRes.body.order_id;
+      }
+      const addItemRes = await addItemsToOrder(
+        order_id,
+        item_id,
+        item_name,
+        item_price
+      );
+      res.status(addItemRes.statusCode).send(addItemRes.body);
+    }
+  } catch (err) {
+    console.log("Error encountered while adding to cart: ", err);
+    res.status(500).send({
+      errors: {
+        message: "Internal Server Error",
+      },
+    });
+  }
+});
+
+// Get Cart Details
+router.get("/cart/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+
+  try {
+    const cart = await getCartOrderId(user_id);
+    if (cart.statusCode === 200) {
+      let order_id = cart.body.order_id;
+      const cartSummary = await getOrderSummary(order_id);
+      res.status(200).send({ cart: cartSummary.body });
+    } else if (cart.statusCode === 404) {
+      res.status(404).send({ message: cart.body });
+    }
+  } catch (err) {
+    console.log("Error encountered while getting cart: ", err);
+    res.status(500).send({
+      errors: {
+        message: "Internal Server Error",
+      },
+    });
+  }
+});
+
+router.delete("/removeitem/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+  const item_id = req.query.item_id;
+  try {
+    const cart = await getCartOrderId(user_id);
+    let order_id = cart.body.order_id;
+    const removeRes = await removeFromCart(order_id, item_id);
+    console.log("Items Left: ", removeRes.itemsLeft);
+    if (removeRes.itemsLeft === 0) {
+      await removeCart(order_id);
+      // console.log()
+    }
+    res.status(removeRes.statusCode).send({ message: removeRes.body });
+  } catch (err) {
+    console.log("Error encountered while removing item: ", err);
+    res.status(500).send({
+      errors: {
+        message: "Internal Server Error",
+      },
+    });
+  }
+});
 
 // Checkout
+router.put("/checkout/:order_id", async (req, res) => {
+  const order_id = req.params.order_id;
+  try {
+    const updateRes = await updateOrder(order_id, "order placed");
+    if (updateRes.statusCode === 200) {
+      res.status(200).send({ message: "Order Successfully Placed!" });
+    }
+  } catch (err) {
+    console.log("Error encountered while placing order: ", err);
+    res.status(500).send({
+      errors: {
+        message: "Internal Server Error",
+      },
+    });
+  }
+});
+
+// Get All Orders
+router.get("/orders/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+  try {
+    let orders = await getUserOrders(user_id);
+    console.log("Orders before map: ", orders);
+    if (orders.statusCode === 200) {
+      let uporders = await Promise.all(
+        orders.body.map(async (order) => {
+          console.log("order in map: ", order.dataValues.order_id);
+          let order_id = order.dataValues.order_id;
+          let ordersummary = await getOrderSummary(order_id);
+          order.dataValues["summary"] = {
+            item_id: ordersummary.body[0].dataValues.item_id,
+            item_name: ordersummary.body[0].dataValues.item_name,
+            quantity: ordersummary.body[0].dataValues.quantity,
+            item_price: ordersummary.body[0].dataValues.item_price,
+          };
+          return order;
+        })
+      );
+      res.status(200).send({ orders: orders.body });
+    } else if (orders.statusCode === 404) {
+      res.status(404).send({ message: orders.body });
+    }
+  } catch (err) {
+    console.log("Error encountered while getting orders: ", err);
+    res.status(500).send({
+      errors: {
+        message: "Internal Server Error",
+      },
+    });
+  }
+});
+
+// Cancel Order
+router.put("/cancelorder/:order_id", async (req, res) => {
+  const order_id = req.params.order_id;
+  try {
+    const updateRes = await updateOrder(order_id, "cancelled");
+    if (updateRes.statusCode === 200) {
+      res.status(200).send({ message: "Order Successfully cancelled!" });
+    }
+  } catch (err) {
+    console.log("Error encountered while placing order: ", err);
+    res.status(500).send({
+      errors: {
+        message: "Internal Server Error",
+      },
+    });
+  }
+});
 
 module.exports = router;

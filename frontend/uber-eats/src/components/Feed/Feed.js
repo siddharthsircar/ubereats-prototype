@@ -5,6 +5,7 @@ import "./Feed.css";
 import axios from "axios";
 import RestaurantCard from "./RestaurantCard/RestaurantCard";
 import { Col, Row } from "react-bootstrap";
+import server from "./../../config";
 
 class Feed extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class Feed extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:7000/restaurant/all")
+      .get(`${server}/restaurant/all?zip=${this.props.user.zip}`)
       .then((response) => {
         this.setState({
           restaurants: response.data.restaurants,
@@ -71,6 +72,7 @@ class Feed extends Component {
 
 const mapStateToProps = (state) => ({
   authUser: state.auth.authUser,
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps)(Feed);

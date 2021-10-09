@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
+import "./RestaurantCard.css";
 class RestaurantCard extends Component {
   render() {
     let resData = this.props.restaurant;
@@ -18,7 +19,7 @@ class RestaurantCard extends Component {
             alt="store-img"
           />
           <CardBody>
-            <CardTitle tag="h5" style={{ height: "48px" }}>
+            <CardTitle className="title" tag="h5" style={{ height: "48px" }}>
               {this.props.restaurant.store_name +
                 ` (${this.props.restaurant.street_address})`}
             </CardTitle>

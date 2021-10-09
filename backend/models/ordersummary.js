@@ -21,29 +21,34 @@ const sequelize = new Sequelize(aws.dbName, aws.userName, aws.password, {
 });
 const salt = 10;
 
-const orders = sequelize.define("orders", {
+const ordersummary = sequelize.define("ordersummary", {
   order_id: {
     type: DT.UUID,
-    primaryKey: true,
-    defaultValue: DT.UUIDV1,
+    allowNull: false,
   },
-  rest_id: {
+  item_id: {
     type: DT.UUID,
     allowNull: false,
   },
-  user_id: {
-    type: DT.UUID,
-    allowNull: false,
-  },
-  order_status: {
+  item_name: {
     type: DT.STRING(50),
     allowNull: false,
-    defaultValue: "New",
+  },
+  quantity: {
+    type: DT.INTEGER,
+    allowNull: true,
+    validate: {
+      min: 1,
+    },
+  },
+  item_price: {
+    type: DT.STRING(10),
+    allowNull: false,
   },
 });
 
-orders.sync();
+ordersummary.sync();
 
 module.exports = {
-  orders,
+  ordersummary,
 };

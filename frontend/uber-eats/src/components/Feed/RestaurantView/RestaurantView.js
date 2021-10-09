@@ -1,16 +1,8 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
-import {
-  CardSubtitle,
-  Card,
-  Button,
-  CardTitle,
-  CardText,
-  Row,
-  Col,
-} from "reactstrap";
+import { CardSubtitle, Card, Button, CardTitle, Row, Col } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import server from "../../../config";
 import "./RestaurantView.css";
@@ -26,6 +18,7 @@ class RestaurantView extends Component {
       activeTab: "1",
       categories: "",
       types: "",
+      favorite: false,
     };
   }
 
@@ -116,14 +109,20 @@ class RestaurantView extends Component {
         );
       });
       items = (
-        <Row xs="3" className="pa3">
+        <Row xs="3" className="pa3 menu-container">
           {menuCards}
         </Row>
       );
     } else
       items = <div className="h2 b flex justify-center">No Items in menu.</div>;
+
+    let color = null;
+    if (this.state.favorite === true) {
+      color = "red";
+    } else color = "white";
+
     return (
-      <div className="profile-parent">
+      <div className="parent">
         <div className="center">
           <div
             className="flex justify-between items-end rest-details pb3 pt3 pl4 br2"
@@ -148,23 +147,39 @@ class RestaurantView extends Component {
             </div>
             <br />
             <div className="pr4">
-              <img
-                className="bg-white"
+              {/* <img
+                className={`${color} br-100`}
                 src="https://img.icons8.com/ios-glyphs/30/000000/like--v2.png"
                 alt="fav-icon"
-              />
+                onClick={() => {
+                  this.setState({ favorite: !this.state.favorite });
+                }}
+              /> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill={`${color}`}
+                class="bi bi-suit-heart-fill"
+                viewBox="0 0 16 16"
+                onClick={() => {
+                  this.setState({ favorite: !this.state.favorite });
+                }}
+              >
+                <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" />
+              </svg>
             </div>
           </div>
           <div className="flex justify-start items-center pt2 pl3">
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Filter
+                Dietary
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item>Action</Dropdown.Item>
-                <Dropdown.Item>Another action</Dropdown.Item>
-                <Dropdown.Item>Something else</Dropdown.Item>
+                <Dropdown.Item>Veg</Dropdown.Item>
+                <Dropdown.Item>Non Veg</Dropdown.Item>
+                <Dropdown.Item>Vegan</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>

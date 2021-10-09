@@ -208,11 +208,11 @@ class Menu extends Component {
                   onChange={this.inputChange}
                   required
                 >
-                  <option value="breakfast">Breakfast</option>
-                  <option value="lunch">Lunch</option>
-                  <option value="dinner">Dinner</option>
+                  <option value="appetizer">Appetizer</option>
+                  <option value="salads">Salad</option>
+                  <option value="main-course">Main Course</option>
                   <option value="sides">Sides</option>
-                  <option value="drinks">Drink</option>
+                  <option value="beverages">Beverage</option>
                   <option value="dessert">Dessert</option>
                 </select>
               </div>

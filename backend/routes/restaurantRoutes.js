@@ -13,6 +13,18 @@ const {
   getRestaurants,
 } = require("../controller/restaurantController");
 
+const {
+  getUserOrders,
+  getCartOrderId,
+  addOrder,
+  getOrderSummary,
+  addItemsToOrder,
+  removeFromCart,
+  updateOrder,
+  removeCart,
+  getRestaurantOrders,
+} = require("../controller/orderController");
+
 const router = express.Router();
 
 /* Add new restaurant */
@@ -288,6 +300,60 @@ router.get("/all", async (req, res) => {
     }
   } catch (err) {
     console.log("Error encountered while getting restaurants: ", err);
+    res.status(500).send({
+      errors: {
+        message: "Internal Server Error",
+      },
+    });
+  }
+});
+
+// Update Order
+router.put("/updateorder/:order_id", async (req, res) => {
+  const order_id = req.params.order_id;
+  const order_status = req.query.order_status;
+  try {
+    const updateRes = await updateOrder(order_id, order_status);
+    if (updateRes.statusCode === 200) {
+      res.status(200).send({ message: "Order updated!" });
+    }
+  } catch (err) {
+    console.log("Error encountered while placing order: ", err);
+    res.status(500).send({
+      errors: {
+        message: "Internal Server Error",
+      },
+    });
+  }
+});
+
+// Get All Orders
+router.get("/orders/:rest_id", async (req, res) => {
+  const rest_id = req.params.rest_id;
+  try {
+    let orders = await getRestaurantOrders(rest_id);
+    console.log("Orders before map: ", orders);
+    if (orders.statusCode === 200) {
+      let uporders = await Promise.all(
+        orders.body.map(async (order) => {
+          console.log("order in map: ", order.dataValues.order_id);
+          let order_id = order.dataValues.order_id;
+          let ordersummary = await getOrderSummary(order_id);
+          order.dataValues["summary"] = {
+            item_id: ordersummary.body[0].dataValues.item_id,
+            item_name: ordersummary.body[0].dataValues.item_name,
+            quantity: ordersummary.body[0].dataValues.quantity,
+            item_price: ordersummary.body[0].dataValues.item_price,
+          };
+          return order;
+        })
+      );
+      res.status(200).send({ orders: orders.body });
+    } else if (orders.statusCode === 404) {
+      res.status(404).send({ message: orders.body });
+    }
+  } catch (err) {
+    console.log("Error encountered while getting orders: ", err);
     res.status(500).send({
       errors: {
         message: "Internal Server Error",

@@ -5,12 +5,12 @@ const fileType = require("file-type");
 const { uploadFile } = require("./../utils/s3Uploader");
 
 const {
-  addItem,
-  getAllItemsByRestaurant,
-  getItemDetails,
-  updateItem,
-  getItemByName,
-} = require("../controller/menuController");
+  addToCart,
+  removeFromCart,
+  updateOrder,
+  getUserOrders,
+  getRestaurantOrders,
+} = require("../controller/orderController");
 
 const router = express.Router();
 

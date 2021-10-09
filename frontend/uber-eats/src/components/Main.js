@@ -11,6 +11,7 @@ import RestaurantProfile from "./Restaurant/Profile/RestaurantProfile";
 import EditProfile from "./Restaurant/Profile/EditProfile/EditProfile";
 import EditUserProfile from "./User/Profile/EditProfile/EditUserProfile";
 import RestaurantView from "./Feed/RestaurantView/RestaurantView";
+import Search from "./Feed/Search/Search";
 import { Redirect } from "react-router";
 class Main extends Component {
   render() {
@@ -34,6 +35,7 @@ class Main extends Component {
         <Route exact path="/restaurant/edit" component={EditProfile} />
         <Route exact path="/user/edit" component={EditUserProfile} />
         <Route exact path="/restaurant" component={RestaurantView} />
+        <Route exact path="/search" component={Search} />
       </div>
     );
   }
