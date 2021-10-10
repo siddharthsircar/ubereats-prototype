@@ -316,9 +316,9 @@ router.get("/all", async (req, res) => {
 // Update Order
 router.put("/updateorder/:order_id", async (req, res) => {
   const order_id = req.params.order_id;
-  const order_status = req.query.order_status;
+  const updateData = req.body;
   try {
-    const updateRes = await updateOrder(order_id, order_status);
+    const updateRes = await updateOrder(order_id, updateData);
     if (updateRes.statusCode === 200) {
       res.status(200).send({ message: "Order updated!" });
     }

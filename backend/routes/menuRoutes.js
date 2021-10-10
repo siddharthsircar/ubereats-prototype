@@ -191,7 +191,8 @@ router.get("/item/:item_id", async (req, res) => {
 
 /* Update Item Details */
 router.put("/item/:item_id", async (req, res) => {
-  const { updateData } = req.body;
+  const updateData = req.body;
+  console.log("UpdateData: ", updateData);
   const item_id = req.params.item_id;
   const updateRes = await updateItem(item_id, updateData);
   if (updateRes.statusCode === 200) {

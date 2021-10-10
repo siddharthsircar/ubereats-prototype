@@ -5,6 +5,7 @@ import server from "../../../../config";
 import axios from "axios";
 import { Card, DropdownButton, Dropdown, Alert } from "react-bootstrap";
 import OrderSummary from "../../../User/Profile/OrderHistory/OrderSummary/OrderSummary";
+import { Link } from "react-router-dom";
 class Orders extends Component {
   constructor(props) {
     super(props);
@@ -14,8 +15,12 @@ class Orders extends Component {
       filteredList: "",
       no_orders: "",
       showSummary: false,
+      updateOrder: false,
+      currentStatusFilter: "All",
+      orderStatus: "",
     };
     this.onStatusSelect = this.onStatusSelect.bind(this);
+    this.selectOrderStatus = this.selectOrderStatus.bind(this);
     this.getLatestOrders = this.getLatestOrders.bind(this);
   }
 
@@ -58,6 +63,7 @@ class Orders extends Component {
   onStatusSelect = (e) => {
     if (e.target.text === "All") {
       this.setState({
+        currentStatusFilter: e.target.text,
         filteredList: this.state.orders,
       });
     } else {
@@ -65,32 +71,66 @@ class Orders extends Component {
         (order) => order.order_status === e.target.text.toLowerCase()
       );
       this.setState({
+        currentStatusFilter: e.target.text,
         filteredList: filteredList,
       });
     }
   };
 
+  selectOrderStatus = (e) => {
+    e.preventDefault();
+    this.setState({
+      orderStatus: e.target.text.toLowerCase(),
+    });
+  };
+
+  updateOrderStatus = (order_id, status) => {
+    if (status && status !== null && status !== undefined) {
+      console.log(order_id, status);
+      let updateData = { order_status: status };
+      axios
+        .put(`${server}/restaurant/updateorder/${order_id}`, updateData)
+        .then((res) => {
+          if (res.status === 200) {
+            this.getLatestOrders();
+          }
+        })
+        .catch((err) => {
+          console.log("Unable to update order: ", err.response);
+          alert("Unable to update order");
+        });
+    } else alert("Select an order status to update order");
+  };
+
   render() {
     let orders = null;
+    let statuses = null;
     console.log("Filtered List: ", this.state.filteredList);
     if (this.state.filteredList) {
       let ordercards = this.state.filteredList.map((order) => {
         let createdDate = new Date(order.updatedAt).toLocaleDateString();
         let createdTime = new Date(order.updatedAt).toLocaleTimeString();
+        if (order.mode === "delivery") {
+          statuses = ["on the way", "delivered"];
+        } else statuses = ["ready for pickup", "picked up"];
         return (
           <Card body className="">
             <div className="flex justify-between">
               <div className="flex w-90">
                 <div className="ml4">
-                  <Card.Text className="f3 b">
-                    {`${order.store_name} (${order.store_address})`}
+                  <Card.Text className="f3 b ttc">
+                    <Link className="pointer">
+                      {order.order_status === "cancelled"
+                        ? order.cust_name
+                        : `${order.cust_name} (${order.mode})`}
+                    </Link>
                     <Card.Subtitle className="i">
                       {`${order.summary.length} items for ${order.order_total}`}
                     </Card.Subtitle>
                   </Card.Text>
                   {order.order_status === "cancelled" ? (
                     <Card.Subtitle className="ttc i red">
-                      {order.order_status}
+                      {order.order_status} by customer.
                     </Card.Subtitle>
                   ) : (
                     <Card.Subtitle className="ttc i">
@@ -107,28 +147,82 @@ class Orders extends Component {
                   </Card.Subtitle>
                 </div>
               </div>
-              <div className="w-10 center">
+              <div className="w-20 center">
                 <CardText>{`${createdDate}, ${createdTime}`}</CardText>
-                {order.order_status === "order placed" ? (
-                  <CardText
-                    className="underline red pointer grow"
-                    onClick={() => {
-                      axios
-                        .put(`${server}/user/cancelorder/${order.order_id}`)
-                        .then((res) => {
-                          if (res.status === 200) {
-                            this.getLatestOrders();
-                            alert("Order Cancelled");
-                          }
-                        })
-                        .catch((err) => {
-                          console.log("Unable to cancel order: ", err.response);
-                          alert("Unable to cancel order");
-                        });
-                    }}
-                  >
-                    Cancel Order
-                  </CardText>
+                {order.order_status !== "cancelled" ? (
+                  this.state.updateOrder === true ? (
+                    <div className="flex">
+                      <div>
+                        <DropdownButton
+                          variant="dark"
+                          title={this.state.orderStatus || order.order_status}
+                          id="status"
+                        >
+                          <Dropdown.Item
+                            id="preparing"
+                            onClick={this.selectOrderStatus}
+                          >
+                            Preparing
+                          </Dropdown.Item>
+                          {statuses.map((status) => {
+                            return (
+                              <Dropdown.Item
+                                id={status}
+                                className="ttc"
+                                onClick={this.selectOrderStatus}
+                              >
+                                {status}
+                              </Dropdown.Item>
+                            );
+                          })}
+                        </DropdownButton>
+                      </div>
+                      <div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          className="bi bi-check-lg pointer ml4"
+                          viewBox="0 0 16 16"
+                          onClick={() => {
+                            this.updateOrderStatus(
+                              order.order_id,
+                              this.state.orderStatus
+                            );
+                            this.setState({ updateOrder: false });
+                          }}
+                        >
+                          <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z" />
+                        </svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          className="bi bi-x-lg pointer ml4"
+                          viewBox="0 0 16 16"
+                          onClick={() => {
+                            this.setState({
+                              updateOrder: false,
+                              orderStatus: "",
+                            });
+                          }}
+                        >
+                          <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" />
+                        </svg>
+                      </div>
+                    </div>
+                  ) : (
+                    <CardText
+                      className="underline center pointer grow"
+                      onClick={() => {
+                        this.setState({ updateOrder: true });
+                      }}
+                    >
+                      Update Order
+                    </CardText>
+                  )
                 ) : (
                   <div></div>
                 )}
@@ -165,14 +259,18 @@ class Orders extends Component {
     if (this.state.order_status.length !== 0) {
       let statusOptions = this.state.order_status.map((status) => {
         return (
-          <Dropdown.Item href="#" className="ttc" onClick={this.onStatusSelect}>
+          <Dropdown.Item className="ttc" onClick={this.onStatusSelect}>
             {status}
           </Dropdown.Item>
         );
       });
       statusDropdown = (
-        <DropdownButton variant="dark" title="Status" id="status">
-          <Dropdown.Item href="#" onClick={this.onStatusSelect}>
+        <DropdownButton
+          variant="dark"
+          title={this.state.currentStatusFilter}
+          id="status"
+        >
+          <Dropdown.Item className="ttc" onClick={this.onStatusSelect}>
             All
           </Dropdown.Item>
           {statusOptions}
