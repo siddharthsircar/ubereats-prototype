@@ -4,9 +4,8 @@ import { Redirect } from "react-router";
 import "./Feed.css";
 import axios from "axios";
 import RestaurantCard from "./RestaurantCard/RestaurantCard";
-import { Card, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import server from "./../../config";
-import DeliveryMode from "../Navigation/DeliveryMode/DeliveryMode";
 import { setDeliveryModeDispachter } from "../../redux/actions/orderActions";
 class Feed extends Component {
   constructor(props) {

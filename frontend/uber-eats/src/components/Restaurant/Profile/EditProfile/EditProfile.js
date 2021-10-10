@@ -83,7 +83,6 @@ class EditProfile extends Component {
                   country: this.state.country,
                 };
                 this.props.updateDispatcher(restaurant);
-                console.log("User updated successfully");
                 this.setState({ updated: true });
               }
             })
@@ -126,7 +125,6 @@ class EditProfile extends Component {
               country: this.state.country,
             };
             this.props.updateDispatcher(restaurant);
-            console.log("User updated successfully");
             this.setState({ updated: true });
           }
         })

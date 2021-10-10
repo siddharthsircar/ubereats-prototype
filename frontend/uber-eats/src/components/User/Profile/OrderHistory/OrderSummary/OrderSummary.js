@@ -23,7 +23,6 @@ class OrderSummary extends Component {
     ) {
       return <Redirect to="/home" />;
     }
-    console.log("Order Details", this.state.order_details);
     let items = null;
     if (this.state.order_details.summary) {
       items = this.state.order_details.summary.map((item) => {

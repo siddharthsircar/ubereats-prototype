@@ -77,10 +77,7 @@ class Register extends Component {
       email,
       password,
       street_address,
-      city,
       zip,
-      state,
-      country,
     } = this.state;
 
     // let signInError = null;

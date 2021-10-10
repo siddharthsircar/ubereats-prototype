@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { ButtonGroup } from "react-bootstrap";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import { connect } from "react-redux";

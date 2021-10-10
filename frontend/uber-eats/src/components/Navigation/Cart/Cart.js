@@ -25,7 +25,6 @@ class Cart extends Component {
   };
 
   removeAll = () => {
-    console.log("order id", this.props.cart[0].order_id);
     axios
       .delete(`${server}/user/emptycart/${this.props.cart[0].order_id}`)
       .then((res) => {

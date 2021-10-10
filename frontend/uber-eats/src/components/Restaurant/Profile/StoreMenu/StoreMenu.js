@@ -134,7 +134,6 @@ class Menu extends Component {
   };
 
   updateItem = (item_id, item_name, item_desc, item_price) => {
-    console.log("state: ", item_name, item_desc, item_price);
     let updateData = {};
     if (item_name !== null && item_name !== undefined && item_name) {
       updateData["item_name"] = item_name;

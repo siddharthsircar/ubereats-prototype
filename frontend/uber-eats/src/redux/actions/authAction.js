@@ -45,15 +45,12 @@ const updateDispatcher = (payload) => ({
 });
 
 const loginUser = (payload) => (dispatch) => {
-  console.log("User Payload :", payload);
   axios
     .post(`${server}/user/login`, payload)
     .then((res) => {
       if (res.status === 200) {
-        console.log(res);
         dispatch(userLoginDispatcher(res.data));
       }
-      console.log("dispatch response :", res);
     })
     .catch((errors) => {
       console.log(errors);
@@ -87,15 +84,12 @@ const registerUser = (payload) => (dispatch) => {
 };
 
 const loginRest = (payload) => (dispatch) => {
-  console.log("Restaurant Payload :", payload);
   axios
     .post(`${server}/restaurant/login`, payload)
     .then((res) => {
       if (res.status === 200) {
-        console.log(res);
         dispatch(restLoginDispatcher(res.data));
       }
-      console.log("dispatch response :", res);
     })
     .catch((errors) => {
       console.log(errors);
@@ -109,12 +103,10 @@ const loginRest = (payload) => (dispatch) => {
 };
 
 const registerRest = (payload) => (dispatch) => {
-  console.log("Restaurant Payload: ", payload);
   axios
     .post(`${server}/restaurant/register`, payload)
     .then((res) => {
       if (res.status === 201) {
-        console.log(res);
         dispatch(restRegisterDispatcher(res.data));
       }
     })

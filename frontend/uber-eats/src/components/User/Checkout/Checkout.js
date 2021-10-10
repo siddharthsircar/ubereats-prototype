@@ -63,7 +63,6 @@ class Checkout extends Component {
   };
 
   render() {
-    console.log("address: ", this.state.addresses);
     if (
       !this.props.authUser ||
       localStorage.getItem("userType") !== "customer"
@@ -102,7 +101,6 @@ class Checkout extends Component {
     for (let i = 0; i < this.state.addresses.length; i++) {
       addresses.push(this.state.addresses[i]);
     }
-    console.log("address: ", this.state.delivery_address);
     let addressList = addresses.map((address) => {
       return (
         <div>

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { CardTitle, CardText, Row, Col } from "reactstrap";
 import server from "../../../../config";
 import axios from "axios";
-import { Card, DropdownButton, Dropdown, Alert } from "react-bootstrap";
+import { Card, DropdownButton, Dropdown } from "react-bootstrap";
 import OrderSummary from "./OrderSummary/OrderSummary";
 class OrderHistory extends Component {
   constructor(props) {
@@ -78,7 +78,6 @@ class OrderHistory extends Component {
 
   render() {
     let orders = null;
-    console.log("Filtered List: ", this.state.filteredList);
     if (this.state.filteredList) {
       let ordercards = this.state.filteredList.map((order) => {
         let createdDate = new Date(order.updatedAt).toLocaleDateString();

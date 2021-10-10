@@ -22,34 +22,37 @@ class Address extends Component {
           <fieldset id="profile" className="ba b--transparent ph0 mh0">
             <legend className="f2 fw6 ph0 mh0">Store Address</legend>
             <div className="mt3">
-              <label className="db fw6 lh-copy f4 b" for="street_address">
+              <label className="db fw6 lh-copy f4 b" htmlFor="street_address">
                 Street
               </label>
-              <label className="border db fw6 lh-copy f5" for="street_address">
+              <label
+                className="border db fw6 lh-copy f5"
+                htmlFor="street_address"
+              >
                 {street_address}
               </label>
             </div>
             <div className="mt3">
-              <label className="db fw6 lh-copy f4 b" for="city">
+              <label className="db fw6 lh-copy f4 b" htmlFor="city">
                 City
               </label>
-              <label className="border db fw6 lh-copy f5" for="city">
+              <label className="border db fw6 lh-copy f5" htmlFor="city">
                 {city + ", " + zip}
               </label>
             </div>
             <div className="mt3">
-              <label className="db fw6 lh-copy f4 b" for="state">
+              <label className="db fw6 lh-copy f4 b" htmlFor="state">
                 State
               </label>
-              <label className="border db fw6 lh-copy f5" for="state">
+              <label className="border db fw6 lh-copy f5" htmlFor="state">
                 {state}
               </label>
             </div>
             <div className="mt3">
-              <label className="db fw6 lh-copy f4 b" for="country">
+              <label className="db fw6 lh-copy f4 b" htmlFor="country">
                 Country
               </label>
-              <label className="border db fw6 lh-copy f5" for="country">
+              <label className="border db fw6 lh-copy f5" htmlFor="country">
                 {country}
               </label>
             </div>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Card, CardTitle, CardSubtitle, Col, Row } from "reactstrap";
+import { Button, Card, CardTitle, CardSubtitle } from "reactstrap";
 import axios from "axios";
 import server from "../../../config";
 import { connect } from "react-redux";
@@ -34,7 +34,6 @@ class ItemCard extends Component {
   };
 
   addToCart = () => {
-    console.log("In add to cart: Hello");
     let item = this.props.item;
     if (!this.props.authUser || this.props.authUser === undefined) {
       return <Redirect to="/user/login" />;
@@ -44,7 +43,6 @@ class ItemCard extends Component {
           this.props.restaurant.rest_id === this.props.cart_summary.rest_id) ||
         this.props.cart_summary.length === 0
       ) {
-        console.log("In add to cart if: Hello");
         let [item_price, cur] = item.item_price.split(" ");
         let total_item_price = (
           this.state.item_quantity * parseFloat(item_price)
@@ -91,7 +89,6 @@ class ItemCard extends Component {
   };
 
   emptyExistingCart = () => {
-    console.log("order id", this.props.cart_summary);
     axios
       .delete(`${server}/user/emptycart/${this.props.cart_summary.order_id}`)
       .then((res) => {
@@ -100,11 +97,6 @@ class ItemCard extends Component {
         }
       })
       .then(() => {
-        console.log(
-          "Rest Id: ",
-          this.state.restaurant.rest_id,
-          this.props.cart_summary.rest_id
-        );
         this.addToCart();
         this.setState({ new_restaurant: false });
       })

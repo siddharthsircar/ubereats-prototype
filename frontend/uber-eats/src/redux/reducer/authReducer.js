@@ -20,7 +20,6 @@ const initState = {
 const authReducer = (state = initState, action) => {
   switch (action.type) {
     case USER_LOGIN: {
-      console.log("action payload", action.payload);
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("userType", "customer");
       return {
@@ -30,7 +29,6 @@ const authReducer = (state = initState, action) => {
       };
     }
     case USER_REGISTER: {
-      console.log("inside register reducer", action.payload);
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("userType", "customer");
       return {
@@ -40,7 +38,6 @@ const authReducer = (state = initState, action) => {
       };
     }
     case RESTAURANT_LOGIN: {
-      console.log("action payload", action.payload);
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("userType", "restaurant");
       return {
@@ -50,7 +47,6 @@ const authReducer = (state = initState, action) => {
       };
     }
     case RESTAURANT_REGISTER: {
-      console.log("inside register reducer", action.payload);
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("userType", "restaurant");
       return {
@@ -60,14 +56,12 @@ const authReducer = (state = initState, action) => {
       };
     }
     case UNAUTHENTICATED: {
-      console.log("Unauthenticated: ", action.payload);
       return {
         error: action.payload,
         authUser: false,
       };
     }
     case UPDATE_USER: {
-      console.log("User Update: ", action.payload);
       return {
         user: action.payload,
         userId: action.payload.rest_id,
@@ -75,7 +69,6 @@ const authReducer = (state = initState, action) => {
       };
     }
     case LOGOUT: {
-      console.log("logging out");
       localStorage.removeItem("user");
       localStorage.removeItem("userType");
       return {

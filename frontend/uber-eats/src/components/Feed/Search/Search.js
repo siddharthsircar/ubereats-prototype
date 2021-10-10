@@ -6,7 +6,7 @@ import server from "../../../config";
 import { connect } from "react-redux";
 import axios from "axios";
 import RestaurantCard from "../RestaurantCard/RestaurantCard";
-import { Col, Image, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
 class Search extends Component {
   constructor(props) {

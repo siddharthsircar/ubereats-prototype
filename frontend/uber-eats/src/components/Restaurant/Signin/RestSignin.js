@@ -113,7 +113,7 @@ class RestSignin extends Component {
               <Link
                 to="/restaurant/register"
                 className="b f4 link dim hover-black black db"
-                style={{ "text-decoration": "none" }}
+                style={{ textDecoration: "none" }}
               >
                 Create an account
               </Link>

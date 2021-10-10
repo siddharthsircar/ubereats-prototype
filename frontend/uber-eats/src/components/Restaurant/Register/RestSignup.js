@@ -19,7 +19,7 @@ class RestSignup extends Component {
       password: "",
       delivery_mode: "delivery",
       street_address: "",
-      city: "",
+      city: "San Jose",
       zip: "",
       state: "California",
       country: "United States",
@@ -46,7 +46,7 @@ class RestSignup extends Component {
       formData.append("file", this.state.store_image[0]);
       axios
         .post(
-          `${server}/restaurant/profile/uploadImage/${this.props.restaurant.rest_id}`,
+          `${server}/restaurant/profile/uploadImage/${this.state.store_name}`,
           formData,
           {
             headers: {
@@ -55,15 +55,16 @@ class RestSignup extends Component {
           }
         )
         .then((res) => {
+          console.log("image res: ", res);
           if (res.status === 200) {
             const data = {
-              store_image: res.data.location,
+              store_image: res.data.Location,
               store_name: this.state.store_name,
               phone_number: this.state.phone_number,
               timings: this.state.timings,
               email: this.state.email,
               password: this.state.password,
-              delivery_mode: "delivery",
+              delivery_mode: this.state.delivery_mode,
               street_address: this.state.street_address,
               city: this.state.city,
               zip: this.state.zip,
@@ -83,13 +84,14 @@ class RestSignup extends Component {
           }
         });
     } catch (error) {
+      console.log(error);
       const data = {
         store_name: this.state.store_name,
         phone_number: this.state.phone_number,
         timings: this.state.timings,
         email: this.state.email,
         password: this.state.password,
-        delivery_mode: "delivery",
+        delivery_mode: this.state.delivery_mode,
         street_address: this.state.street_address,
         city: this.state.city,
         zip: this.state.zip,
@@ -122,18 +124,13 @@ class RestSignup extends Component {
 
   render() {
     const {
-      store_image,
       store_name,
       phone_number,
       timings,
       email,
       password,
-      delivery_mode,
       street_address,
-      city,
       zip,
-      state,
-      country,
     } = this.state;
     let signInError = null;
     if (this.props.authUser) {
@@ -373,7 +370,7 @@ class RestSignup extends Component {
               <Link
                 to="/restaurant/login"
                 className="b f4 link dim hover-black black db"
-                style={{ "text-decoration": "none" }}
+                style={{ textDecoration: "none" }}
               >
                 Sign In
               </Link>
