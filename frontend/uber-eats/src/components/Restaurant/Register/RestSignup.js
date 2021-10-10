@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { registerRest } from "../../../redux/actions/authAction";
 import { formatPhoneNumber } from "../../../utils/utils";
 import "./RestSignup.css";
+import { states, cities, countries } from "../../../places";
 class RestSignup extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +14,7 @@ class RestSignup extends Component {
       timings: "",
       email: "",
       password: "",
+      delivery_mode: "delivery",
       street_address: "",
       city: "",
       zip: "",
@@ -39,6 +41,7 @@ class RestSignup extends Component {
       timings: this.state.timings,
       email: this.state.email,
       password: this.state.password,
+      delivery_mode: "delivery",
       street_address: this.state.street_address,
       city: this.state.city,
       zip: this.state.zip,
@@ -75,6 +78,7 @@ class RestSignup extends Component {
       timings,
       email,
       password,
+      delivery_mode,
       street_address,
       city,
       zip,
@@ -87,6 +91,30 @@ class RestSignup extends Component {
     } else if (!this.props.authUser && this.state.showError) {
       signInError = this.props.signInError;
     }
+    let selectState = null;
+    selectState = states.map((state) => {
+      return (
+        <option className="ttc" value={state}>
+          {state}
+        </option>
+      );
+    });
+    let selectCity = null;
+    selectCity = cities.map((city) => {
+      return (
+        <option className="ttc" value={city}>
+          {city}
+        </option>
+      );
+    });
+    let selectCountry = null;
+    selectCountry = countries.map((country) => {
+      return (
+        <option className="ttc" value={country}>
+          {country}
+        </option>
+      );
+    });
     return (
       <div>
         <main className="pa4 black-80 w-50 center main">
@@ -174,6 +202,23 @@ class RestSignup extends Component {
                   required
                 />
               </div>
+              <div className="mv3">
+                <label className="db fw6 lh-copy f5" htmlFor="delivery_mode">
+                  Mode of Delivery
+                </label>
+                <select
+                  className="b pa2 input-reset ba bg-transparent w-100"
+                  name="delivery_mode"
+                  id="delivery_mode"
+                  value={this.state.delivery_mode}
+                  onChange={this.inputChange}
+                  required
+                >
+                  <option value="delivery">Delivery</option>
+                  <option value="pickup">Pickup</option>
+                  <option value="both">Both</option>
+                </select>
+              </div>
               <legend className="f3 fw6 ph0 mh0">Address</legend>
               <div className="mt3">
                 <label className="db fw6 lh-copy f5" htmlFor="street_address">
@@ -193,15 +238,16 @@ class RestSignup extends Component {
                 <label className="db fw6 lh-copy f5" htmlFor="city">
                   City
                 </label>
-                <input
-                  className="pa2 input-reset ba bg-transparent w-100"
-                  type="city"
+                <select
+                  className="b pa2 input-reset ba bg-transparent w-100"
                   name="city"
                   id="city"
-                  value={city}
+                  value={this.state.city}
                   onChange={this.inputChange}
                   required
-                />
+                >
+                  {selectCity}
+                </select>
               </div>
               <div className="mt3">
                 <label className="db fw6 lh-copy f5" htmlFor="zip">
@@ -221,31 +267,31 @@ class RestSignup extends Component {
                 <label className="db fw6 lh-copy f5" htmlFor="state">
                   State
                 </label>
-                <input
+                <select
                   className="b pa2 input-reset ba bg-transparent w-100"
-                  type="state"
                   name="state"
                   id="state"
-                  value={state}
+                  value={this.state.state}
                   onChange={this.inputChange}
-                  disabled
                   required
-                />
+                >
+                  {selectState}
+                </select>
               </div>
               <div className="mt3">
                 <label className="db fw6 lh-copy f5" htmlFor="country">
                   Country
                 </label>
-                <input
+                <select
                   className="b pa2 input-reset ba bg-transparent w-100"
-                  type="country"
                   name="country"
                   id="country"
-                  value={country}
+                  value={this.state.country}
                   onChange={this.inputChange}
-                  disabled
                   required
-                />
+                >
+                  {selectCountry}
+                </select>
               </div>
               <div className="mv3 center b red">{signInError}</div>
             </fieldset>

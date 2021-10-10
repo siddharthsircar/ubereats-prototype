@@ -18,6 +18,7 @@ import {
 import classnames from "classnames";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Address from "./Address/Address";
+import OrderHistory from "./OrderHistory/OrderHistory";
 import { logoutDispatcher } from "../../../redux/actions/authAction";
 import "./UserProfile.css";
 
@@ -66,6 +67,10 @@ class UserProfile extends Component {
     if (this.state.user) {
       address = <Address userDets={this.state.user} />;
     }
+    let orders = null;
+    if (this.state.user) {
+      orders = <OrderHistory />;
+    } else orders = <div>You have no past orders</div>;
     return (
       <div className="parent-container">
         <div className="center profile-container">
@@ -140,22 +145,16 @@ class UserProfile extends Component {
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId="1">
                 <Row>
-                  <Col sm="12">
-                    {/* <Address userDets={this.props.user} /> */}
-                    {address}
-                  </Col>
+                  <Col sm="12">{address}</Col>
                 </Row>
               </TabPane>
               <TabPane tabId="2">
                 <Row>
-                  <Col sm="6">
-                    <Card body>
-                      <CardTitle>Past Orders</CardTitle>
-                      <CardText>
-                        With supporting text below as a natural lead-in to
-                        additional content.
-                      </CardText>
-                    </Card>
+                  <Col>
+                    {/* <Card body> */}
+                    <CardTitle className="f2 b pl2">Past Orders</CardTitle>
+                    {orders}
+                    {/* </Card> */}
                   </Col>
                 </Row>
               </TabPane>

@@ -1,12 +1,16 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
+import ordersReducer from "./ordersReducer";
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import deliveryReducer from "./deliveryReducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  order: ordersReducer,
+  delivery: deliveryReducer,
 });
 
 const persistConfig = {

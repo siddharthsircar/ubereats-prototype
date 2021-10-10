@@ -31,14 +31,43 @@ const orders = sequelize.define("orders", {
     type: DT.UUID,
     allowNull: false,
   },
+  store_name: {
+    type: DT.STRING(50),
+    allowNull: false,
+  },
+  store_address: {
+    type: DT.STRING(50),
+    allowNull: false,
+    defaultValue: "New",
+  },
   user_id: {
     type: DT.UUID,
     allowNull: false,
+  },
+  cust_name: {
+    type: DT.STRING(50),
+    allowNull: false,
+  },
+  cust_address: {
+    type: DT.STRING(50),
+    allowNull: true,
   },
   order_status: {
     type: DT.STRING(50),
     allowNull: false,
     defaultValue: "New",
+  },
+  total_items: {
+    type: DT.STRING(10),
+    allowNull: true,
+  },
+  mode: {
+    type: DT.STRING(10),
+    allowNull: false,
+  },
+  order_total: {
+    type: DT.STRING(10),
+    allowNull: false,
   },
 });
 

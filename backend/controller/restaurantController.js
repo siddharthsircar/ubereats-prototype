@@ -11,6 +11,7 @@ const createRestaurant = async (
   timings,
   email,
   password,
+  delivery_mode,
   street_address,
   city,
   zip,
@@ -24,6 +25,7 @@ const createRestaurant = async (
       timings,
       email,
       password,
+      delivery_mode,
       street_address,
       city,
       zip,
@@ -97,7 +99,7 @@ const getRestaurantsByUserZip = async (zip) => {
   try {
     // const userObject = await restaurants.findAll();
     const userObject = await sequelize.query(
-      `SELECT rest_id, store_image, store_name, timings, street_address, city, state, zip, abs(${zip} - zip) as diff FROM restaurants order by diff`,
+      `SELECT rest_id, store_image, store_name, timings, delivery_mode, street_address, city, state, zip, abs(${zip} - zip) as diff FROM restaurants order by diff`,
       { type: QueryTypes.SELECT }
     );
     if (userObject !== undefined && userObject !== null) {
@@ -128,6 +130,7 @@ const getRestaurants = async () => {
         "store_image",
         "store_name",
         "timings",
+        "delivery_mode",
         "street_address",
         "city",
         "state",
@@ -153,30 +156,6 @@ const getRestaurants = async () => {
     };
   }
 };
-
-// const searchRestaurants = async (zip, searchQuery) => {
-//     try {
-//         // const userObject = await restaurants.findAll();
-//         const userObject = await sequelize.query(`SELECT rest_id, store_name, timings, city, state, zip, abs(${zip} - zip) as diff FROM restaurants order by diff`, { type: QueryTypes.SELECT });
-//         if (userObject !== undefined && userObject !== null) {
-//             return {
-//                 statusCode: 200,
-//                 body: userObject,
-//             };
-//         }
-
-//         return {
-//             statusCode: 404,
-//             body: 'No Restaurants Found',
-//         };
-//     } catch (err) {
-//         console.log(err);
-//         return {
-//             statusCode: 500,
-//             body: err,
-//         };
-//     }
-// };
 
 const updateRestaurant = async (restaurantId, updateData) => {
   try {

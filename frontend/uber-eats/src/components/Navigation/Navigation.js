@@ -8,7 +8,8 @@ import UserProfile from "./FeedNavBar/UserProfile/UserProfile";
 import { connect } from "react-redux";
 import "./Navigation.css";
 import Cart from "./Cart/Cart";
-
+import { getUserCart } from "../../redux/actions/orderActions";
+import DeliveryMode from "./DeliveryMode/DeliveryMode";
 class Navigation extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +18,12 @@ class Navigation extends Component {
     };
   }
 
+  componentDidMount = () => {
+    if (localStorage.getItem("userType") === "customer") {
+      this.props.getUserCart(this.props.user.user_id);
+    }
+  };
+
   render() {
     let showMenu = null;
     let showSignin = null;
@@ -24,11 +31,13 @@ class Navigation extends Component {
     let showLocation = null;
     let showProfile = null;
     let showCart = null;
+    let showDeliveryMode = null;
     if (!this.props.authUser) {
       showMenu = <Burger open={this.props.open} setOpen={this.props.setOpen} />;
       showSignin = <SigninButton />;
     } else {
       if (localStorage.getItem("userType") === "customer") {
+        showDeliveryMode = <DeliveryMode />;
         showSearch = <SearchBar />;
         showLocation = <UserCity />;
         showProfile = <UserProfile />;
@@ -48,6 +57,7 @@ class Navigation extends Component {
             {showMenu}
             <Logo />
           </div>
+          {showDeliveryMode}
           {showLocation}
           {showSearch}
           {showCart}
@@ -61,6 +71,11 @@ class Navigation extends Component {
 
 const mapStateToProps = (state) => ({
   authUser: state.auth.authUser,
+  user: state.auth.user,
 });
 
-export default connect(mapStateToProps)(Navigation);
+const mapDispatchToProps = (dispatch) => ({
+  getUserCart: (payload) => dispatch(getUserCart(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

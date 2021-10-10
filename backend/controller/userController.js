@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 const { Op } = require("sequelize");
-const { users } = require("../models/index");
+const { users, favorite } = require("../models/index");
 
 // eslint-disable-next-line consistent-return
 const createUser = async (
@@ -111,9 +111,76 @@ const updateUser = async (userID, updateData) => {
   }
 };
 
+const addFavorite = async (rest_id, user_id) => {
+  try {
+    const userObject = await favorite.create({
+      rest_id,
+      user_id,
+    });
+    return {
+      statusCode: 201,
+      body: userObject,
+    };
+  } catch (err) {
+    console.log("Error while creating user row: ", err);
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
+const getFavorite = async (user_id) => {
+  try {
+    const favObject = await favorite.FindAll({
+      where: { user_id: user_id },
+    });
+    if (favObject !== undefined && favObject !== null) {
+      return {
+        statusCode: 200,
+        body: favObject,
+      };
+    } else {
+      return {
+        statusCode: 404,
+        body: "You have not added any restaurants",
+      };
+    }
+  } catch (err) {
+    console.log("Error while creating user row: ", err);
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
+const removeFavorite = async (user_id, rest_id) => {
+  const favObj = await favorite.destroy({
+    where: {
+      user_id: user_id,
+      rest_id: rest_id,
+    },
+  });
+  if (favObj === 1) {
+    return {
+      statusCode: 201,
+      body: "Remove restaurant from favorites",
+    };
+  } else {
+    return {
+      statusCode: 403,
+      body: "Invalid Restaurant Id",
+    };
+  }
+};
+
 module.exports = {
   createUser,
   getUser,
   updateUser,
   getUserByCreds,
+  addFavorite,
+  getFavorite,
+  removeFavorite,
 };

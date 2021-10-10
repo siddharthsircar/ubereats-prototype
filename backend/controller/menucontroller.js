@@ -128,8 +128,9 @@ const searchItems = async (searchQuery) => {
           },
         ],
       },
+      order: [["menu_id"]],
     });
-    if (menuObj !== undefined && menuObj !== null) {
+    if (menuObj !== undefined && menuObj !== null && menuObj.length !== 0) {
       return {
         statusCode: 200,
         body: menuObj,

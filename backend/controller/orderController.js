@@ -1,12 +1,28 @@
 const { Op } = require("sequelize");
 const { orders, ordersummary, sequelize } = require("../models/index");
 
-const addOrder = async (user_id, rest_id, order_status) => {
+const addOrder = async (
+  user_id,
+  rest_id,
+  store_name,
+  store_address,
+  cust_name,
+  cust_address,
+  order_status,
+  order_total,
+  mode
+) => {
   try {
     const orderObject = await orders.create({
       user_id,
       rest_id,
+      store_name,
+      store_address,
+      cust_name,
+      cust_address,
       order_status,
+      order_total,
+      mode,
     });
     return {
       statusCode: 201,
@@ -17,6 +33,7 @@ const addOrder = async (user_id, rest_id, order_status) => {
       },
     };
   } catch (err) {
+    console.log("Add Order Error: ", err);
     return {
       statusCode: 500,
       body: err,
@@ -24,19 +41,28 @@ const addOrder = async (user_id, rest_id, order_status) => {
   }
 };
 
-const addItemsToOrder = async (order_id, item_id, item_name, item_price) => {
+const addItemsToOrder = async (
+  order_id,
+  item_id,
+  item_name,
+  item_price,
+  item_quantity
+) => {
   try {
     const itemObject = await ordersummary.create({
       order_id,
       item_id,
       item_name,
       item_price,
+      item_quantity,
     });
     return {
       statusCode: 201,
       body: itemObject,
     };
   } catch (err) {
+    console.log("Error encountered while adding to cart: ", err);
+
     return {
       statusCode: 500,
       body: err,
@@ -78,11 +104,39 @@ const removeFromCart = async (order_id, item_id) => {
   }
 };
 
+const removeAllItems = async (order_id) => {
+  try {
+    const itemObject = await ordersummary.destroy({
+      where: {
+        order_id: order_id,
+      },
+    });
+    if (itemObject !== 0) {
+      return {
+        statusCode: 201,
+        body: "Items removed",
+      };
+    } else {
+      return {
+        statusCode: 403,
+        body: "Invalid Item Id",
+      };
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 const removeCart = async (order_id) => {
   try {
     const itemObject = await orders.destroy({
       where: {
         order_id: order_id,
+        order_status: "cart",
       },
     });
     if (itemObject === 1) {
@@ -105,16 +159,13 @@ const removeCart = async (order_id) => {
   }
 };
 
-const updateOrder = async (order_id, order_status) => {
+const updateOrder = async (order_id, updateData) => {
   try {
-    const updateObject = await orders.update(
-      { order_status },
-      {
-        where: {
-          order_id: order_id,
-        },
-      }
-    );
+    const updateObject = await orders.update(updateData, {
+      where: {
+        order_id: order_id,
+      },
+    });
     if (updateObject !== undefined && updateObject !== null) {
       return {
         statusCode: 200,
@@ -138,6 +189,7 @@ const getUserOrders = async (user_id) => {
           [Op.not]: "cart",
         },
       },
+      order: [["updatedAt"]],
     });
     if (
       orderObject !== undefined &&
@@ -213,7 +265,12 @@ const getCartOrderId = async (user_id) => {
         body: {
           order_id: orderObject[0].dataValues.order_id,
           rest_id: orderObject[0].dataValues.rest_id,
+          store_name: orderObject[0].dataValues.store_name,
+          store_address: orderObject[0].dataValues.store_address,
+          cust_address: orderObject[0].dataValues.cust_address,
           order_status: orderObject[0].dataValues.order_status,
+          order_total: orderObject[0].dataValues.order_total,
+          delivery_mode: orderObject[0].dataValues.delivery_mode,
         },
       };
     } else {
@@ -223,6 +280,8 @@ const getCartOrderId = async (user_id) => {
       };
     }
   } catch (err) {
+    console.log("Error encountered while gettingcart: ", err);
+
     return {
       statusCode: 500,
       body: err,
@@ -270,4 +329,5 @@ module.exports = {
   removeCart,
   updateOrder,
   getRestaurantOrders,
+  removeAllItems,
 };

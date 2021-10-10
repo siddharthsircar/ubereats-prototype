@@ -8,20 +8,23 @@ const Menu = ({ open, setOpen }) => {
   return (
     <StyledMenu open={open} className="border shadow-2">
       <Link to="/user/login">
-        <a href="/user/login" className="signin" onClick={() => setOpen(!open)}>
+        <button
+          id="login"
+          className="center pa2 pl4 pr4 b shadow-2 grow f4 white bg-black link pointer"
+          onClick={() => setOpen(!open)}
+        >
           Sign In
-        </a>
+        </button>
       </Link>
       <br />
       <Link to="/restaurant/register">
-        <a
-          href="/restaurant/register"
-          className="pa3"
+        <div
+          className="center"
           style={{ color: "black" }}
           onClick={() => setOpen(!open)}
         >
           Add Your Restaurant
-        </a>
+        </div>
       </Link>
     </StyledMenu>
   );

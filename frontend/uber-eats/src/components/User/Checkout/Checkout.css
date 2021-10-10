@@ -1,0 +1,5 @@
+.checkout-parent {
+  top: 10vh;
+  position: relative;
+  overflow-x: hidden;
+}

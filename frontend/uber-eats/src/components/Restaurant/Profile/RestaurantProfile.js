@@ -23,6 +23,7 @@ import { logoutDispatcher } from "../../../redux/actions/authAction";
 import server from "../../../config";
 import Menu from "./StoreMenu/StoreMenu";
 import "./RestaurantProfile.css";
+import Orders from "./Orders/Orders";
 
 class RestaurantProfile extends Component {
   constructor(props) {
@@ -56,8 +57,6 @@ class RestaurantProfile extends Component {
     } else alert("Unable to get data from server");
   };
 
-  componentDidUpdate = () => {};
-
   handleLogout = () => {
     this.props.logoutDispatcher();
   };
@@ -78,12 +77,16 @@ class RestaurantProfile extends Component {
     }
     let menu = null;
     if (this.state.restaurantId) {
-      menu = <Menu menu={this.state.menu} />;
+      menu = <Menu />;
     }
     let image_url = "";
     if (this.state.restaurant.store_image) {
       image_url = this.state.restaurant.store_image;
     }
+    let orders = null;
+    if (this.state.restaurant) {
+      orders = <Orders />;
+    } else orders = <div>You have no past orders</div>;
     return (
       <div
         className="profile-parent"
@@ -172,14 +175,11 @@ class RestaurantProfile extends Component {
               </TabPane>
               <TabPane tabId="3">
                 <Row>
-                  <Col sm="6">
-                    <Card body>
-                      <CardTitle>Past Orders</CardTitle>
-                      <CardText>
-                        With supporting text below as a natural lead-in to
-                        additional content.
-                      </CardText>
-                    </Card>
+                  <Col>
+                    {/* <Card body> */}
+                    <CardTitle className="f2 b pl2">Orders</CardTitle>
+                    {orders}
+                    {/* </Card> */}
                   </Col>
                 </Row>
               </TabPane>

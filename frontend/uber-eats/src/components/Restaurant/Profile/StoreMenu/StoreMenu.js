@@ -13,7 +13,7 @@ class Menu extends Component {
       item_name: "",
       item_desc: "",
       item_type: "veg",
-      category: "breakfast",
+      category: "main course",
       item_price: "",
       menu: "",
       edit: false,
@@ -96,6 +96,10 @@ class Menu extends Component {
                       }
                       this.setState({
                         menu: res.data.menu,
+                        item_image: [],
+                        item_name: "",
+                        item_desc: "",
+                        item_price: "",
                       });
                     } else console.log("Error while getting menu: ", res.data);
                   })

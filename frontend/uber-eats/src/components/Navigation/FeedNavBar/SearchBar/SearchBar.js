@@ -31,12 +31,17 @@ class SearchBar extends Component {
       );
     } else searchButton = <Button variant="dark">Search</Button>;
     return (
-      <div className="br4 w-30">
-        <Form className="d-flex" onSubmit="/search">
+      <div className="br4 w-20">
+        <Form
+          className="d-flex"
+          onSubmit={() => {
+            return false;
+          }}
+        >
           <FormControl
             type="search"
             placeholder="Search"
-            className="mr-2"
+            className="mr-3"
             aria-label="Search"
             value={this.state.q}
             onChange={(e) => {

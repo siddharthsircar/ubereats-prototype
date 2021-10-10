@@ -4,20 +4,6 @@ const ACCESS_KEY = "AKIAQYQN2G66FT7IGQ2R";
 const SECRET_KEY = "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";
 const S3_BUCKET = "ubereats-273";
 
-// const s3 = new AWS.S3({
-//   accessKeyId: ACCESS_KEY,
-//   secretAccessKey: SECRET_KEY,
-//   region: "us-west-1",
-// });
-
-// const getParams = (userID, body, ftype) => ({
-//   Bucket: "ubereats-273",
-//   Key: `${userID}`,
-//   Body: body,
-//   ACL: "public-read",
-//   ContentType: ftype,
-// });
-
 AWS.config.update({
   accessKeyId: ACCESS_KEY,
   secretAccessKey: SECRET_KEY,

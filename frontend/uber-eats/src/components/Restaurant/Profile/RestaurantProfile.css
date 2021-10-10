@@ -2,8 +2,6 @@
   height: 92vh;
   position: relative;
   top: 8vh;
-  /* background-image: url("../../../assets/images/restaurant_image.jpg"); */
-  /* background-repeat: no-repeat; */
   background-size: cover;
   overflow-y: scroll;
 }

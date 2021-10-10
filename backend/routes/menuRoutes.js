@@ -10,9 +10,42 @@ const {
   getItemDetails,
   updateItem,
   getItemByName,
+  searchItems,
 } = require("../controller/menuController");
 
 const router = express.Router();
+
+/** Get all menu for search */
+router.get("/items/all", async (req, res) => {
+  const searchQuery = req.query.searchQuery;
+  console.log("filters: ", searchQuery);
+  try {
+    let menuItems = await searchItems(searchQuery.toLowerCase());
+    if (menuItems.statusCode === 200) {
+      res.status(200).send({
+        menu: menuItems.body,
+      });
+    } else if (menuItems.statusCode === 404) {
+      res.status(404).send({
+        message: menuItems.body,
+      });
+    } else {
+      console.log(menuItems.body);
+      res.status(500).send({
+        errors: {
+          message: menuItems.body,
+        },
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      errors: {
+        message: "Internal Server Error",
+      },
+    });
+  }
+});
 
 /* 
     Get menu for a restaurant
@@ -31,7 +64,7 @@ router.get("/items/:rest_id", async (req, res) => {
             console.log(key, item["item_name"], filters[key]);
             if (key === "item_type") {
               isValid = isValid && item[key] == filters[key];
-            } else if (key === "search") {
+            } else if (key === "searchQuery") {
               isValid =
                 isValid &&
                 (item["item_type"] === filters[key] ||

@@ -4,8 +4,8 @@ import { CardTitle, CardText, Row, Col } from "reactstrap";
 import server from "../../../../config";
 import axios from "axios";
 import { Card, DropdownButton, Dropdown, Alert } from "react-bootstrap";
-import OrderSummary from "./OrderSummary/OrderSummary";
-class OrderHistory extends Component {
+import OrderSummary from "../../../User/Profile/OrderHistory/OrderSummary/OrderSummary";
+class Orders extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +25,7 @@ class OrderHistory extends Component {
 
   getLatestOrders = () => {
     axios
-      .get(`${server}/user/orders/${this.props.user.user_id}`)
+      .get(`${server}/restaurant/orders/${this.props.user.rest_id}`)
       .then((res) => {
         if (res.status === 200) {
           let order_status = [];
@@ -192,4 +192,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps)(OrderHistory);
+export default connect(mapStateToProps)(Orders);

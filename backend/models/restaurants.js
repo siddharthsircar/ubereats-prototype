@@ -56,6 +56,10 @@ const restaurants = sequelize.define(
       type: DT.STRING(200),
       allowNull: false,
     },
+    delivery_mode: {
+      type: DT.STRING(20),
+      allowNull: false,
+    },
     street_address: {
       type: DT.STRING(50),
       allowNull: false,

@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const bcrypt = require("bcrypt");
 const aws = require("../config/config");
 
 const DT = Sequelize.DataTypes;
@@ -21,34 +22,19 @@ const sequelize = new Sequelize(aws.dbName, aws.userName, aws.password, {
 });
 const salt = 10;
 
-const ordersummary = sequelize.define("ordersummary", {
-  order_id: {
+const favorite = sequelize.define("favorite", {
+  user_id: {
     type: DT.UUID,
     allowNull: false,
   },
-  item_id: {
+  rest_id: {
     type: DT.UUID,
-    allowNull: false,
-  },
-  item_name: {
-    type: DT.STRING(50),
-    allowNull: false,
-  },
-  item_quantity: {
-    type: DT.INTEGER,
-    allowNull: true,
-    validate: {
-      min: 1,
-    },
-  },
-  item_price: {
-    type: DT.STRING(10),
     allowNull: false,
   },
 });
 
-ordersummary.sync();
+favorite.sync();
 
 module.exports = {
-  ordersummary,
+  favorite,
 };

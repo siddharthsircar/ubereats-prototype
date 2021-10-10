@@ -37,6 +37,7 @@ router.post("/register", async (req, res) => {
     timings,
     email,
     password,
+    delivery_mode,
     street_address,
     city,
     zip,
@@ -59,6 +60,7 @@ router.post("/register", async (req, res) => {
         timings,
         email,
         password,
+        delivery_mode,
         street_address,
         city,
         zip,
@@ -72,6 +74,7 @@ router.post("/register", async (req, res) => {
             store_image: createRes.body.dataValues.store_image,
             store_name: createRes.body.dataValues.store_name,
             timings: createRes.body.dataValues.timings,
+            delivery_mode: createRes.body.dataValues.delivery_mode,
             phone_number: createRes.body.dataValues.phone_number,
             email: createRes.body.dataValues.email,
             street_address: createRes.body.dataValues.street_address,
@@ -131,6 +134,7 @@ router.post("/login", async (req, res) => {
               store_image: restDetails.store_image,
               store_name: restDetails.store_name,
               timings: restDetails.timings,
+              delivery_mode: restDetails.delivery_mode,
               phone_number: restDetails.phone_number,
               email: restDetails.email,
               street_address: restDetails.street_address,
@@ -198,6 +202,7 @@ router.get("/profile/:rest_id", async (req, res) => {
           store_image: restDetails.body.dataValues.store_image,
           store_name: restDetails.body.dataValues.store_name,
           timings: restDetails.body.dataValues.timings,
+          delivery_mode: restDetails.body.dataValues.delivery_mode,
           phone_number: restDetails.body.dataValues.phone_number,
           email: restDetails.body.dataValues.email,
           street_address: restDetails.body.dataValues.street_address,
@@ -332,19 +337,12 @@ router.get("/orders/:rest_id", async (req, res) => {
   const rest_id = req.params.rest_id;
   try {
     let orders = await getRestaurantOrders(rest_id);
-    console.log("Orders before map: ", orders);
     if (orders.statusCode === 200) {
       let uporders = await Promise.all(
         orders.body.map(async (order) => {
-          console.log("order in map: ", order.dataValues.order_id);
           let order_id = order.dataValues.order_id;
           let ordersummary = await getOrderSummary(order_id);
-          order.dataValues["summary"] = {
-            item_id: ordersummary.body[0].dataValues.item_id,
-            item_name: ordersummary.body[0].dataValues.item_name,
-            quantity: ordersummary.body[0].dataValues.quantity,
-            item_price: ordersummary.body[0].dataValues.item_price,
-          };
+          order.dataValues["summary"] = ordersummary.body;
           return order;
         })
       );

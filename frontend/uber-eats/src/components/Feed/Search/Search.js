@@ -6,7 +6,7 @@ import server from "../../../config";
 import { connect } from "react-redux";
 import axios from "axios";
 import RestaurantCard from "../RestaurantCard/RestaurantCard";
-import { Col, Row } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 
 class Search extends Component {
   constructor(props) {
@@ -14,7 +14,10 @@ class Search extends Component {
     this.state = {
       restaurants: "",
       showRestaurants: false,
-      result: "",
+      showFood: false,
+      foodError: "",
+      restError: "",
+      food: "",
       q: this.props.location.state.searchQuery,
     };
   }
@@ -31,34 +34,40 @@ class Search extends Component {
         });
       })
       .catch((error) => {
-        if (error.response && error.response.data) {
+        if (error.response.status === 404) {
+          this.setState({
+            restError: "No items found matching your search query.",
+          });
+        } else {
+          console.log(error.response.data);
+        }
+      });
+
+    axios
+      .get(`${server}/menu/items/all?searchQuery=${this.state.q}`)
+      .then((response) => {
+        if (response.status === 200) {
+          this.setState({
+            food: response.data.menu,
+            showFood: true,
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          this.setState({
+            foodError: "No items found matching your search query.",
+          });
+        } else {
           console.log(error.response.data);
         }
       });
   };
 
-  // componentDidUpdate = () => {
-  //   axios
-  //     .get(
-  //       `${server}/restaurant/all?zip=${this.props.user.zip}&searchQuery=${this.props.location.state.searchQuery}`
-  //     )
-  //     .then((response) => {
-  //       this.setState({
-  //         restaurants: response.data.restaurants,
-  //         showRestaurants: true,
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       if (error.response && error.response.data) {
-  //         console.log(error.response.data);
-  //       }
-  //     });
-  // };
-
   render() {
     let restaurantCards = null;
     let feed = null;
-    if (this.state.showRestaurants) {
+    if (this.state.showRestaurants && this.state.restaurants.length !== 0) {
       restaurantCards = this.state.restaurants.map((restaurant) => {
         return (
           <Col xs lg="2" className="ma2">
@@ -73,13 +82,69 @@ class Search extends Component {
           </Col>
         </Row>
       );
-    } else
-      feed = <div className="fl-jc-center">No Restaurants to be displayed</div>;
+    } else {
+      feed = (
+        <div className="fl-jc-center">
+          {this.state.restError
+            ? this.state.restError
+            : "No restaurants for your search."}
+        </div>
+      );
+    }
 
+    let foodCards = null;
+    let foodResults = null;
+    if (this.state.showFood) {
+      foodCards = this.state.food.map((item) => {
+        return (
+          <Row xs className="ma2">
+            <Link
+              to={{
+                pathname: "/restaurant",
+                state: { restaurant: { rest_id: item.menu_id } },
+              }}
+            >
+              <li className="flex items-center lh-copy pa3 ph0-l bb b--black-10">
+                <img
+                  src={item.item_image}
+                  alt="item-img"
+                  height="100px"
+                  width="100px"
+                />
+                <div className="pl3 flex-auto">
+                  <span className="f4 db black-70">{item.item_name}</span>
+                  <span className="f6 db black-70">{item.item_price}</span>
+                </div>
+              </li>
+            </Link>
+          </Row>
+        );
+      });
+      foodResults = (
+        <Row>
+          <Col>
+            <Row>{foodCards}</Row>
+          </Col>
+        </Row>
+      );
+    } else {
+      foodResults = (
+        <div className="fl-jc-center">
+          {this.state.foodError
+            ? this.state.foodError
+            : "No food items to be displayed"}
+        </div>
+      );
+    }
+    let defaultActiveKey = null;
+    if (this.state.showRestaurants === true) {
+      defaultActiveKey = "restaurant";
+    } else defaultActiveKey = "food";
     return (
       <div style={{ position: "relative", top: "18vh" }}>
         <div className="center" style={{ width: "80%" }}>
-          <div className="flex justify-end">
+          <div className="flex justify-between">
+            <p className="i b">Showing results for {this.state.q}</p>
             <Link to="/user/feed">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -94,18 +159,15 @@ class Search extends Component {
             </Link>
           </div>
           <Tabs
-            defaultActiveKey="restaurant"
+            defaultActiveKey={defaultActiveKey}
             id="uncontrolled-tab-example"
-            className="mb-3"
+            className="mb-3 black"
           >
-            <Tab eventKey="restaurant" title="Restaurant" className="pa2">
-              <div>
-                <p className="i b">Showing results for {this.state.q}</p>
-                {feed}
-              </div>
+            <Tab eventKey="restaurant" title="Restaurant" className="pa2 black">
+              <div>{feed}</div>
             </Tab>
-            <Tab eventKey="food" title="Food">
-              <div>Hello There</div>
+            <Tab eventKey="food" title="Food" className="pa2 black">
+              <div>{foodResults}</div>
             </Tab>
           </Tabs>
         </div>

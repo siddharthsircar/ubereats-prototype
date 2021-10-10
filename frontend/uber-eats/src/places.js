@@ -1,0 +1,37 @@
+export const states = [
+  "Alaska",
+  "Alabama",
+  "Arkansas",
+  "American Samoa",
+  "Arizona",
+  "California",
+  "Colorado",
+  "West Virginia",
+  "Wyoming",
+];
+export const cities = [
+  "San Jose",
+  "San Fransisco",
+  "Oakland",
+  "Fremont",
+  "Sunnyvale",
+  "Chico",
+  "Sacramento",
+  "Santa Cruz",
+  "San Diego",
+  "Los Angeles",
+];
+export const countries = [
+  "Hong Kong",
+  "Hungary",
+  "Iceland",
+  "India",
+  "Indonesia",
+  "Iran",
+  "Poland",
+  "Uganda",
+  "Ukraine",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+];
