@@ -24,8 +24,14 @@ class OrderHistory extends Component {
   };
 
   getLatestOrders = () => {
+    let user_id = null;
+    if (localStorage.getItem("userType") === "customer") {
+      user_id = this.props.user.user_id;
+    } else if (localStorage.getItem("userType") === "restaurant") {
+      user_id = this.props.user_id;
+    }
     axios
-      .get(`${server}/user/orders/${this.props.user.user_id}`)
+      .get(`${server}/user/orders/${user_id}`)
       .then((res) => {
         if (res.status === 200) {
           let order_status = [];
@@ -97,19 +103,25 @@ class OrderHistory extends Component {
                       {order.order_status}
                     </Card.Subtitle>
                   )}
-                  <Card.Subtitle
-                    className="pt2 i underline pointer"
-                    onClick={() => {
-                      this.setState({ showSummary: true });
-                    }}
-                  >
-                    View Summary
-                  </Card.Subtitle>
+                  {localStorage.getItem("userType") === "restaurant" ? (
+                    <div></div>
+                  ) : (
+                    <Card.Subtitle
+                      className="pt2 i underline pointer"
+                      onClick={() => {
+                        this.setState({ showSummary: true });
+                      }}
+                    >
+                      View Summary
+                    </Card.Subtitle>
+                  )}
                 </div>
               </div>
               <div className="w-10 center">
                 <CardText>{`${createdDate}, ${createdTime}`}</CardText>
-                {order.order_status === "order placed" ? (
+                {localStorage.getItem("userType") === "restaurant" ? (
+                  <div></div>
+                ) : order.order_status === "order placed" ? (
                   <CardText
                     className="underline red pointer grow"
                     onClick={() => {

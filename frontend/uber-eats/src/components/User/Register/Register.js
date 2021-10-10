@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { registerUser } from "../../../redux/actions/authAction";
 import { formatPhoneNumber } from "../../../utils/utils";
 import "./Register.css";
+import { states, cities, countries } from "./../../../places";
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +15,7 @@ class Register extends Component {
       email: "",
       password: "",
       street_address: "",
-      city: "",
+      city: "San Jose",
       zip: "",
       state: "California",
       country: "United States",
@@ -88,6 +89,30 @@ class Register extends Component {
     } else if (!this.props.authUser && this.state.showError) {
       console.log(this.props.signInError);
     }
+    let selectState = null;
+    selectState = states.map((state) => {
+      return (
+        <option className="ttc" value={state}>
+          {state}
+        </option>
+      );
+    });
+    let selectCity = null;
+    selectCity = cities.map((city) => {
+      return (
+        <option className="ttc" value={city}>
+          {city}
+        </option>
+      );
+    });
+    let selectCountry = null;
+    selectCountry = countries.map((country) => {
+      return (
+        <option className="ttc" value={country}>
+          {country}
+        </option>
+      );
+    });
     return (
       <div>
         <main className="pa4 black-80 w-50 center main">
@@ -191,15 +216,16 @@ class Register extends Component {
                 <label className="db fw6 lh-copy f5" htmlFor="city">
                   City
                 </label>
-                <input
-                  className="pa2 input-reset ba bg-transparent w-100"
-                  type="text"
+                <select
+                  className="b pa2 input-reset ba bg-transparent w-100"
                   name="city"
                   id="city"
-                  value={city}
+                  value={this.state.city}
                   onChange={this.inputChange}
                   required
-                />
+                >
+                  {selectCity}
+                </select>
               </div>
               <div className="mt3">
                 <label className="db fw6 lh-copy f5" htmlFor="zip">
@@ -219,31 +245,31 @@ class Register extends Component {
                 <label className="db fw6 lh-copy f5" htmlFor="state">
                   State
                 </label>
-                <input
+                <select
                   className="b pa2 input-reset ba bg-transparent w-100"
-                  type="text"
                   name="state"
                   id="state"
-                  value={state}
+                  value={this.state.state}
                   onChange={this.inputChange}
-                  disabled
                   required
-                />
+                >
+                  {selectState}
+                </select>
               </div>
               <div className="mt3">
                 <label className="db fw6 lh-copy f5" htmlFor="country">
                   Country
                 </label>
-                <input
+                <select
                   className="b pa2 input-reset ba bg-transparent w-100"
-                  type="text"
                   name="country"
                   id="country"
-                  value={country}
+                  value={this.state.country}
                   onChange={this.inputChange}
-                  disabled
                   required
-                />
+                >
+                  {selectCountry}
+                </select>
               </div>
               <div className="mv3 center b red">{/* {signInError} */}</div>
             </fieldset>

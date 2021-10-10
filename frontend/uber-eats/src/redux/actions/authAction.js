@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import server from "../../config";
 import {
   USER_LOGIN,
   USER_REGISTER,
@@ -47,7 +47,7 @@ const updateDispatcher = (payload) => ({
 const loginUser = (payload) => (dispatch) => {
   console.log("User Payload :", payload);
   axios
-    .post("http://localhost:7000/user/login", payload)
+    .post(`${server}/user/login`, payload)
     .then((res) => {
       if (res.status === 200) {
         console.log(res);
@@ -69,7 +69,7 @@ const loginUser = (payload) => (dispatch) => {
 const registerUser = (payload) => (dispatch) => {
   console.log("User Payload :", payload);
   axios
-    .post("http://localhost:7000/user/register", payload)
+    .post(`${server}/user/register`, payload)
     .then((res) => {
       if (res.status === 201) {
         console.log(res);
@@ -89,7 +89,7 @@ const registerUser = (payload) => (dispatch) => {
 const loginRest = (payload) => (dispatch) => {
   console.log("Restaurant Payload :", payload);
   axios
-    .post("http://localhost:7000/restaurant/login", payload)
+    .post(`${server}/restaurant/login`, payload)
     .then((res) => {
       if (res.status === 200) {
         console.log(res);
@@ -111,7 +111,7 @@ const loginRest = (payload) => (dispatch) => {
 const registerRest = (payload) => (dispatch) => {
   console.log("Restaurant Payload: ", payload);
   axios
-    .post("http://localhost:7000/restaurant/register", payload)
+    .post(`${server}/restaurant/register`, payload)
     .then((res) => {
       if (res.status === 201) {
         console.log(res);

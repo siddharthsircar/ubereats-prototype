@@ -32,6 +32,7 @@ router.post("/register", async (req, res) => {
   const restDetails = req.body;
   console.log("Rest Details: ", restDetails);
   const {
+    store_image,
     store_name,
     phone_number,
     timings,
@@ -55,6 +56,7 @@ router.post("/register", async (req, res) => {
       });
     } else {
       const createRes = await createRestaurant(
+        store_image,
         store_name,
         phone_number,
         timings,

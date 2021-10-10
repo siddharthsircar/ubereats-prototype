@@ -119,7 +119,16 @@ class Orders extends Component {
               <div className="flex w-90">
                 <div className="ml4">
                   <Card.Text className="f3 b ttc">
-                    <Link className="pointer">
+                    <Link
+                      className="pointer"
+                      to={{
+                        pathname: "/user/profile",
+                        state: {
+                          rest_id: this.props.user.rest_id,
+                          user_id: order.user_id,
+                        },
+                      }}
+                    >
                       {order.order_status === "cancelled"
                         ? order.cust_name
                         : `${order.cust_name} (${order.mode})`}

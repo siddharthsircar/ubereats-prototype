@@ -91,12 +91,12 @@ class Feed extends Component {
       });
       feed = (
         <Row>
-          <Col lg="1" className="mb4 b">
+          {/* <Col lg="1" className="mb4 b">
             <Card>
               Filters:
               <input type="checkbox" value="Vegan" />
             </Card>
-          </Col>
+          </Col> */}
           <Col>
             <Row>{restaurantCards}</Row>
           </Col>

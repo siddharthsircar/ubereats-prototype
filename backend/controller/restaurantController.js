@@ -6,6 +6,7 @@ const { QueryTypes } = require("sequelize");
 
 // eslint-disable-next-line consistent-return
 const createRestaurant = async (
+  store_image,
   store_name,
   phone_number,
   timings,
@@ -20,6 +21,7 @@ const createRestaurant = async (
 ) => {
   try {
     const userObject = await restaurants.create({
+      store_image,
       store_name,
       phone_number,
       timings,

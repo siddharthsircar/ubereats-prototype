@@ -5,10 +5,13 @@ import { registerRest } from "../../../redux/actions/authAction";
 import { formatPhoneNumber } from "../../../utils/utils";
 import "./RestSignup.css";
 import { states, cities, countries } from "../../../places";
+import axios from "axios";
+import server from "../../../config";
 class RestSignup extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      store_image: [],
       store_name: "",
       phone_number: "",
       timings: "",
@@ -35,29 +38,75 @@ class RestSignup extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const data = {
-      store_name: this.state.store_name,
-      phone_number: this.state.phone_number,
-      timings: this.state.timings,
-      email: this.state.email,
-      password: this.state.password,
-      delivery_mode: "delivery",
-      street_address: this.state.street_address,
-      city: this.state.city,
-      zip: this.state.zip,
-      state: this.state.state,
-      country: this.state.country,
-    };
-    this.props.registerRest(data);
-    setTimeout(() => {
-      if (!this.props.authUser) {
-        this.setState({ showError: true });
-      } else {
-        this.setState({
-          showError: false,
-        });
+    try {
+      if (!this.state.store_image) {
+        alert("Select a file first!");
       }
-    }, 2000);
+      const formData = new FormData();
+      formData.append("file", this.state.store_image[0]);
+      axios
+        .post(
+          `${server}/restaurant/profile/uploadImage/${this.props.restaurant.rest_id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            const data = {
+              store_image: res.data.location,
+              store_name: this.state.store_name,
+              phone_number: this.state.phone_number,
+              timings: this.state.timings,
+              email: this.state.email,
+              password: this.state.password,
+              delivery_mode: "delivery",
+              street_address: this.state.street_address,
+              city: this.state.city,
+              zip: this.state.zip,
+              state: this.state.state,
+              country: this.state.country,
+            };
+            this.props.registerRest(data);
+            setTimeout(() => {
+              if (!this.props.authUser) {
+                this.setState({ showError: true });
+              } else {
+                this.setState({
+                  showError: false,
+                });
+              }
+            }, 2000);
+          }
+        });
+    } catch (error) {
+      const data = {
+        store_name: this.state.store_name,
+        phone_number: this.state.phone_number,
+        timings: this.state.timings,
+        email: this.state.email,
+        password: this.state.password,
+        delivery_mode: "delivery",
+        street_address: this.state.street_address,
+        city: this.state.city,
+        zip: this.state.zip,
+        state: this.state.state,
+        country: this.state.country,
+      };
+      this.props.registerRest(data);
+      setTimeout(() => {
+        if (!this.props.authUser) {
+          this.setState({ showError: true });
+        } else {
+          this.setState({
+            showError: false,
+          });
+        }
+      }, 2000);
+    }
   }
 
   inputChange = (e) => {
@@ -73,6 +122,7 @@ class RestSignup extends Component {
 
   render() {
     const {
+      store_image,
       store_name,
       phone_number,
       timings,
@@ -127,6 +177,21 @@ class RestSignup extends Component {
                 />{" "}
                 Add Your Restaurant
               </legend>
+              <div className="mv3">
+                <label className="db fw6 lh-copy f5" htmlFor="item_image">
+                  Store Image
+                </label>
+                <input
+                  className="input-reset bg-transparent  w-100"
+                  type="file"
+                  name="item_image"
+                  id="item_image"
+                  onChange={(event) =>
+                    this.setState({ store_image: event.target.files })
+                  }
+                />
+              </div>
+
               <div className="mt3">
                 <label className="db fw6 lh-copy f5" htmlFor="store_name">
                   Store Name

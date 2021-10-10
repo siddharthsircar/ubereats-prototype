@@ -381,12 +381,11 @@ router.delete("/emptycart/:order_id", async (req, res) => {
 // Checkout
 router.put("/checkout/:order_id", async (req, res) => {
   const order_id = req.params.order_id;
-  const delivery_mode = req.query.mode;
+  // const delivery_mode = req.query.mode;
+  const updateData = req.body;
+  console.log("Update Data: ", updateData);
   try {
-    const updateRes = await updateOrder(order_id, {
-      order_status: "order placed",
-      mode: delivery_mode,
-    });
+    const updateRes = await updateOrder(order_id, updateData);
     if (updateRes.statusCode === 200) {
       res.status(200).send({ message: "Order Successfully Placed!" });
     }
