@@ -14,7 +14,8 @@ class RestaurantCard extends Component {
       >
         <Card className="shadow-3">
           <img
-            width="100%"
+            width="500"
+            height="300"
             src={this.props.restaurant.store_image}
             alt="store-img"
           />

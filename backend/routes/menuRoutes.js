@@ -228,7 +228,7 @@ router.post("/item/uploadImage", (request, response) => {
 });
 
 router.get("/pingServer", (req, res) => {
-  res.status(200).send("Ping to UberEats API succesful");
+  res.status(200).send("Welcome to UberEats");
 });
 
 module.exports = router;

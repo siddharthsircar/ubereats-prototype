@@ -3,10 +3,11 @@
   height: 92vh;
   position: relative;
   top: 8vh;
+  overflow-y: scroll;
 }
 
 .profile-container {
-  width: 50%;
+  width: 60%;
 }
 
 .user-info {

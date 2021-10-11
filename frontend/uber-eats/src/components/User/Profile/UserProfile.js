@@ -21,6 +21,7 @@ import OrderHistory from "./OrderHistory/OrderHistory";
 import { logoutDispatcher } from "../../../redux/actions/authAction";
 import "./UserProfile.css";
 import server from "../../../config";
+import RestaurantCard from "../../Feed/RestaurantCard/RestaurantCard";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class UserProfile extends Component {
       userId: "",
       user: "",
       activeTab: "1",
+      fav_res: [],
     };
     this.handleLogout = this.handleLogout.bind(this);
   }
@@ -42,6 +44,12 @@ class UserProfile extends Component {
           user: res.data.user,
           userId: res.data.user.userId,
         });
+      });
+      axios.get(`${server}/user/favorite/${user_id}`).then((res) => {
+        console.log(res.data.body);
+        if (res.status === 200) {
+          this.setState({ fav_res: res.data.favorites });
+        }
       });
     } else if (localStorage.getItem("userType") === "restaurant") {
       this.setState({ authFlag: true });
@@ -68,7 +76,6 @@ class UserProfile extends Component {
       return <Redirect to="/home" />;
     }
     if (localStorage.getItem("userType") !== "customer") {
-      // return <Redirect to="/home" />;
     }
     let address = null;
     if (this.state.user) {
@@ -82,11 +89,25 @@ class UserProfile extends Component {
     if (this.state.user) {
       orders = <OrderHistory user_id={user_id} />;
     } else orders = <div>You have no past orders</div>;
+
+    let favRes = null;
+    if (!this.state.fav_res.length || this.state.fav_res.length === 0) {
+      favRes = <div>No favorite Restaurants.</div>;
+    } else {
+      favRes = this.state.fav_res.map((restaurant) => {
+        return (
+          <Col lg="3" className="pa2">
+            <RestaurantCard guest={"true"} restaurant={restaurant.restaurant} />
+          </Col>
+        );
+      });
+    }
+
     return (
       <div className="parent-container">
         <div className="center profile-container">
           <br />
-          <div className="user-info">
+          <div className="user-info flex justify-between items-center pb3 pt3 br2">
             <div>
               <div className="full-name b f3 white ma2">
                 {this.state.user.first_name + " " + this.state.user.last_name}
@@ -182,11 +203,10 @@ class UserProfile extends Component {
               <TabPane tabId="3">
                 <Row>
                   <Col>
-                    <CardTitle>Favorite Restaurants</CardTitle>
-                    <CardText>
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </CardText>
+                    <CardTitle className="f2 b pl2">
+                      Favorite Restaurants
+                    </CardTitle>
+                    <Row className="pl2">{favRes}</Row>;
                   </Col>
                 </Row>
               </TabPane>

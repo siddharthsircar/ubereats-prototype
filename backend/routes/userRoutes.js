@@ -26,6 +26,7 @@ const {
   removeCart,
   removeAllItems,
 } = require("../controller/orderController");
+const { getRestaurantProfile } = require("../controller/restaurantController");
 
 const router = express.Router();
 
@@ -450,16 +451,23 @@ router.put("/cancelorder/:order_id", async (req, res) => {
 // Get Favorite Restaurant
 router.get("/favorite/:user_id", async (req, res) => {
   const user_id = req.params.user_id;
-
   try {
-    const getRes = await getFavorite(user_id);
-    if (getRes.statusCode === 200) {
-      res.status(getRes.statusCode).send({ body: getRes.body });
-    } else {
-      res.status(removeRes.statusCode).send({ message: removeRes.body });
+    let favsList = await getFavorite(user_id);
+    if (favsList.statusCode === 200) {
+      let favRes = await Promise.all(
+        favsList.body.map(async (favs) => {
+          let rest_id = favs.dataValues.rest_id;
+          let restaurants = await getRestaurantProfile(rest_id);
+          favs.dataValues["restaurant"] = restaurants.body;
+          return favs;
+        })
+      );
+      res.status(200).send({ favorites: favsList.body });
+    } else if (orders.statusCode === 404) {
+      res.status(404).send({ message: orders.body });
     }
   } catch (err) {
-    console.log("Error encountered while getting fav restaurants: ", err);
+    console.log("Error encountered while getting orders: ", err);
     res.status(500).send({
       errors: {
         message: "Internal Server Error",

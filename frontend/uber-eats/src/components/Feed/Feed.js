@@ -83,24 +83,12 @@ class Feed extends Component {
       }
       restaurantCards = filteredRestaurants.map((restaurant) => {
         return (
-          <Col className="ma2">
+          <Col lg="3" className="pa2">
             <RestaurantCard guest={"true"} restaurant={restaurant} />
           </Col>
         );
       });
-      feed = (
-        <Row>
-          {/* <Col lg="1" className="mb4 b">
-            <Card>
-              Filters:
-              <input type="checkbox" value="Vegan" />
-            </Card>
-          </Col> */}
-          <Col>
-            <Row>{restaurantCards}</Row>
-          </Col>
-        </Row>
-      );
+      feed = <Row className="">{restaurantCards}</Row>;
     } else
       feed = <div className="fl-jc-center">No Restaurants to be displayed</div>;
     return <div className="center pa3 page">{feed}</div>;

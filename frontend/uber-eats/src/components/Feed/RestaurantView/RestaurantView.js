@@ -80,42 +80,39 @@ class RestaurantView extends Component {
   };
 
   markFavorite = () => {
-    console.log("Favorite Before Toggle: ", this.state.favorite);
-    this.setState({ favorite: !this.state.favorite });
-    console.log("Favorite After Toggle: ", this.state.favorite);
-    if (this.state.favorite === true) {
-      axios
-        .post(
-          `${server}/user/favorite/${this.props.userId}?rest_id=${this.state.restaurantId}`
-        )
-        .then((res) => {
-          if (res.status === 201) {
-            <Alert variant="success">Restaurant Marked as Favorite</Alert>;
-          }
-        })
-        .catch((err) => {
-          console.log("Error while marking restaurant as favorite: ", err);
-          this.setState({ favorite: false });
-          <Alert variant="danger">Unable to mark Restaurant as Favorite</Alert>;
-        });
-    } else if (this.state.favorite === false) {
-      axios
-        .delete(
-          `${server}/user/favorite/${this.props.userId}?rest_id=${this.state.restaurantId}`
-        )
-        .then((res) => {
-          if (res.status === 201) {
-            <Alert variant="success">Restaurant removed from Favorites</Alert>;
-          }
-        })
-        .catch((err) => {
-          console.log("Error while removing restaurant as favorite: ", err);
-          this.setState({ favorite: true });
-          <Alert variant="danger">
-            Unable to remove restaurant from Favorite
-          </Alert>;
-        });
-    }
+    axios
+      .post(
+        `${server}/user/favorite/${this.props.userId}?rest_id=${this.state.restaurantId}`
+      )
+      .then((res) => {
+        if (res.status === 201) {
+          <Alert variant="success">Restaurant Marked as Favorite</Alert>;
+        }
+      })
+      .catch((err) => {
+        console.log("Error while marking restaurant as favorite: ", err);
+        this.setState({ favorite: false });
+        <Alert variant="danger">Unable to mark Restaurant as Favorite</Alert>;
+      });
+    this.setState({ favorite: true });
+    // } else if (this.state.favorite === false) {
+    //   axios
+    //     .delete(
+    //       `${server}/user/favorite/${this.props.userId}?rest_id=${this.state.restaurantId}`
+    //     )
+    //     .then((res) => {
+    //       if (res.status === 201) {
+    //         <Alert variant="success">Restaurant removed from Favorites</Alert>;
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log("Error while removing restaurant as favorite: ", err);
+    //       this.setState({ favorite: true });
+    //       <Alert variant="danger">
+    //         Unable to remove restaurant from Favorite
+    //       </Alert>;
+    //     });
+    // }
   };
 
   onDietSelect = (e) => {
@@ -171,7 +168,7 @@ class RestaurantView extends Component {
       items = <div className="h2 b flex justify-center">No Items in menu.</div>;
 
     let color = null;
-    if (this.state.favorite === false) {
+    if (this.state.favorite !== false) {
       color = "red";
     } else color = "white";
     let dietaryDropdown = null;

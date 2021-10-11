@@ -272,7 +272,6 @@ router.get("/all", async (req, res) => {
       restDetails = await getRestaurants();
     }
     if (restDetails.statusCode === 200) {
-      console.log("RestDetails: ", restDetails);
       if (searchQuery) {
         const restaurants = restDetails.body.filter((restaurant) => {
           let isValid = true;

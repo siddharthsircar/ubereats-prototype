@@ -132,7 +132,7 @@ const addFavorite = async (rest_id, user_id) => {
 
 const getFavorite = async (user_id) => {
   try {
-    const favObject = await favorite.FindAll({
+    const favObject = await favorite.findAll({
       where: { user_id: user_id },
     });
     if (favObject !== undefined && favObject !== null) {

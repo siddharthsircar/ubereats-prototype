@@ -4,7 +4,8 @@
   "description": "Uber Eats server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/test.js",
+    "start":"node index.js"
   },
   "author": "Siddharth Sircar",
   "license": "ISC",
@@ -31,14 +32,14 @@
     "eslint": "^7.20.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
-    "mocha": "^8.3.2"
+    "mocha": "^8.4.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/siddharthsircar/273-lab-1.git"
+    "url": "git+https://github.com/siddharthsircar/273ubereats.git"
   },
   "bugs": {
-    "url": "https://github.com/siddharthsircar/273-lab-1/issues"
+    "url": "https://github.com/siddharthsircar/273ubereats/issues"
   },
-  "homepage": "https://github.com/siddharthsircar/273-lab-1#readme"
+  "homepage": "https://github.com/siddharthsircar/273ubereats#readme"
 }
