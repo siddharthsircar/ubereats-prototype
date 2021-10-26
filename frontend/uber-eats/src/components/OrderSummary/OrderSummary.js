@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import {
   emptyCartDispatcher,
   getUserCart,
-} from "../../../../../redux/actions/orderActions";
+} from "../../redux/actions/orderActions";
 import { Redirect } from "react-router";
 
 class OrderSummary extends Component {
@@ -17,15 +17,12 @@ class OrderSummary extends Component {
   }
 
   render() {
-    if (
-      !this.props.authUser ||
-      localStorage.getItem("userType") !== "customer"
-    ) {
+    if (!this.props.authUser) {
       return <Redirect to="/home" />;
     }
     let items = null;
-    if (this.state.order_details.summary) {
-      items = this.state.order_details.summary.map((item) => {
+    if (this.props.order_details.summary) {
+      items = this.props.order_details.summary.map((item) => {
         return (
           <li className="flex items-center lh-copy pa2 ph0-l bb b--black-10">
             <div className="pl3 flex-auto">
@@ -44,20 +41,20 @@ class OrderSummary extends Component {
         <Modal.Header closeButton className="b f4">
           <div className="flex-column">
             <div>Order Summary</div>
-            <div className="f6 i">
-              Status: {this.state.order_details.order_status}
-            </div>
+            {/* <div className="f6 i">
+              Status: {this.props.order_details.order_status==="order"}
+            </div> */}
           </div>
         </Modal.Header>
         <div className="b f4 pa2 pl3">
-          {this.state.order_details.store_name}
+          {this.props.order_details.store_name}
         </div>
-        {this.state.order_details.order_status !== "cancelled" ? (
+        {this.props.order_details.order_status !== "cancelled" ? (
           <div className="b f6 ttc pl3">
-            {this.state.order_details.mode} :{" "}
-            {this.state.order_details.mode === "delivery"
-              ? this.state.order_details.cust_address
-              : this.state.order_details.store_address}
+            {this.props.order_details.mode} :{" "}
+            {this.props.order_details.mode === "delivery"
+              ? this.props.order_details.cust_address
+              : this.props.order_details.store_address}
           </div>
         ) : (
           <div></div>
@@ -65,7 +62,7 @@ class OrderSummary extends Component {
 
         <Modal.Body>{items}</Modal.Body>
         <Modal.Footer className="b f3">
-          Order Total: ${this.state.order_details.order_total.split(" ")[0]}
+          Order Total: ${this.props.order_details.order_total.split(" ")[0]}
         </Modal.Footer>
       </Modal>
     );

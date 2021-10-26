@@ -77,7 +77,7 @@ class ItemCard extends Component {
           .catch((errors) => {
             if (errors.response.status === 403) {
               this.setState({ new_restaurant: true });
-            } else console.log("Errorsdkjbdc: ", errors);
+            } else console.log("Errors: ", errors);
           });
       } else if (
         this.props.cart_summary &&

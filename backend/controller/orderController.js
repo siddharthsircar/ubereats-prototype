@@ -189,7 +189,7 @@ const getUserOrders = async (user_id) => {
           [Op.not]: "cart",
         },
       },
-      order: [["updatedAt"]],
+      order: [["updatedAt", "DESC"]],
     });
     if (
       orderObject !== undefined &&

@@ -18,6 +18,7 @@ class Menu extends Component {
       menu: "",
       edit: false,
       editItem: false,
+      curItem: "",
     };
     this.handleClick = this.handleClick.bind(this);
     this.inputChange = this.inputChange.bind(this);
@@ -311,7 +312,7 @@ class Menu extends Component {
       if (this.state.menu) {
         let menuCards = this.state.menu.map((item) => {
           return (
-            <Accordion defaultActiveKey="1">
+            <Accordion defaultActiveKey="1" key={item.item_id}>
               <Accordion.Item eventKey="0">
                 <Accordion.Header>{item.item_name}</Accordion.Header>
                 <Accordion.Body>
@@ -324,7 +325,8 @@ class Menu extends Component {
                           alt="item-img"
                         />
                         <div className="ml4">
-                          {this.state.editItem === true ? (
+                          {this.state.editItem === true &&
+                          this.state.curItem === item.item_id ? (
                             <input
                               className="input-reset ba bg-transparent  w-100"
                               type="text"
@@ -339,7 +341,8 @@ class Menu extends Component {
                           ) : (
                             <CardText className="b">{item.item_name}</CardText>
                           )}
-                          {this.state.editItem === true ? (
+                          {this.state.editItem === true &&
+                          this.state.curItem === item.item_id ? (
                             <input
                               className="input-reset ba bg-transparent  w-100"
                               type="text"
@@ -357,7 +360,8 @@ class Menu extends Component {
                         </div>
                       </div>
                       <div className="w-10 center">
-                        {this.state.editItem === true ? (
+                        {this.state.editItem === true &&
+                        this.state.curItem === item.item_id ? (
                           <input
                             className="input-reset ba bg-transparent  w-100"
                             type="number"
@@ -374,7 +378,8 @@ class Menu extends Component {
                         )}
                       </div>
                       <div className="w-10 center">
-                        {this.state.editItem === true ? (
+                        {this.state.editItem === true &&
+                        this.state.curItem === item.item_id ? (
                           <div>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -418,7 +423,10 @@ class Menu extends Component {
                             className="bi bi-pencil-fill pointer"
                             viewBox="0 0 16 16"
                             onClick={() => {
-                              this.setState({ editItem: true });
+                              this.setState({
+                                editItem: true,
+                                curItem: item.item_id,
+                              });
                             }}
                           >
                             <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />

@@ -1,25 +1,25 @@
 const Sequelize = require("sequelize");
-const aws = require("../config/config");
+const sequelize = require("../config/dbconfig");
 
 const DT = Sequelize.DataTypes;
 
-const sequelize = new Sequelize(aws.dbName, aws.userName, aws.password, {
-  host: aws.host,
-  port: 3306,
-  // eslint-disable-next-line no-console
-  logging: console.log,
-  maxConcurrentQueries: 100,
-  dialect: "mysql",
-  dialectOptions: {
-    ssl: "Amazon RDS",
-  },
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000,
-  },
-});
-const salt = 10;
+// const sequelize = new Sequelize(aws.dbName, aws.userName, aws.password, {
+//   host: aws.host,
+//   port: 3306,
+//   // eslint-disable-next-line no-console
+//   logging: console.log,
+//   maxConcurrentQueries: 100,
+//   dialect: "mysql",
+//   dialectOptions: {
+//     ssl: "Amazon RDS",
+//   },
+//   pool: {
+//     max: 5,
+//     min: 0,
+//     idle: 10000,
+//   },
+// });
+// const salt = 10;
 
 const ordersummary = sequelize.define("ordersummary", {
   order_id: {

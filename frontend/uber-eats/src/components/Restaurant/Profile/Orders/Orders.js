@@ -4,7 +4,7 @@ import { CardTitle, CardText, Row, Col } from "reactstrap";
 import server from "../../../../config";
 import axios from "axios";
 import { Card, DropdownButton, Dropdown } from "react-bootstrap";
-import OrderSummary from "../../../User/Profile/OrderHistory/OrderSummary/OrderSummary";
+import OrderSummary from "../../../OrderSummary/OrderSummary";
 import { Link } from "react-router-dom";
 class Orders extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ class Orders extends Component {
       updateOrder: false,
       currentStatusFilter: "All",
       orderStatus: "",
+      curOrder: "",
     };
     this.onStatusSelect = this.onStatusSelect.bind(this);
     this.selectOrderStatus = this.selectOrderStatus.bind(this);
@@ -93,6 +94,9 @@ class Orders extends Component {
         .then((res) => {
           if (res.status === 200) {
             this.getLatestOrders();
+            this.setState({
+              orderStatus: "",
+            });
           }
         })
         .catch((err) => {
@@ -113,7 +117,7 @@ class Orders extends Component {
           statuses = ["on the way", "delivered"];
         } else statuses = ["ready for pickup", "picked up"];
         return (
-          <Card body className="">
+          <Card body className="" key={order.order_id}>
             <div className="flex justify-between">
               <div className="flex w-90">
                 <div className="ml4">
@@ -140,6 +144,10 @@ class Orders extends Component {
                     <Card.Subtitle className="ttc i red">
                       {order.order_status} by customer.
                     </Card.Subtitle>
+                  ) : order.order_status === "order placed" ? (
+                    <Card.Subtitle className="ttc i">
+                      Order Recieved
+                    </Card.Subtitle>
                   ) : (
                     <Card.Subtitle className="ttc i">
                       {order.order_status}
@@ -148,7 +156,10 @@ class Orders extends Component {
                   <Card.Subtitle
                     className="pt2 i underline pointer"
                     onClick={() => {
-                      this.setState({ showSummary: true });
+                      this.setState({
+                        showSummary: true,
+                        curOrder: order.order_id,
+                      });
                     }}
                   >
                     View Summary
@@ -158,7 +169,8 @@ class Orders extends Component {
               <div className="w-20 center">
                 <CardText>{`${createdDate}, ${createdTime}`}</CardText>
                 {order.order_status !== "cancelled" ? (
-                  this.state.updateOrder === true ? (
+                  this.state.updateOrder === true &&
+                  this.state.curOrder === order.order_id ? (
                     <div className="flex">
                       <div>
                         <DropdownButton
@@ -225,7 +237,10 @@ class Orders extends Component {
                     <CardText
                       className="underline center pointer grow"
                       onClick={() => {
-                        this.setState({ updateOrder: true });
+                        this.setState({
+                          updateOrder: true,
+                          curOrder: order.order_id,
+                        });
                       }}
                     >
                       Update Order
@@ -236,7 +251,8 @@ class Orders extends Component {
                 )}
               </div>
             </div>
-            {this.state.showSummary ? (
+            {this.state.showSummary &&
+            this.state.curOrder === order.order_id ? (
               <OrderSummary
                 order_details={order}
                 show={this.state.showSummary}

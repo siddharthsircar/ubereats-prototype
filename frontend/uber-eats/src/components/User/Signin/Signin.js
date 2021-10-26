@@ -112,6 +112,16 @@ class Signin extends Component {
                 Create an account
               </Link>
             </div>
+            <div className="lh-copy mt3 f4">
+              Own a restaurant?
+              <Link
+                to="/restaurant/login"
+                className="b f4 link dim hover-black black db"
+                style={{ textDecoration: "none" }}
+              >
+                Sign In
+              </Link>
+            </div>
           </form>
         </main>
       </div>

@@ -4,7 +4,8 @@ import { CardTitle, CardText, Row, Col } from "reactstrap";
 import server from "../../../../config";
 import axios from "axios";
 import { Card, DropdownButton, Dropdown } from "react-bootstrap";
-import OrderSummary from "./OrderSummary/OrderSummary";
+import OrderSummary from "../../../OrderSummary/OrderSummary";
+import Modal from "react-bootstrap/Modal";
 class OrderHistory extends Component {
   constructor(props) {
     super(props);
@@ -14,6 +15,8 @@ class OrderHistory extends Component {
       filteredList: "",
       no_orders: "",
       showSummary: false,
+      curOrder: "",
+      currentStatusFilter: "All",
     };
     this.onStatusSelect = this.onStatusSelect.bind(this);
     this.getLatestOrders = this.getLatestOrders.bind(this);
@@ -64,6 +67,7 @@ class OrderHistory extends Component {
   onStatusSelect = (e) => {
     if (e.target.text === "All") {
       this.setState({
+        currentStatusFilter: e.target.text,
         filteredList: this.state.orders,
       });
     } else {
@@ -71,6 +75,7 @@ class OrderHistory extends Component {
         (order) => order.order_status === e.target.text.toLowerCase()
       );
       this.setState({
+        currentStatusFilter: e.target.text,
         filteredList: filteredList,
       });
     }
@@ -82,8 +87,9 @@ class OrderHistory extends Component {
       let ordercards = this.state.filteredList.map((order) => {
         let createdDate = new Date(order.updatedAt).toLocaleDateString();
         let createdTime = new Date(order.updatedAt).toLocaleTimeString();
+
         return (
-          <Card body className="">
+          <Card body className="" key={order.order_id}>
             <div className="flex justify-between">
               <div className="flex w-90">
                 <div className="ml4">
@@ -102,18 +108,18 @@ class OrderHistory extends Component {
                       {order.order_status}
                     </Card.Subtitle>
                   )}
-                  {localStorage.getItem("userType") === "restaurant" ? (
-                    <div></div>
-                  ) : (
-                    <Card.Subtitle
-                      className="pt2 i underline pointer"
-                      onClick={() => {
-                        this.setState({ showSummary: true });
-                      }}
-                    >
-                      View Summary
-                    </Card.Subtitle>
-                  )}
+                  <Card.Subtitle
+                    className="pt2 i underline pointer"
+                    id={order.order_id}
+                    onClick={() => {
+                      this.setState({
+                        showSummary: true,
+                        curOrder: order.order_id,
+                      });
+                    }}
+                  >
+                    View Summary
+                  </Card.Subtitle>
                 </div>
               </div>
               <div className="w-10 center">
@@ -145,7 +151,8 @@ class OrderHistory extends Component {
                 )}
               </div>
             </div>
-            {this.state.showSummary ? (
+
+            {this.state.showSummary && this.state.curOrder == order.order_id ? (
               <OrderSummary
                 order_details={order}
                 show={this.state.showSummary}
@@ -176,13 +183,22 @@ class OrderHistory extends Component {
     if (this.state.order_status.length !== 0) {
       let statusOptions = this.state.order_status.map((status) => {
         return (
-          <Dropdown.Item href="#" className="ttc" onClick={this.onStatusSelect}>
+          <Dropdown.Item
+            href="#"
+            className="ttc"
+            onClick={this.onStatusSelect}
+            key={status}
+          >
             {status}
           </Dropdown.Item>
         );
       });
       statusDropdown = (
-        <DropdownButton variant="dark" title="Status" id="status">
+        <DropdownButton
+          variant="dark"
+          title={this.state.currentStatusFilter}
+          id="status"
+        >
           <Dropdown.Item href="#" onClick={this.onStatusSelect}>
             All
           </Dropdown.Item>
