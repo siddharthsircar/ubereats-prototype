@@ -60,7 +60,7 @@ class EditUserProfile extends Component {
             state: this.state.state,
             country: this.state.country,
           };
-          this.props.updateDispatcher(user);
+          //this.props.updateDispatcher(user);
           this.setState({ updated: true });
         }
       })
