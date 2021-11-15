@@ -5,26 +5,26 @@ const multiparty = require("multiparty");
 const fileType = require("file-type");
 const { uploadFile } = require("./../utils/s3Uploader");
 const kafka = require("../kafka/client");
-const {
-  createRestaurant,
-  getRestaurantProfile,
-  updateRestaurant,
-  getRestaurantbyEmail,
-  getRestaurantsByUserZip,
-  getRestaurants,
-} = require("../controller/restaurantController");
+// const {
+//   createRestaurant,
+//   getRestaurantProfile,
+//   updateRestaurant,
+//   getRestaurantbyEmail,
+//   getRestaurantsByUserZip,
+//   getRestaurants,
+// } = require("../controller/restaurantController");
 
-const {
-  getUserOrders,
-  getCartOrderId,
-  addOrder,
-  getOrderSummary,
-  addItemsToOrder,
-  removeFromCart,
-  updateOrder,
-  removeCart,
-  getRestaurantOrders,
-} = require("../controller/orderController");
+// const {
+//   getUserOrders,
+//   getCartOrderId,
+//   addOrder,
+//   getOrderSummary,
+//   addItemsToOrder,
+//   removeFromCart,
+//   updateOrder,
+//   removeCart,
+//   getRestaurantOrders,
+// } = require("../controller/orderController");
 
 const router = express.Router();
 
