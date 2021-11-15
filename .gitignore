@@ -4,3 +4,6 @@
 /Submission
 /frontend/restaurantImg
 /kafka-backend/node_modules
+/backend/package-lock.json
+/frontend/uber-eats/package-lock.json
+/kafka-backend/package-lock.json
