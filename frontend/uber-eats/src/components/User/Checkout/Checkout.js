@@ -27,6 +27,7 @@ class Checkout extends Component {
       delivery: true,
       delivery_mode: "delivery",
       showSuccess: false,
+      special_instruction: "",
       store_name: this.props.cart_summary.store_name,
       delivery_address: this.props.cart_summary.cust_address,
       new_address: false,
@@ -34,6 +35,7 @@ class Checkout extends Component {
     };
     this.placeOrder = this.placeOrder.bind(this);
     this.inputChange = this.inputChange.bind(this);
+    this.specialInstructions = this.specialInstructions.bind(this);
   }
 
   //   componentDidMount = () => {};
@@ -43,12 +45,10 @@ class Checkout extends Component {
       cust_address: this.state.delivery_address,
       mode: this.state.delivery_mode,
       order_status: "order placed",
+      special_instruction: this.state.special_instruction,
     };
     axios
-      .put(
-        `${server}/user/checkout/${this.props.location.state.order_id}`,
-        updatData
-      )
+      .post(`${server}/user/checkout/${this.props.user_id}`, updatData)
       .then((res) => {
         if (res.status === 200) {
           this.setState({ showSuccess: true });
@@ -62,6 +62,10 @@ class Checkout extends Component {
     this.setState({ [name]: value, showError: false });
   };
 
+  specialInstructions = (e) => {
+    e.preventDefault();
+    this.setState({ [e.target.name]: e.target.value });
+  };
   render() {
     if (
       !this.props.authUser ||
@@ -312,8 +316,14 @@ class Checkout extends Component {
                   className="mb-3"
                   controlId="exampleForm.ControlTextarea1"
                 >
-                  <Form.Label>Delivery Instructions</Form.Label>
-                  <Form.Control as="textarea" rows={3} />
+                  <Form.Label>Special Instructions</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    name="special_instruction"
+                    value={this.state.special_instruction}
+                    onChange={this.specialInstructions}
+                  />
                 </Form.Group>
               </div>
             </Card>

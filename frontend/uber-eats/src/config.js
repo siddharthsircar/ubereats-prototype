@@ -1,2 +1,2 @@
-const server = "http://localhost:7000";
+const server = "http://54.193.134.230:7000";
 export default server;

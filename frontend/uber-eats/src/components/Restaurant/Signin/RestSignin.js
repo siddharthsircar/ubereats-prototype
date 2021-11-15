@@ -31,6 +31,7 @@ class RestSignin extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const data = {
+      category: "store",
       email: this.state.email,
       password: this.state.password,
     };

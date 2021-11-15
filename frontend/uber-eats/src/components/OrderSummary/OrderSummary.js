@@ -61,6 +61,10 @@ class OrderSummary extends Component {
         )}
 
         <Modal.Body>{items}</Modal.Body>
+        <h5 className="b f4 pl3">Special Instructions</h5>
+        <Modal.Body>
+          {this.props.order_details.special_instruction || "None"}
+        </Modal.Body>
         <Modal.Footer className="b f3">
           Order Total: ${this.props.order_details.order_total.split(" ")[0]}
         </Modal.Footer>

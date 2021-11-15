@@ -22,10 +22,12 @@ class RestaurantCard extends Component {
           <CardBody>
             <CardTitle className="title" tag="h5" style={{ height: "48px" }}>
               {this.props.restaurant.store_name +
-                ` (${this.props.restaurant.street_address})`}
+                ` (${this.props.restaurant.address.street_address})`}
             </CardTitle>
             <CardSubtitle tag="h6" className="mb-2 text-muted">
-              {this.props.restaurant.city + ", " + this.props.restaurant.state}
+              {this.props.restaurant.address.city +
+                ", " +
+                this.props.restaurant.address.state}
             </CardSubtitle>
             <CardSubtitle
               tag="h6"

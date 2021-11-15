@@ -44,7 +44,6 @@ class Menu extends Component {
       .then(this.setState({ edit: false }))
       .catch((err) => {
         console.log("Error while getting restaurant menu: ", err);
-        alert("Internal Server Error");
       });
   };
 
@@ -390,7 +389,7 @@ class Menu extends Component {
                               viewBox="0 0 16 16"
                               onClick={() => {
                                 this.updateItem(
-                                  item.item_id,
+                                  item._id,
                                   this.state.item_name,
                                   this.state.item_desc,
                                   this.state.item_price

@@ -25,6 +25,7 @@ class Signin extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const data = {
+      category: "customer",
       email: this.state.email,
       password: this.state.password,
     };

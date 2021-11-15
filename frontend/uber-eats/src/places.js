@@ -10,6 +10,7 @@ export const states = [
   "Wyoming",
 ];
 export const cities = [
+  "Santa Clara",
   "San Jose",
   "San Fransisco",
   "Oakland",

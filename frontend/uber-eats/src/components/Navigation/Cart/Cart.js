@@ -26,7 +26,7 @@ class Cart extends Component {
 
   removeAll = () => {
     axios
-      .delete(`${server}/user/emptycart/${this.props.cart[0].order_id}`)
+      .delete(`${server}/user/emptycart/${this.props.user_id}`)
       .then((res) => {
         if (res.status === 201) {
           this.props.getUserCart(this.props.user_id);
@@ -45,6 +45,7 @@ class Cart extends Component {
       let items = this.props.cart.map((item) => {
         return (
           <div className="flex justify-between items-center mb2">
+            {/* <Select></Select> */}
             <div>{`${item.item_name} x ${item.item_quantity}`}</div>
             <div className="flex">
               <div>{item.item_price}</div>

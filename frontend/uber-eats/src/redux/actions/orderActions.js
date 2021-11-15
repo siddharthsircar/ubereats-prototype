@@ -22,6 +22,7 @@ const getUserCart = (payload) => (dispatch) => {
       .get(`${server}/user/cart/${payload}`)
       .then((res) => {
         if (res.status === 200) {
+          console.log("Get Cart Result: ", res);
           if (!res.data.message) {
             dispatch(getCartDispatcher(res.data));
           } else dispatch(emptyCartDispatcher());

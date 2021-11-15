@@ -33,7 +33,11 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static("public"));
-console.log("env baby:", process.env.SEQUELIZE_SYNC_FORCE);
+// console.log("env baby:", process.env.SEQUELIZE_SYNC_FORCE);
+app.use("/login", require("./routes/account/login"));
+app.use("/registerCustomer", require("./routes/account/registerCustomer"));
+app.use("/registerStore", require("./routes/account/registerStore"));
+
 app.use("/user", require("./routes/userRoutes"));
 app.use("/restaurant", require("./routes/restaurantRoutes"));
 app.use("/menu", require("./routes/menuRoutes"));

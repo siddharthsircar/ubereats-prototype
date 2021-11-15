@@ -89,7 +89,7 @@ class OrderHistory extends Component {
         let createdTime = new Date(order.updatedAt).toLocaleTimeString();
 
         return (
-          <Card body className="" key={order.order_id}>
+          <Card body className="" key={order._id}>
             <div className="flex justify-between">
               <div className="flex w-90">
                 <div className="ml4">
@@ -99,7 +99,7 @@ class OrderHistory extends Component {
                       {`${order.summary.length} items for ${order.order_total}`}
                     </Card.Subtitle>
                   </Card.Text>
-                  {order.order_status === "cancelled" ? (
+                  {order.order_status === "Cancelled" ? (
                     <Card.Subtitle className="ttc i red">
                       {order.order_status}
                     </Card.Subtitle>
@@ -110,11 +110,11 @@ class OrderHistory extends Component {
                   )}
                   <Card.Subtitle
                     className="pt2 i underline pointer"
-                    id={order.order_id}
+                    id={order._id}
                     onClick={() => {
                       this.setState({
                         showSummary: true,
-                        curOrder: order.order_id,
+                        curOrder: order._id,
                       });
                     }}
                   >
@@ -131,7 +131,7 @@ class OrderHistory extends Component {
                     className="underline red pointer grow"
                     onClick={() => {
                       axios
-                        .put(`${server}/user/cancelorder/${order.order_id}`)
+                        .put(`${server}/user/cancelorder/${order._id}`)
                         .then((res) => {
                           if (res.status === 200) {
                             this.getLatestOrders();
@@ -152,7 +152,7 @@ class OrderHistory extends Component {
               </div>
             </div>
 
-            {this.state.showSummary && this.state.curOrder == order.order_id ? (
+            {this.state.showSummary && this.state.curOrder == order._id ? (
               <OrderSummary
                 order_details={order}
                 show={this.state.showSummary}

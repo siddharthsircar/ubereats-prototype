@@ -165,7 +165,7 @@ const removeFavorite = async (user_id, rest_id) => {
   if (favObj === 1) {
     return {
       statusCode: 201,
-      body: "Remove restaurant from favorites",
+      body: "Removed restaurant from favorites",
     };
   } else {
     return {

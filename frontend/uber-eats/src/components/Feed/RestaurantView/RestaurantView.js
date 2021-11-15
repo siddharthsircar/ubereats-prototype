@@ -15,7 +15,7 @@ class RestaurantView extends Component {
     super(props);
     this.state = {
       guest: this.props.location.state.guest,
-      restaurantId: this.props.location.state.restaurant.rest_id,
+      restaurantId: this.props.location.state.restaurant._id,
       restaurant: "",
       menu: "",
       filteredMenu: "",

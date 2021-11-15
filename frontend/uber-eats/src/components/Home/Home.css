@@ -1,6 +1,8 @@
 .home-container {
   height: 100vh;
-  background: linear-gradient(89deg, #ff5edf 0%, #04c8de 100%);
+  /* background: linear-gradient(89deg, #ff5edf 0%, #04c8de 100%); */
+  background-image: url("https://ubereats-273.s3.us-west-1.amazonaws.com/restaurantImages/backgroundimg.png");
+  background-size: cover;
   z-index: -1000;
 }
 

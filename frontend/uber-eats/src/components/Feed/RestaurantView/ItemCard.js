@@ -62,7 +62,7 @@ class ItemCard extends Component {
           item_quantity: this.state.item_quantity,
           delivery_mode: this.props.delivery_mode,
           order_status: "cart",
-          order_total: `${order_total} ${cur}`,
+          order_total: `${order_total} $`,
         };
         axios
           .post(

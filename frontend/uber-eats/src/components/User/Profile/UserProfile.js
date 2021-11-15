@@ -46,9 +46,9 @@ class UserProfile extends Component {
         });
       });
       axios.get(`${server}/user/favorite/${user_id}`).then((res) => {
-        console.log(res.data.body);
         if (res.status === 200) {
           this.setState({ fav_res: res.data.favorites });
+          console.log("Favorites: ", this.state.fav_res);
         }
       });
     } else if (localStorage.getItem("userType") === "restaurant") {
@@ -97,7 +97,7 @@ class UserProfile extends Component {
       favRes = this.state.fav_res.map((restaurant) => {
         return (
           <Col lg="3" className="pa2">
-            <RestaurantCard guest={"true"} restaurant={restaurant.restaurant} />
+            <RestaurantCard guest={"true"} restaurant={restaurant} />
           </Col>
         );
       });
@@ -206,7 +206,7 @@ class UserProfile extends Component {
                     <CardTitle className="f2 b pl2">
                       Favorite Restaurants
                     </CardTitle>
-                    <Row className="pl2">{favRes}</Row>;
+                    <Row className="pl2">{favRes}</Row>
                   </Col>
                 </Row>
               </TabPane>

@@ -114,10 +114,10 @@ class Orders extends Component {
         let createdDate = new Date(order.updatedAt).toLocaleDateString();
         let createdTime = new Date(order.updatedAt).toLocaleTimeString();
         if (order.mode === "delivery") {
-          statuses = ["on the way", "delivered"];
-        } else statuses = ["ready for pickup", "picked up"];
+          statuses = ["on the way", "delivered", "cancelled"];
+        } else statuses = ["ready for pickup", "picked up", "cancelled"];
         return (
-          <Card body className="" key={order.order_id}>
+          <Card body className="" key={order._id}>
             <div className="flex justify-between">
               <div className="flex w-90">
                 <div className="ml4">
@@ -142,7 +142,7 @@ class Orders extends Component {
                   </Card.Text>
                   {order.order_status === "cancelled" ? (
                     <Card.Subtitle className="ttc i red">
-                      {order.order_status} by customer.
+                      {order.order_status}.
                     </Card.Subtitle>
                   ) : order.order_status === "order placed" ? (
                     <Card.Subtitle className="ttc i">
@@ -158,7 +158,7 @@ class Orders extends Component {
                     onClick={() => {
                       this.setState({
                         showSummary: true,
-                        curOrder: order.order_id,
+                        curOrder: order._id,
                       });
                     }}
                   >
@@ -170,7 +170,7 @@ class Orders extends Component {
                 <CardText>{`${createdDate}, ${createdTime}`}</CardText>
                 {order.order_status !== "cancelled" ? (
                   this.state.updateOrder === true &&
-                  this.state.curOrder === order.order_id ? (
+                  this.state.curOrder === order._id ? (
                     <div className="flex">
                       <div>
                         <DropdownButton
@@ -207,7 +207,7 @@ class Orders extends Component {
                           viewBox="0 0 16 16"
                           onClick={() => {
                             this.updateOrderStatus(
-                              order.order_id,
+                              order._id,
                               this.state.orderStatus
                             );
                             this.setState({ updateOrder: false });
@@ -239,7 +239,7 @@ class Orders extends Component {
                       onClick={() => {
                         this.setState({
                           updateOrder: true,
-                          curOrder: order.order_id,
+                          curOrder: order._id,
                         });
                       }}
                     >
@@ -251,8 +251,7 @@ class Orders extends Component {
                 )}
               </div>
             </div>
-            {this.state.showSummary &&
-            this.state.curOrder === order.order_id ? (
+            {this.state.showSummary && this.state.curOrder === order._id ? (
               <OrderSummary
                 order_details={order}
                 show={this.state.showSummary}
