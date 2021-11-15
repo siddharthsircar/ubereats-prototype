@@ -5,7 +5,8 @@ import server from "../../../../config";
 import axios from "axios";
 import { Card, DropdownButton, Dropdown } from "react-bootstrap";
 import OrderSummary from "../../../OrderSummary/OrderSummary";
-import Modal from "react-bootstrap/Modal";
+import PaginatedItems from "./paginatedOrders";
+
 class OrderHistory extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +18,8 @@ class OrderHistory extends Component {
       showSummary: false,
       curOrder: "",
       currentStatusFilter: "All",
+      page_size: 5,
+      orderCards: "",
     };
     this.onStatusSelect = this.onStatusSelect.bind(this);
     this.getLatestOrders = this.getLatestOrders.bind(this);
@@ -83,6 +86,8 @@ class OrderHistory extends Component {
 
   render() {
     let orders = null;
+    let flist = null;
+    let pagination = null;
     if (this.state.filteredList) {
       let ordercards = this.state.filteredList.map((order) => {
         let createdDate = new Date(order.updatedAt).toLocaleDateString();
@@ -99,7 +104,7 @@ class OrderHistory extends Component {
                       {`${order.summary.length} items for ${order.order_total}`}
                     </Card.Subtitle>
                   </Card.Text>
-                  {order.order_status === "Cancelled" ? (
+                  {order.order_status === "cancelled" ? (
                     <Card.Subtitle className="ttc i red">
                       {order.order_status}
                     </Card.Subtitle>
@@ -168,12 +173,105 @@ class OrderHistory extends Component {
           </Card>
         );
       });
+
       orders = (
         <Row>
           <Col>
             <Row>{ordercards}</Row>
           </Col>
         </Row>
+      );
+      pagination = (
+        <PaginatedItems
+          itemsPerPage={this.state.page_size}
+          orderCards={this.state.filteredList.map((order) => {
+            let createdDate = new Date(order.updatedAt).toLocaleDateString();
+            let createdTime = new Date(order.updatedAt).toLocaleTimeString();
+
+            return (
+              <Card body className="" key={order._id}>
+                <div className="flex justify-between">
+                  <div className="flex w-90">
+                    <div className="ml4">
+                      <Card.Text className="f3 b">
+                        {`${order.store_name} (${order.store_address})`}
+                        <Card.Subtitle className="i">
+                          {`${order.summary.length} items for ${order.order_total}`}
+                        </Card.Subtitle>
+                      </Card.Text>
+                      {order.order_status === "cancelled" ? (
+                        <Card.Subtitle className="ttc i red">
+                          {order.order_status}
+                        </Card.Subtitle>
+                      ) : (
+                        <Card.Subtitle className="ttc i">
+                          {order.order_status}
+                        </Card.Subtitle>
+                      )}
+                      <Card.Subtitle
+                        className="pt2 i underline pointer"
+                        id={order._id}
+                        onClick={() => {
+                          this.setState({
+                            showSummary: true,
+                            curOrder: order._id,
+                          });
+                        }}
+                      >
+                        View Summary
+                      </Card.Subtitle>
+                    </div>
+                  </div>
+                  <div className="w-10 center">
+                    <CardText>{`${createdDate}, ${createdTime}`}</CardText>
+                    {localStorage.getItem("userType") === "restaurant" ? (
+                      <div></div>
+                    ) : order.order_status === "order placed" ? (
+                      <CardText
+                        className="underline red pointer grow"
+                        onClick={() => {
+                          axios
+                            .put(`${server}/user/cancelorder/${order._id}`)
+                            .then((res) => {
+                              if (res.status === 200) {
+                                this.getLatestOrders();
+                                alert("Order Cancelled");
+                              }
+                            })
+                            .catch((err) => {
+                              console.log(
+                                "Unable to cancel order: ",
+                                err.response
+                              );
+                              alert("Unable to cancel order");
+                            });
+                        }}
+                      >
+                        Cancel Order
+                      </CardText>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
+                </div>
+
+                {this.state.showSummary && this.state.curOrder == order._id ? (
+                  <OrderSummary
+                    order_details={order}
+                    show={this.state.showSummary}
+                    onHide={() => {
+                      this.setState({
+                        showSummary: false,
+                      });
+                    }}
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </Card>
+            );
+          })}
+        />
       );
     } else
       orders = (
@@ -207,10 +305,13 @@ class OrderHistory extends Component {
       );
     }
     return (
-      <Card body>
-        <div className="flex justify-end pa3">{statusDropdown}</div>
-        {orders}
-      </Card>
+      <div>
+        <Card body>
+          <div className="flex justify-end pa3">{statusDropdown}</div>
+          {orders}
+        </Card>
+        {/* {pagination} */}
+      </div>
     );
   }
 }

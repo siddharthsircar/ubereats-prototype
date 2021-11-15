@@ -37,6 +37,8 @@ class Cart extends Component {
       });
   };
 
+  updateItemQty = (e) => {};
+
   render() {
     let cartItems = null;
     if (this.props.total_items === 0) {
@@ -45,8 +47,15 @@ class Cart extends Component {
       let items = this.props.cart.map((item) => {
         return (
           <div className="flex justify-between items-center mb2">
-            {/* <Select></Select> */}
-            <div>{`${item.item_name} x ${item.item_quantity}`}</div>
+            <div>
+              <select name="item_quantity" id="item_quantity">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+              {`  ${item.item_name}`}
+            </div>
             <div className="flex">
               <div>{item.item_price}</div>
               <div className="pl2">

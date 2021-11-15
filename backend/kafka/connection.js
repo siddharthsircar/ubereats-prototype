@@ -5,7 +5,7 @@ function ConnectionProvider() {
     //if (!this.kafkaConsumerConnection) {
 
     // getConsumer is connected to localhost:2181 where zookeeper is running
-    this.client = new kafka.KafkaClient("54.193.134.230:9092");
+    this.client = new kafka.KafkaClient("localhost:8888");
 
     this.kafkaConsumerConnection = new kafka.Consumer(this.client, [
       { topic: topic_name, partition: 0 },
@@ -21,7 +21,7 @@ function ConnectionProvider() {
   this.getProducer = function () {
     if (!this.kafkaProducerConnection) {
       // getProducer is connected to localhost:2181 where zookeeper is running
-      this.client = new kafka.KafkaClient("54.193.134.230:9092");
+      this.client = new kafka.KafkaClient("localhost:8888");
       var HighLevelProducer = kafka.HighLevelProducer;
       this.kafkaProducerConnection = new HighLevelProducer(this.client);
       console.log("producer ready");
