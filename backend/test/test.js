@@ -22,8 +22,8 @@ it("Test server status", function (done) {
 it("Check login", function (done) {
   chai
     .request(api_url)
-    .post("/user/login")
-    .send({ email: "sidsircar16@gmail.com", password: "1234" })
+    .post("/login")
+    .send({ category: "customer", email: "sid4@gmail.com", password: "123456" })
     .end(function (err, res) {
       expect(res).to.have.status(200);
       done();
@@ -45,14 +45,12 @@ it("Check if restaurants are returned", function (done) {
 it("Check user profile", function (done) {
   chai
     .request(api_url)
-    .get("/user/profile/a153eb30-2a04-11ec-9719-4b19dbf0a305")
+    .get("/user/profile/618dd85311dd0d09fc214575")
     .send()
     .end(function (err, res) {
       // expect(res).to.have.status(201);
       expect(res.body.user).to.be.a("Object");
-      expect(res.body.user.user_id).to.equal(
-        "a153eb30-2a04-11ec-9719-4b19dbf0a305"
-      );
+      expect(res.body.user.user_id).to.equal("618dd85311dd0d09fc214575");
       done();
     });
 });
