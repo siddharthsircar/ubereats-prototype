@@ -16,7 +16,7 @@ router.post("/", function (req, res) {
     } else {
       if (results.status == 200) {
         const token = jwt.sign(
-          { _id: results.id, category: msg.category },
+          { _id: results.user.user_id, category: req.body.category },
           secret,
           {
             expiresIn: 1008000,

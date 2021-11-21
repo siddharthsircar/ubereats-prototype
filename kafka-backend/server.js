@@ -39,12 +39,11 @@ Mongoose.connect(connection_string, {
 
 //handle topic's request
 function handleTopicRequest(topic_name, fname) {
-  //var topic_name = 'root_topic';
   let consumer = connection.getConsumer(topic_name);
   let producer = connection.getProducer();
   console.log("Kafka server is running ");
   consumer.on("message", function (message) {
-    console.log("message received for " + topic_name);
+    console.log("Message received for: " + topic_name);
     console.log(JSON.stringify(message.value));
     let data = JSON.parse(message.value);
 
@@ -68,7 +67,7 @@ function handleTopicRequest(topic_name, fname) {
         },
       ];
       producer.send(payloads, function (err, data) {
-        console.log(data);
+        console.log("Response Data: ", data);
       });
       return;
     });

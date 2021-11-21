@@ -80,7 +80,6 @@ let addToCart = async (msg, callback) => {
           );
         } else {
           if (rest_id === result.cart.rest_id.toString()) {
-            console.log("Item from same rest");
             const item = {
               item_id: item_id,
               item_name: item_name,

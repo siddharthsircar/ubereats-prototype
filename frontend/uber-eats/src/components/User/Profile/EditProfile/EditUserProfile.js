@@ -48,18 +48,18 @@ class EditUserProfile extends Component {
       .put(`${server}/user/profile/${this.props.user.user_id}`, data)
       .then((res) => {
         if (res.status === 200) {
-          let user = {
-            user_id: this.props.user.user_id,
-            first_name: this.state.first_name,
-            last_name: this.state.last_name,
-            phone_number: this.state.phone_number,
-            email: this.state.email,
-            street_address: this.state.street_address,
-            city: this.state.city,
-            zip: this.state.zip,
-            state: this.state.state,
-            country: this.state.country,
-          };
+          // let user = {
+          //   user_id: this.props.user.user_id,
+          //   first_name: this.state.first_name,
+          //   last_name: this.state.last_name,
+          //   phone_number: this.state.phone_number,
+          //   email: this.state.email,
+          //   street_address: this.state.street_address,
+          //   city: this.state.city,
+          //   zip: this.state.zip,
+          //   state: this.state.state,
+          //   country: this.state.country,
+          // };
           //this.props.updateDispatcher(user);
           this.setState({ updated: true });
         }

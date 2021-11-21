@@ -10,7 +10,6 @@ import {
   NavLink,
   Button,
   CardTitle,
-  CardText,
   Row,
   Col,
 } from "reactstrap";
@@ -39,6 +38,8 @@ class UserProfile extends Component {
     if (localStorage.getItem("userType") === "customer") {
       this.setState({ authFlag: this.props.authUser });
       let user_id = JSON.parse(localStorage.getItem("user")).user_id;
+      axios.defaults.headers.common.authorization =
+        localStorage.getItem("authToken");
       axios.get(`${server}/user/profile/${user_id}`).then((res) => {
         this.setState({
           user: res.data.user,

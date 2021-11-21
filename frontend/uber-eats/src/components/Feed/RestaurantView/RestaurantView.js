@@ -135,7 +135,7 @@ class RestaurantView extends Component {
     if (this.state.filteredMenu.length !== 0) {
       let menuCards = this.state.filteredMenu.map((item) => {
         return (
-          <Col>
+          <Col key={item._id}>
             <ItemCard
               item={item}
               restaurant={this.state.restaurant}
@@ -160,7 +160,7 @@ class RestaurantView extends Component {
     if (this.state.types.length !== 0) {
       let dietaryOptions = this.state.types.map((type) => {
         return (
-          <Dropdown.Item id={type} onClick={this.onDietSelect}>
+          <Dropdown.Item id={type} onClick={this.onDietSelect} key={type}>
             {type === "nonveg"
               ? "Non-Vegetarian"
               : type === "veg"
@@ -215,7 +215,7 @@ class RestaurantView extends Component {
                 width="20"
                 height="20"
                 fill={`${color}`}
-                class="bi bi-suit-heart-fill"
+                className="bi bi-suit-heart-fill"
                 viewBox="0 0 16 16"
                 onClick={this.markFavorite}
               >

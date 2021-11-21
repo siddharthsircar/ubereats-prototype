@@ -2,7 +2,7 @@
 
 const express = require("express");
 const morgan = require("morgan");
-
+const passport = require("passport");
 const app = express();
 const bp = require("body-parser");
 const cors = require("cors");
@@ -20,7 +20,7 @@ app.use(
 app.use(morgan("dev"));
 
 app.use(cors());
-
+app.use(passport.initialize());
 // eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");

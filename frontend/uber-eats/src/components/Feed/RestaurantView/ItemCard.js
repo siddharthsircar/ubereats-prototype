@@ -56,7 +56,7 @@ class ItemCard extends Component {
           store_address: `${this.state.restaurant.street_address}, ${this.state.restaurant.city}`,
           cust_name: `${this.state.user.first_name} ${this.state.user.last_name}`,
           cust_address: `${this.state.user.street_address}, ${this.state.user.city}`,
-          item_id: item.item_id,
+          item_id: item._id,
           item_name: item.item_name,
           item_price: total_item_price,
           item_quantity: this.state.item_quantity,
@@ -64,6 +64,7 @@ class ItemCard extends Component {
           order_status: "cart",
           order_total: `${order_total} $`,
         };
+        console.log("Add To Cart Data: ", cartPayload);
         axios
           .post(
             `${server}/user/addtocart/${this.state.user.user_id}`,
@@ -90,7 +91,7 @@ class ItemCard extends Component {
 
   emptyExistingCart = () => {
     axios
-      .delete(`${server}/user/emptycart/${this.props.cart_summary.order_id}`)
+      .delete(`${server}/user/emptycart/${this.state.user.user_id}`)
       .then((res) => {
         if (res.status === 201) {
           this.props.emptyCartDispatcher();
@@ -124,7 +125,9 @@ class ItemCard extends Component {
             Update Cart
           </Modal.Header>
           <Modal.Body>
-            {`Your cart consists of orders from ${this.props.cart_summary.store_name}.\nDo you want to remove these items and create a new order?`}
+            {`Your cart consists of orders from`}
+            <p className="b">{this.props.cart_summary.store_name}</p>
+            {`Do you want to remove these items and create a new order?`}
           </Modal.Body>
           <Modal.Footer>
             <Button

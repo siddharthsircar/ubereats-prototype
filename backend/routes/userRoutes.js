@@ -32,7 +32,7 @@ const { checkAuth } = require("../passport");
 const router = express.Router();
 
 // Get Customer Profile
-router.get("/profile/:user_id", (req, res) => {
+router.get("/profile/:user_id", checkAuth, (req, res) => {
   let msg = req.body;
   msg.route = "getProfile";
   msg.params = req.params.user_id;
@@ -92,7 +92,7 @@ router.get("/profile/:user_id", (req, res) => {
 // });
 
 // Update Customer Profile
-router.put("/profile/:user_id", (req, res) => {
+router.put("/profile/:user_id", checkAuth, (req, res) => {
   console.log("Inside post of customer/profile/updateProfileDetails");
   console.log(req.body);
   let msg = req.body;
@@ -133,7 +133,7 @@ router.put("/profile/:user_id", (req, res) => {
 // });
 
 // Add to cart
-router.post("/addtocart/:user_id", (req, res) => {
+router.post("/addtocart/:user_id", checkAuth, (req, res) => {
   console.log(req.body);
   let msg = req.body;
   msg.route = "addToCart";
@@ -218,7 +218,7 @@ router.post("/addtocart/:user_id", (req, res) => {
 // });
 
 // Get Cart Details
-router.get("/cart/:user_id", (req, res) => {
+router.get("/cart/:user_id", checkAuth, (req, res) => {
   let msg = {};
   msg.route = "getCart";
   msg.user_id = req.params.user_id;
@@ -313,8 +313,26 @@ router.delete("/removeitem/:user_id", (req, res) => {
 //   }
 // });
 
+// Update Items in cart
+router.put("/cart/updateitem/:user_id", (req, res) => {
+  let msg = {
+    _id: req.body._id,
+    item_id: req.body.item_id,
+    item_quantity: req.body.item_quantity,
+  };
+  msg.route = "updateItem";
+  msg.user_id = req.params.user_id;
+  kafka.make_request("cart", msg, function (err, results) {
+    if (err) {
+      res.status(err.status).send(err);
+    } else {
+      res.status(results.status).send(results);
+    }
+  });
+});
+
 // Empty Cart
-router.delete("/emptycart/:user_id", (req, res) => {
+router.delete("/emptycart/:user_id", checkAuth, (req, res) => {
   let msg = {};
   msg.route = "emptyCart";
   msg.user_id = req.params.user_id;
@@ -346,7 +364,7 @@ router.delete("/emptycart/:user_id", (req, res) => {
 // });
 
 // Checkout
-router.post("/checkout/:user_id", (req, res) => {
+router.post("/checkout/:user_id", checkAuth, (req, res) => {
   let msg = req.body;
   msg.user_id = req.params.user_id;
   kafka.make_request("checkout", msg, function (err, results) {
@@ -379,7 +397,7 @@ router.post("/checkout/:user_id", (req, res) => {
 // });
 
 // Get All Orders
-router.get("/orders/:user_id", (req, res) => {
+router.get("/orders/:user_id", checkAuth, (req, res) => {
   let msg = {};
   msg.user_id = req.params.user_id;
   msg.route = "getCustomerOrders";
@@ -420,7 +438,7 @@ router.get("/orders/:user_id", (req, res) => {
 // });
 
 // Cancel Order
-router.put("/cancelorder/:order_id", (req, res) => {
+router.put("/cancelorder/:order_id", checkAuth, (req, res) => {
   let msg = {
     order_status: "cancelled",
   };
@@ -455,7 +473,7 @@ router.put("/cancelorder/:order_id", (req, res) => {
 // });
 
 // Get Favorite Restaurant
-router.get("/favorite/:user_id", (req, res) => {
+router.get("/favorite/:user_id", checkAuth, (req, res) => {
   console.log(req.body);
   let msg = {
     user_id: req.params.user_id,
@@ -498,7 +516,7 @@ router.get("/favorite/:user_id", (req, res) => {
 // });
 
 // Add Favorite Restaurants
-router.post("/favorite/:user_id", (req, res) => {
+router.post("/favorite/:user_id", checkAuth, (req, res) => {
   console.log(req.body);
   let msg = {
     user_id: req.params.user_id,
@@ -533,7 +551,7 @@ router.post("/favorite/:user_id", (req, res) => {
 // });
 
 // Remove Restaurant from Favorites
-router.delete("/favorite/:user_id", (req, res) => {
+router.delete("/favorite/:user_id", checkAuth, (req, res) => {
   console.log(req.body);
   let msg = {
     user_id: req.params.user_id,

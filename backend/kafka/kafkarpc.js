@@ -39,7 +39,7 @@ KafkaRPC.prototype.makeRequest = function (topic_name, content, callback) {
     function (corr_id) {
       //if this ever gets called we didn't get a response in a
       //timely fashion
-      console.log("timeout");
+      console.log("Timeout: ");
       callback(new Error("timeout " + corr_id));
       //delete the entry from hash
       delete self.requests[corr_id];
@@ -60,7 +60,7 @@ KafkaRPC.prototype.makeRequest = function (topic_name, content, callback) {
 
   //make sure we have a response topic
   self.setupResponseQueue(self.producer, topic_name, function () {
-    console.log("in response");
+    console.log("In Setup Response");
     //put the request on a topic
 
     /*
@@ -78,10 +78,10 @@ KafkaRPC.prototype.makeRequest = function (topic_name, content, callback) {
         partition: 0,
       },
     ];
-    console.log("in response1");
+    console.log("In Response");
     console.log(self.producer.ready);
     self.producer.send(payloads, function (err, data) {
-      console.log("in response2");
+      console.log("In Producer Send");
       if (err) console.log(err);
       console.log(data);
     });
@@ -96,15 +96,12 @@ will now act as a consumer and would subscribe to that topic
 KafkaRPC.prototype.setupResponseQueue = function (producer, topic_name, next) {
   //don't mess around if we have a queue
   if (this.response_queue) return next();
-
-  console.log("1");
-
   self = this;
 
   //subscribe to messages
   var consumer = self.connection.getConsumer("response_topic_ubereats");
   consumer.on("message", function (message) {
-    console.log("msg received");
+    console.log("Message received: ", message);
     var data = JSON.parse(message.value);
     //get the correlationId
     var correlationId = data.correlationId;

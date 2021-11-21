@@ -3,6 +3,7 @@ const { addToCart } = require("./addToCart");
 const { getCart } = require("./getCart");
 const { emptyCart } = require("./emptyCart");
 const { removeItem } = require("./removeItem");
+const { updateItem } = require("./updateItem");
 
 let handle_request = (msg, callback) => {
   console.log(msg.route);
@@ -18,6 +19,9 @@ let handle_request = (msg, callback) => {
       break;
     case "removeItem":
       removeItem(msg, callback);
+      break;
+    case "updateItem":
+      updateItem(msg, callback);
       break;
   }
 };

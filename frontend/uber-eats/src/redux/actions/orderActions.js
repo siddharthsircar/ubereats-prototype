@@ -18,6 +18,8 @@ const setDeliveryModeDispachter = (payload) => ({
 
 const getUserCart = (payload) => (dispatch) => {
   try {
+    axios.defaults.headers.common.authorization =
+      localStorage.getItem("authToken");
     axios
       .get(`${server}/user/cart/${payload}`)
       .then((res) => {

@@ -15,6 +15,7 @@ class Cart extends Component {
       total_items: this.props.total_items,
       cart_total: this.props.cart_total,
       showSummary: false,
+      curItem: "",
     };
     this.handleClick = this.handleClick.bind(this);
     this.removeAll = this.removeAll.bind(this);
@@ -37,8 +38,6 @@ class Cart extends Component {
       });
   };
 
-  updateItemQty = (e) => {};
-
   render() {
     let cartItems = null;
     if (this.props.total_items === 0) {
@@ -46,13 +45,45 @@ class Cart extends Component {
     } else {
       let items = this.props.cart.map((item) => {
         return (
-          <div className="flex justify-between items-center mb2">
+          <div className="flex justify-between items-center mb2" key={item._id}>
             <div>
-              <select name="item_quantity" id="item_quantity">
+              <select
+                name="item_quantity"
+                id={item._id}
+                defaultValue={item.item_quantity}
+                onChange={(e) => {
+                  e.preventDefault();
+                  this.setState({
+                    curItem: item._id,
+                  });
+                  console.log("QTY: ", e.target.value);
+                  const updateData = {
+                    _id: e.target.id,
+                    item_id: item.item_id,
+                    item_quantity: e.target.value,
+                  };
+                  axios
+                    .put(
+                      `${server}/user/cart/updateitem/${this.props.user_id}`,
+                      updateData
+                    )
+                    .then((res) => {
+                      if (res.status === 200) {
+                        this.props.getUserCart(this.props.user_id);
+                        console.log("Update result: ", res);
+                      }
+                    })
+                    .catch((err) => {
+                      console.log("Error while removing item: ", err.response);
+                      alert("Unable to update item qty.");
+                    });
+                }}
+              >
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
+                <option value="5">5</option>
               </select>
               {`  ${item.item_name}`}
             </div>

@@ -22,6 +22,7 @@ const authReducer = (state = initState, action) => {
     case USER_LOGIN: {
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("userType", "customer");
+      localStorage.setItem("authToken", action.payload.Token);
       return {
         user: action.payload.user,
         userId: action.payload.user.user_id,
@@ -31,6 +32,7 @@ const authReducer = (state = initState, action) => {
     case USER_REGISTER: {
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("userType", "customer");
+      localStorage.setItem("authToken", action.payload.Token);
       return {
         user: action.payload.user,
         userId: action.payload.user.user_id,

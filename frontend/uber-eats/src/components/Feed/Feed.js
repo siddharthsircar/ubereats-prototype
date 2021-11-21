@@ -27,6 +27,8 @@ class Feed extends Component {
       this.props.authUser &&
       (this.city === undefined || this.city === null || !this.city)
     ) {
+      axios.defaults.headers.common.authorization =
+        localStorage.getItem("authToken");
       axios
         .get(`${server}/restaurant/all?zip=${this.props.user.zip}`)
         .then((response) => {
@@ -83,7 +85,7 @@ class Feed extends Component {
       }
       restaurantCards = filteredRestaurants.map((restaurant) => {
         return (
-          <Col lg="3" className="pa2">
+          <Col lg="3" className="pa2" key={restaurant._id}>
             <RestaurantCard guest={"true"} restaurant={restaurant} />
           </Col>
         );

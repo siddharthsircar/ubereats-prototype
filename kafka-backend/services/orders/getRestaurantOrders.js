@@ -22,10 +22,15 @@ let getRestaurantOrders = async (msg, callback) => {
           );
         } else {
           console.log("Orders: ", result.orders);
-          if (result.orders.length !== 0) {
+          let orders = result.orders;
+          orders.sort((a, b) =>
+            a.updatedAt > b.updatedAt ? -1 : b.updatedAt > a.updatedAt ? 1 : 0
+          );
+          console.log("Sorted Orders: ", orders);
+          if (orders.length !== 0) {
             return callback(null, {
               status: 200,
-              orders: result.orders,
+              orders: orders,
             });
           } else {
             return callback(

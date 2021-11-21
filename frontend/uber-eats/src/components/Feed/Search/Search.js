@@ -20,12 +20,13 @@ class Search extends Component {
       food: "",
       q: this.props.location.state.searchQuery,
     };
+    this.search = this.search.bind(this);
   }
 
-  componentDidMount = () => {
+  search = () => {
     axios
       .get(
-        `${server}/restaurant/all?zip=${this.props.user.zip}&searchQuery=${this.state.q}`
+        `${server}/restaurant/all?zip=${this.props.user.zip}&searchQuery=${this.props.location.state.searchQuery}`
       )
       .then((response) => {
         this.setState({
@@ -44,7 +45,9 @@ class Search extends Component {
       });
 
     axios
-      .get(`${server}/menu/items/all?searchQuery=${this.state.q}`)
+      .get(
+        `${server}/menu/items/all?searchQuery=${this.props.location.state.searchQuery}`
+      )
       .then((response) => {
         if (response.status === 200) {
           this.setState({
@@ -62,6 +65,18 @@ class Search extends Component {
           console.log(error.response.data);
         }
       });
+  };
+  componentDidMount = () => {
+    this.search();
+  };
+
+  componentDidUpdate = (prevProps) => {
+    if (
+      this.props.location.state.searchQuery !==
+      prevProps.location.state.searchQuery
+    ) {
+      this.search();
+    }
   };
 
   render() {
@@ -101,7 +116,7 @@ class Search extends Component {
             <Link
               to={{
                 pathname: "/restaurant",
-                state: { restaurant: { rest_id: item.menu_id } },
+                state: { restaurant: { _id: item.rest_id } },
               }}
             >
               <li className="flex items-center lh-copy pa3 ph0-l bb b--black-10">
@@ -137,9 +152,9 @@ class Search extends Component {
       );
     }
     let defaultActiveKey = null;
-    if (this.state.showRestaurants === true) {
-      defaultActiveKey = "restaurant";
-    } else defaultActiveKey = "food";
+    if (this.state.showFood === true) {
+      defaultActiveKey = "food";
+    } else defaultActiveKey = "restaurant";
     return (
       <div style={{ position: "relative", top: "18vh" }}>
         <div className="center" style={{ width: "80%" }}>
