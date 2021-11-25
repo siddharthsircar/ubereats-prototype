@@ -7,3 +7,6 @@
 /backend/package-lock.json
 /frontend/uber-eats/package-lock.json
 /kafka-backend/package-lock.json
+Lab 2.postman_collection.json
+.gitignore
+frontend/uber-eats/src/components/Navigation/Cart/cart_new.js
