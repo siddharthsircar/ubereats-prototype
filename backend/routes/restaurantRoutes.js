@@ -14,14 +14,8 @@ const {
 } = require("../controller/restaurantController");
 
 const {
-  getUserOrders,
-  getCartOrderId,
-  addOrder,
   getOrderSummary,
-  addItemsToOrder,
-  removeFromCart,
   updateOrder,
-  removeCart,
   getRestaurantOrders,
 } = require("../controller/orderController");
 

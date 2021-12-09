@@ -91,7 +91,9 @@ class Orders extends Component {
       axios
         .put(`${server}/restaurant/updateorder/${order_id}`, updateData)
         .then((res) => {
+          console.log({ updateData });
           if (res.status === 200) {
+            console.log(res.body);
             this.getLatestOrders();
           }
         })

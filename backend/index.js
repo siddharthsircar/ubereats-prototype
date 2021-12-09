@@ -1,25 +1,36 @@
 /* eslint-disable no-console */
-
 const express = require("express");
 const morgan = require("morgan");
-
+const { graphqlHTTP } = require("express-graphql");
+const { ApolloServer, gql } = require("apollo-server");
 const app = express();
-const bp = require("body-parser");
+const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const schema = require("./schema/schema");
 // eslint-disable-next-line no-unused-vars
 const dotenv = require("dotenv");
 dotenv.config();
 
-app.use(bp.json());
+// let apolloServer = null;
+// async function startServer() {
+//   apolloServer = new ApolloServer({
+//     playground: true,
+//     schema,
+//   });
+//   await apolloServer.start();
+//   apolloServer.applyMiddleware({ app });
+// }
+// startServer();
+
+app.use(bodyParser.json());
 app.use(
-  bp.urlencoded({
+  bodyParser.urlencoded({
     extended: true,
   })
 );
 app.use(morgan("dev"));
 
-app.use(cors());
+app.use(cors({ origin: "*", credentials: true }));
 
 // eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
@@ -32,17 +43,25 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static("public"));
+app.use(express.static("./public"));
 console.log("env baby:", process.env.SEQUELIZE_SYNC_FORCE);
 app.use("/user", require("./routes/userRoutes"));
 app.use("/restaurant", require("./routes/restaurantRoutes"));
 app.use("/menu", require("./routes/menuRoutes"));
 
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Siddharth's Uber Eats application." });
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+);
+const server = new ApolloServer({ schema });
+
+// The `listen` method launches a web server.
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`);
 });
 
-// const port = process.env.PORT;
-// || 3001;
 app.listen(7000, () => console.log(`listening on port 7000`));
 module.exports = app;

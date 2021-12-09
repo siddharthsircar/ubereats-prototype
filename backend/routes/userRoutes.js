@@ -29,7 +29,7 @@ const {
 const { getRestaurantProfile } = require("../controller/restaurantController");
 
 const router = express.Router();
-
+// Register User
 router.post("/register", async (req, res) => {
   const userDetails = req.body;
   const {
@@ -97,7 +97,7 @@ router.post("/register", async (req, res) => {
     });
   }
 });
-
+// Login user
 router.post("/login", async (req, res) => {
   const userCreds = req.body;
   const { email } = userCreds;
@@ -155,7 +155,7 @@ router.post("/login", async (req, res) => {
     });
   }
 });
-
+// Update User Profile
 router.put("/profile/:user_id", async (req, res) => {
   const updateData = req.body;
   const user_id = req.params.user_id;
@@ -180,7 +180,7 @@ router.put("/profile/:user_id", async (req, res) => {
     });
   }
 });
-
+// Get User Profile
 router.get("/profile/:user_id", async (req, res) => {
   const user_id = req.params.user_id;
   console.log(user_id);

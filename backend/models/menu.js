@@ -32,7 +32,7 @@ const menu = sequelize.define("menu", {
     allowNull: false,
   },
   item_image: {
-    type: DT.STRING(50),
+    type: DT.STRING(500),
     unique: false,
     allowNull: true,
   },
